@@ -9,6 +9,13 @@
 #include <iostream>
 #include <map>
 #include <list>
+#include <vector>
+#include <cmath>
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/euler_angles.hpp>
+#include <glm/gtx/transform.hpp>
 
 #include <ppgso/ppgso.h>
 
@@ -17,6 +24,12 @@
 #include "generator.h"
 #include "player.h"
 #include "space.h"
+#include "skybox.h"
+
+#include "BezierPatch.h"
+
+#include <shaders/texture_vert_glsl.h>
+#include <shaders/texture_frag_glsl.h>
 
 const unsigned int SIZE = 512;
 
@@ -41,7 +54,14 @@ private:
     scene.camera = move(camera);
 
     // Add space background
-    scene.objects.push_back(std::make_unique<Space>());
+    // UNDO
+    //scene.objects.push_back(std::make_unique<Space>());
+    auto skybox = std::make_unique<Skybox>();
+    skybox->scale = {10, 10, 10};
+    scene.objects.push_back(move(skybox));
+    //skybox->position = {0, 10, 0};
+
+    //skybox->update(scene, 0);
 
     // Add generator to scene
     auto generator = std::make_unique<Generator>();
@@ -73,6 +93,8 @@ public:
     glCullFace(GL_BACK);
 
     initScene();
+
+
   }
 
   /*!
@@ -158,6 +180,8 @@ public:
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Update and render all objects
+    //scene.camera->position = {0, 0, -15 + 3 * sin(time)};
+
     scene.update(dt);
     scene.render();
   }

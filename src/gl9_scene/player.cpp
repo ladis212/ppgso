@@ -1,6 +1,6 @@
 #include "player.h"
 #include "scene.h"
-#include "asteroid.h"
+#include "skybox.h"
 #include "projectile.h"
 #include "explosion.h"
 
@@ -33,19 +33,19 @@ bool Player::update(Scene &scene, float dt) {
       continue;
 
     // We only need to collide with asteroids, ignore other objects
-    auto asteroid = dynamic_cast<Asteroid*>(obj.get());
-    if (!asteroid) continue;
-
-    if (distance(position, asteroid->position) < asteroid->scale.y) {
-      // Explode
-      auto explosion = std::make_unique<Explosion>();
-      explosion->position = position;
-      explosion->scale = scale * 3.0f;
-      scene.objects.push_back(move(explosion));
+    //auto asteroid = dynamic_cast<Asteroid*>(obj.get());
+    //if (!asteroid) continue;
+//
+    //if (distance(position, asteroid->position) < asteroid->scale.y) {
+    //  // Explode
+    //  auto explosion = std::make_unique<Explosion>();
+    //  explosion->position = position;
+    //  explosion->scale = scale * 3.0f;
+    //  scene.objects.push_back(move(explosion));
 
       // Die
-      return false;
-    }
+      //return false;
+    //}
   }
 
   // Keyboard controls

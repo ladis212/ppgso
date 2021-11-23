@@ -1,5 +1,5 @@
 #include <glm/gtc/random.hpp>
-#include "asteroid.h"
+#include "skybox.h"
 #include "projectile.h"
 #include "explosion.h"
 
