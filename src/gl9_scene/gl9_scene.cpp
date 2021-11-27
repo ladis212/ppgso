@@ -25,6 +25,7 @@
 #include "player.h"
 #include "space.h"
 #include "skybox.h"
+#include "island.h"
 
 #include "BezierPatch.h"
 
@@ -40,6 +41,8 @@ class SceneWindow : public ppgso::Window {
 private:
   Scene scene;
   bool animate = true;
+  std::unique_ptr<Skybox> skybox;
+  std::unique_ptr<Island> island;
 
   /*!
    * Reset and initialize the game scene
@@ -47,6 +50,7 @@ private:
    */
   void initScene() {
     scene.objects.clear();
+    scene.lightDirection = {1, 1, 0};
 
     // Create a camera
     auto camera = std::make_unique<Camera>(60.0f, 1.0f, 0.1f, 100.0f);
@@ -56,9 +60,13 @@ private:
     // Add space background
     // UNDO
     //scene.objects.push_back(std::make_unique<Space>());
-    auto skybox = std::make_unique<Skybox>();
+    skybox = std::make_unique<Skybox>();
     skybox->scale = {10, 10, 10};
     scene.objects.push_back(move(skybox));
+
+    island = std::make_unique<Island>();
+    island->scale = {.10, .10, .10};
+    scene.objects.push_back(move(island));
     //skybox->position = {0, 10, 0};
 
     //skybox->update(scene, 0);
@@ -91,6 +99,10 @@ public:
     glEnable(GL_CULL_FACE);
     glFrontFace(GL_CCW);
     glCullFace(GL_BACK);
+
+    //glEnable(GL_LIGHTING);
+    //glEnable(GL_LIGHT0);
+    //glShadeModel(GL_SMOOTH);
 
     initScene();
 
@@ -166,11 +178,16 @@ public:
    * Window update implementation that will be called automatically from pollEvents
    */
   void onIdle() override {
+
     // Track time
     static auto time = (float) glfwGetTime();
 
     // Compute time delta
     float dt = animate ? (float) glfwGetTime() - time : 0;
+
+    //skybox->rotMomentum = {1, 0, 1};
+
+    //scene.camera->back = {5 * abs(sin(time * 0.1)), 0, 5 * -abs(cos(time * 0.1))};
 
     time = (float) glfwGetTime();
 

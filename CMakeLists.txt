@@ -132,7 +132,7 @@ add_executable(gl9_scene
         src/gl9_scene/player.cpp
         src/gl9_scene/projectile.cpp
         src/gl9_scene/explosion.cpp
-        src/gl9_scene/space.cpp src/gl9_scene/BezierPatch.cpp src/gl9_scene/BezierPatch.h)
+        src/gl9_scene/space.cpp src/gl9_scene/BezierPatch.cpp src/gl9_scene/BezierPatch.h src/gl9_scene/island.cpp src/gl9_scene/island.h)
 target_link_libraries(gl9_scene ppgso shaders)
 install(TARGETS gl9_scene DESTINATION .)
 add_custom_command(TARGET gl9_scene POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/data/ ${CMAKE_CURRENT_BINARY_DIR})

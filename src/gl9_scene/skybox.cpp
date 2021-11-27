@@ -1,10 +1,8 @@
 #include <glm/gtc/random.hpp>
 #include "skybox.h"
-#include "projectile.h"
-#include "explosion.h"
 
-#include <shaders/diffuse_vert_glsl.h>
-#include <shaders/diffuse_frag_glsl.h>
+#include <shaders/texture_vert_glsl.h>
+#include <shaders/texture_frag_glsl.h>
 
 
 // Static resources
@@ -16,11 +14,11 @@ Skybox::Skybox() {
   // Set random scale speed and rotation
   //scale *= glm::linearRand(.1f, .3f);
   //speed = {glm::linearRand(-2.0f, 2.0f), glm::linearRand(-5.0f, -10.0f), 0.0f};
-  //rotation = glm::ballRand(ppgso::PI);
-  //rotMomentum = glm::ballRand(ppgso::PI);
+  rotation = {0, 0, 0};
+  rotMomentum = {0, 0, 0};
 
   // Initialize static resources if needed
-  if (!shader) shader = std::make_unique<ppgso::Shader>(diffuse_vert_glsl, diffuse_frag_glsl);
+  if (!shader) shader = std::make_unique<ppgso::Shader>(texture_vert_glsl, texture_frag_glsl);
   if (!texture) texture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("skybox.bmp"));
   if (!mesh) mesh = std::make_unique<ppgso::Mesh>("skybox.obj");
 }
@@ -30,10 +28,8 @@ bool Skybox::update(Scene &scene, float dt) {
   //age += dt;
 
   // Animate position according to time
-  //position += speed * dt;
-
-  // Rotate the object
-  //rotation += rotMomentum * dt;
+  position += speed * dt;
+  rotation += rotMomentum * dt;
 
   // Delete when alive longer than 10s or out of visibility
   //if (age > 10.0f || position.y < -10) return false;
@@ -76,33 +72,19 @@ bool Skybox::update(Scene &scene, float dt) {
   return true;
 }
 
-void Skybox::explode(Scene &scene, glm::vec3 explosionPosition, glm::vec3 explosionScale, int pieces) {
-  // Generate explosion
-  auto explosion = std::make_unique<Explosion>();
-  explosion->position = explosionPosition;
-  explosion->scale = explosionScale;
-  explosion->speed = speed / 2.0f;
-  scene.objects.push_back(move(explosion));
-
-  // Generate smaller asteroids
-  for (int i = 0; i < pieces; i++) {
-    auto asteroid = std::make_unique<Skybox>();
-    asteroid->speed = speed + glm::vec3(glm::linearRand(-3.0f, 3.0f), glm::linearRand(0.0f, -5.0f), 0.0f);;
-    asteroid->position = position;
-    asteroid->rotMomentum = rotMomentum;
-    float factor = (float) pieces / 2.0f;
-    asteroid->scale = scale / factor;
-    scene.objects.push_back(move(asteroid));
-  }
-}
-
 void Skybox::render(Scene &scene) {
   shader->use();
+  //shader->setUniform("LightDirection", scene.lightDirection);
 
-  // Set up light
-  shader->setUniform("LightDirection", scene.lightDirection);
+  //glm::vec3 ambientLight(1, 0.5, 0.5);
+  //shader->setUniform("AmbientLight", ambientLight);
+  //float light_ambient[] = {1.0f, 1.0f, 1.0f, 1.0f };
+  //float mat_ambient[] = { 1.0f, 0.0f, 0.0f, 1.0f };
+  //glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+  //glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
 
   // use camera
+  //shader->setUniform("OverallColor", {1, 1, 1});
   shader->setUniform("ProjectionMatrix", scene.camera->projectionMatrix);
   shader->setUniform("ViewMatrix", scene.camera->viewMatrix);
 
@@ -114,7 +96,6 @@ void Skybox::render(Scene &scene) {
 
 void Skybox::onClick(Scene &scene) {
   std::cout << "Skybox clicked!" << std::endl;
-  explode(scene, position, {10.0f, 10.0f, 10.0f}, 0 );
   age = 10000;
 }
 

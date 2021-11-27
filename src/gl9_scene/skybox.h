@@ -23,6 +23,8 @@ private:
   float age{0.0f};
 
   // Speed and rotational momentum
+public:
+
   glm::vec3 speed;
   glm::vec3 rotMomentum;
 
@@ -34,8 +36,6 @@ private:
    * @param explosionScale - Scale of the explosion
    * @param pieces - Skybox pieces to generate
    */
-  void explode(Scene &scene, glm::vec3 explosionPosition, glm::vec3 explosionScale, int pieces);
-
 public:
   /*!
    * Create new asteroid
