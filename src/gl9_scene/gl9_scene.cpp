@@ -32,7 +32,8 @@
 #include <shaders/texture_vert_glsl.h>
 #include <shaders/texture_frag_glsl.h>
 
-const unsigned int SIZE = 512;
+const unsigned int HEIGHT = 720;
+const unsigned int WIDTH = 720;
 
 /*!
  * Custom windows for our simple game
@@ -61,12 +62,12 @@ private:
     // UNDO
     //scene.objects.push_back(std::make_unique<Space>());
     skybox = std::make_unique<Skybox>();
-    skybox->scale = {10, 10, 10};
-    scene.objects.push_back(move(skybox));
+    skybox->scale = {50, 50, 50};
+    //scene.objects.push_back(move(skybox));
 
     island = std::make_unique<Island>();
     island->scale = {.10, .10, .10};
-    scene.objects.push_back(move(island));
+    //scene.objects.push_back(move(island));
     //skybox->position = {0, 10, 0};
 
     //skybox->update(scene, 0);
@@ -86,7 +87,7 @@ public:
   /*!
    * Construct custom game window
    */
-  SceneWindow() : Window{"gl9_scene", SIZE, SIZE} {
+  SceneWindow() : Window{"gl9_scene", WIDTH, HEIGHT} {
     //hideCursor();
     glfwSetInputMode(window, GLFW_STICKY_KEYS, 1);
 
@@ -187,7 +188,9 @@ public:
 
     //skybox->rotMomentum = {1, 0, 1};
 
-    //scene.camera->back = {5 * abs(sin(time * 0.1)), 0, 5 * -abs(cos(time * 0.1))};
+    scene.camera->position = {10 * (sin(time)), 5, 10 * (cos(time))};
+    skybox->position = scene.camera->position;
+    move(skybox);
 
     time = (float) glfwGetTime();
 
@@ -198,6 +201,11 @@ public:
 
     // Update and render all objects
     //scene.camera->position = {0, 0, -15 + 3 * sin(time)};
+
+    skybox->update(scene, dt);
+    skybox->render(scene);
+    island->update(scene, dt);
+    island->render(scene);
 
     scene.update(dt);
     scene.render();
