@@ -26,6 +26,7 @@
 #include "space.h"
 #include "skybox.h"
 #include "island.h"
+#include "dolphin.h"
 
 #include "BezierPatch.h"
 
@@ -44,6 +45,7 @@ private:
   bool animate = true;
   std::unique_ptr<Skybox> skybox;
   std::unique_ptr<Island> island;
+  std::unique_ptr<Dolphin> dolphin;
 
   /*!
    * Reset and initialize the game scene
@@ -70,6 +72,8 @@ private:
     //scene.objects.push_back(move(island));
     //skybox->position = {0, 10, 0};
 
+    dolphin = std::make_unique<Dolphin>();
+    dolphin->scale = {.05, .05, .05};;
     //skybox->update(scene, 0);
 
     // Add generator to scene
@@ -206,6 +210,13 @@ public:
     skybox->render(scene);
     island->update(scene, dt);
     island->render(scene);
+    dolphin->update(scene, dt);
+    dolphin->render(scene);
+
+    //pohyb delfina:
+    //X := originX + cos(angle)*radius;
+     //Y := originY + sin(angle)*radius;
+
 
     scene.update(dt);
     scene.render();
