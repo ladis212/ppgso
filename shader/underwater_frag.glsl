@@ -20,24 +20,13 @@ in vec4 normal;
 // The final color
 out vec4 FragmentColor;
 
-float near = 0.1f;
-float far = 100.0f;
-
-float linearizeDepth(float depth){
-  return (2.0 * near * far) / (far + near - (depth * 2.0 - 1.0) * (far - near));
-}
-
 void main() {
   // Compute diffuse lighting
   float diffuse = max(dot(normal, vec4(normalize(LightDirection), 1.0f)), 0.0f);
 
   // Lookup the color in Texture on coordinates given by texCoord
   // NOTE: Texture coordinate is inverted vertically for compatibility with OBJ
-  float linear_depth = linearizeDepth(gl_FragCoord.z) / far;
   FragmentColor = texture(Texture, vec2(texCoord.x, 1.0 - texCoord.y) + TextureOffset) * diffuse;
-  FragmentColor.r = max(0.0f, FragmentColor.r - linear_depth);
-  FragmentColor.g = max(0.0f, FragmentColor.g - linear_depth);
-  FragmentColor.b = min(0.999f, FragmentColor.b + linear_depth);
-
+  FragmentColor.b = 0;//max(0.0f, gl_FragCoord.z*0.01);
   FragmentColor.a = Transparency;
 }

@@ -68,7 +68,8 @@ private:
     //scene.objects.push_back(move(skybox));
 
     island = std::make_unique<Island>();
-    island->scale = {.10, .10, .10};
+    //island->scale = {.10, .10, .10};
+    island->position = {0, -20, 0};
     //scene.objects.push_back(move(island));
     //skybox->position = {0, 10, 0};
 
@@ -192,7 +193,8 @@ public:
 
     //skybox->rotMomentum = {1, 0, 1};
 
-    scene.camera->position = {10 * (sin(time)), 5, 10 * (cos(time))};
+    int distance = 20;
+    scene.camera->position = {20 + distance * (sin(time / 2)), 5, 0};
     skybox->position = scene.camera->position;
     move(skybox);
 

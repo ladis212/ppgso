@@ -128,6 +128,7 @@ add_executable(gl9_scene
         src/gl9_scene/scene.cpp
         src/gl9_scene/camera.cpp
         src/gl9_scene/skybox.cpp
+        src/gl9_scene/dolphin.cpp
         src/gl9_scene/generator.cpp
         src/gl9_scene/player.cpp
         src/gl9_scene/projectile.cpp
