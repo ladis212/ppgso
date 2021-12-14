@@ -21,7 +21,7 @@ in vec4 normal;
 out vec4 FragmentColor;
 
 float near = 0.1f;
-float far = 100.0f;
+float far = 20.0f;
 
 float linearizeDepth(float depth){
   return (2.0 * near * far) / (far + near - (depth * 2.0 - 1.0) * (far - near));
@@ -35,9 +35,13 @@ void main() {
   // NOTE: Texture coordinate is inverted vertically for compatibility with OBJ
   float linear_depth = linearizeDepth(gl_FragCoord.z) / far;
   FragmentColor = texture(Texture, vec2(texCoord.x, 1.0 - texCoord.y) + TextureOffset) * diffuse;
-  FragmentColor.r = max(0.0f, FragmentColor.r - linear_depth);
-  FragmentColor.g = max(0.0f, FragmentColor.g - linear_depth);
-  FragmentColor.b = min(0.999f, FragmentColor.b + linear_depth);
+  vec3 multiplyColor = {
+  0.09,0.05,0.52
+  };
+
+  FragmentColor.r = mix(FragmentColor.r, FragmentColor.r * multiplyColor.r, linear_depth);
+  FragmentColor.g = mix(FragmentColor.g, FragmentColor.g * multiplyColor.g, linear_depth);
+  FragmentColor.b = mix(FragmentColor.b, FragmentColor.b * multiplyColor.b, linear_depth);
 
   FragmentColor.a = Transparency;
 }

@@ -27,6 +27,8 @@
 #include "skybox.h"
 #include "island.h"
 #include "dolphin.h"
+#include "Bubble.h"
+#include "GenericObject.h"
 
 #include "BezierPatch.h"
 
@@ -46,6 +48,7 @@ private:
   std::unique_ptr<Skybox> skybox;
   std::unique_ptr<Island> island;
   std::unique_ptr<Dolphin> dolphin;
+  std::unique_ptr<Bubble> bubble;
 
   /*!
    * Reset and initialize the game scene
@@ -56,7 +59,7 @@ private:
     scene.lightDirection = {1, 1, 0};
 
     // Create a camera
-    auto camera = std::make_unique<Camera>(60.0f, 1.0f, 0.1f, 100.0f);
+    auto camera = std::make_unique<Camera>(60.0f, 1.0f, 0.1f, 300.0f);
     camera->position.z = -15.0f;
     scene.camera = move(camera);
 
@@ -64,12 +67,15 @@ private:
     // UNDO
     //scene.objects.push_back(std::make_unique<Space>());
     skybox = std::make_unique<Skybox>();
-    skybox->scale = {50, 50, 50};
+    skybox->scale = {100, 100, 100};
     //scene.objects.push_back(move(skybox));
 
     island = std::make_unique<Island>();
-    //island->scale = {.10, .10, .10};
+    island->scale = {.10, .10, .10};
     island->position = {0, -20, 0};
+
+    bubble = std::make_unique<Bubble>();
+    bubble->scale = {10, 10, 10};
     //scene.objects.push_back(move(island));
     //skybox->position = {0, 10, 0};
 
@@ -122,6 +128,7 @@ public:
    * @param action Action indicating the key state change
    * @param mods Additional modifiers to consider
    */
+  glm::vec3 directions = {0, 0, 0};
   void onKey(int key, int scanCode, int action, int mods) override {
     scene.keyboard[key] = action;
 
@@ -134,6 +141,30 @@ public:
     if (key == GLFW_KEY_P && action == GLFW_PRESS) {
       animate = !animate;
     }
+
+    if (key == GLFW_KEY_W) {
+        if(action == GLFW_PRESS) directions.z = 1;
+        if(action == GLFW_RELEASE) directions.z = 0;
+    }
+
+    if (key == GLFW_KEY_S) {
+
+        if(action == GLFW_PRESS) directions.z = -1;
+        if(action == GLFW_RELEASE) directions.z = 0;
+    }
+
+    if (key == GLFW_KEY_D) {
+        if(action == GLFW_PRESS) directions.x = 1;
+        if(action == GLFW_RELEASE) directions.x = 0;
+    }
+
+    if (key == GLFW_KEY_A) {
+        if(action == GLFW_PRESS) directions.x = -1;
+        if(action == GLFW_RELEASE) directions.x = 0;
+
+    }
+
+
   }
 
   /*!
@@ -152,6 +183,7 @@ public:
    * @param action Mouse bu
    * @param mods
    */
+
   void onMouseButton(int button, int action, int mods) override {
     if(button == GLFW_MOUSE_BUTTON_LEFT) {
       scene.cursor.left = action == GLFW_PRESS;
@@ -194,9 +226,15 @@ public:
     //skybox->rotMomentum = {1, 0, 1};
 
     int distance = 20;
-    scene.camera->position = {20 + distance * (sin(time / 2)), 5, 0};
+    //scene.camera->position = {20 + distance * (sin(time / 2)), 5, 0};
     skybox->position = scene.camera->position;
-    move(skybox);
+
+
+    float speed = 0.1f;
+    glm::vec3 direction = glm::normalize(scene.camera->target - scene.camera->position);
+    scene.camera->position += (directions * direction) * speed;
+    //move(skybox);
+    bubble->position = scene.camera->position + (direction * 5.0f);
 
     time = (float) glfwGetTime();
 
@@ -214,6 +252,8 @@ public:
     island->render(scene);
     dolphin->update(scene, dt);
     dolphin->render(scene);
+    bubble->update(scene, dt);
+    bubble->render(scene);
 
     //pohyb delfina:
     //X := originX + cos(angle)*radius;
