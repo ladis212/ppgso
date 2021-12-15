@@ -34,7 +34,7 @@ bool Bubble::update(Scene &scene, float dt) {
     rotation += rotMomentum * dt;
 
     // Delete when alive longer than 10s or out of visibility
-    if (age > 30.0f || position.y > 20) return false;
+    if (age > 30.0f || position.y > -2) return false;
 
     // Collide with scene
     //for (auto &obj : scene.objects) {
@@ -70,8 +70,8 @@ bool Bubble::update(Scene &scene, float dt) {
 
     // Generate modelMatrix from position, rotation and scale
     generateModelMatrix();
-    modelMatrix *= glm::inverse(scene.camera->viewMatrix);
-    modelMatrix *= glm::orientate4(glm::vec3{0, 0, M_PI});
+    //modelMatrix *= glm::inverse(scene.camera->viewMatrix);
+    //modelMatrix *= glm::orientate4(glm::vec3{0, 0, M_PI});
 
     return true;
 }

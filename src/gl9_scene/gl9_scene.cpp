@@ -30,6 +30,7 @@
 #include "Bubble.h"
 #include "GenericObject.h"
 #include "fish.h"
+#include "BezierPatch.h"
 
 #include "BezierPatch.h"
 
@@ -64,6 +65,8 @@ private:
   std::unique_ptr<fish>fish_l1;
   std::unique_ptr<fish>fish_l2;
 
+  std::unique_ptr<BezierPatch> sea;
+
   bool surfaceState = true;
 
   /*!
@@ -87,7 +90,10 @@ private:
       //scene.objects.push_back(move(skybox));
       island = std::make_unique<Island>();
       island->scale = {.10, .10, .10};
-      island->position = {0, -20, 0};
+      island->position = {0, 0, 0};
+
+      sea = std::make_unique<BezierPatch>();
+
       //bubble = std::make_unique<Bubble>();
       //bubble->scale = {10, 10, 10};
       //bubble->rotation = {0, 0, M_PI};
@@ -201,14 +207,14 @@ public:
     }
 
     if (key == GLFW_KEY_Q) {
-        if(action == GLFW_PRESS) {scene.camera->position.y -= 1; scene.camera->target.y -= 1;}
-        if(action == GLFW_RELEASE);
+        if(action == GLFW_PRESS) directions.y = -1;
+        if(action == GLFW_RELEASE)directions.y = 0;
 
     }
 
     if (key == GLFW_KEY_E) {
-        if(action == GLFW_PRESS) {scene.camera->position.y += 1; scene.camera->target.y += 1;}
-        if(action == GLFW_RELEASE);
+        if(action == GLFW_PRESS) directions.y = 1;
+        if(action == GLFW_RELEASE) directions.y = 0;
 
     }
 
@@ -276,6 +282,7 @@ public:
     int distance = 20;
     //scene.camera->position = {distance * (sin(time / 2)), 5, distance * (cos(time / 2))};
     skybox->position = scene.camera->position;
+
     if((scene.camera->position.y < 0 && surfaceState == 1) || (scene.camera->position.y >= 0 && surfaceState == 0)){
         skybox->changeTexture(skybox_alt_texture);
         surfaceState = !surfaceState;
@@ -284,8 +291,7 @@ public:
     float speed = 0.1f;
     glm::vec3 direction = glm::normalize(scene.camera->target - scene.camera->position);
     //printf("%d %d %d \n", direction.x, direction.y, direction.z);
-    scene.camera->position += (directions * direction) * speed;
-    //move(skybox);
+    scene.camera->position += (directions /** direction*/) * speed;
 
     time = (float) glfwGetTime();
 
@@ -303,6 +309,9 @@ public:
     island->render(scene);
     dolphin->update(scene, dt);
     dolphin->render(scene);
+    sea->update(scene, time);
+    sea->render(scene);
+
     //koraly a rastlinky
     cor1->update(scene,dt);
     cor1->render(scene);
