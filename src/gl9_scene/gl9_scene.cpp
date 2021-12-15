@@ -34,6 +34,8 @@
 
 #include <shaders/texture_vert_glsl.h>
 #include <shaders/texture_frag_glsl.h>
+#include <shaders/diffuse_vert_glsl.h>
+#include <shaders/diffuse_frag_glsl.h>
 
 const unsigned int HEIGHT = 720;
 const unsigned int WIDTH = 720;
@@ -47,51 +49,55 @@ private:
   bool animate = true;
   std::unique_ptr<Skybox> skybox;
   std::unique_ptr<Island> island;
-  std::unique_ptr<Dolphin> dolphin;
+  std::unique_ptr<GenericObject> dolphin;
   std::unique_ptr<Bubble> bubble;
+  std::unique_ptr<ppgso::Texture> skybox_alt_texture;
+
+  bool surfaceState = true;
 
   /*!
    * Reset and initialize the game scene
    * Creating unique smart pointers to objects that are stored in the scene object list
    */
   void initScene() {
-    scene.objects.clear();
-    scene.lightDirection = {1, 1, 0};
+      skybox_alt_texture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("skybox_ocean.bmp"));
 
-    // Create a camera
-    auto camera = std::make_unique<Camera>(60.0f, 1.0f, 0.1f, 300.0f);
-    camera->position.z = -15.0f;
-    scene.camera = move(camera);
+      scene.objects.clear();
+      scene.lightDirection = {1, 1, 0};
+      // Create a camera
+      auto camera = std::make_unique<Camera>(60.0f, 1.0f, 0.1f, 300.0f);
+      camera->position.z = -15.0f;
+      scene.camera = move(camera);
+      // Add space background
+      // UNDO
+      //scene.objects.push_back(std::make_unique<Space>());
+      skybox = std::make_unique<Skybox>();
+      skybox->scale = {100, 100, 100};
+      //scene.objects.push_back(move(skybox));
+      island = std::make_unique<Island>();
+      island->scale = {.10, .10, .10};
+      island->position = {0, -20, 0};
+      //bubble = std::make_unique<Bubble>();
+      //bubble->scale = {10, 10, 10};
+      //bubble->rotation = {0, 0, M_PI};
+      //scene.objects.push_back(move(island));
+      //skybox->position = {0, 10, 0};
+      auto generator = std::make_unique<Generator>();
+      generator->position.y = -10.0f;
+      scene.objects.push_back(move(generator));
+      //dolphin = std::make_unique<Dolphin>();
+      dolphin = std::make_unique<GenericObject>("dolphin\\10014_dolphin_v2_max2011_it2.obj", "dolphin\\10014_dolphin_v1_Diffuse.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      dolphin->scale = {.05, .05, .05};;
+      //skybox->update(scene, 0);
+      // Add generator to scene
+      //auto generator = std::make_unique<Generator>();
+      //generator->position.y = 10.0f;
+      //scene.objects.push_back(move(generator));
 
-    // Add space background
-    // UNDO
-    //scene.objects.push_back(std::make_unique<Space>());
-    skybox = std::make_unique<Skybox>();
-    skybox->scale = {100, 100, 100};
-    //scene.objects.push_back(move(skybox));
-
-    island = std::make_unique<Island>();
-    island->scale = {.10, .10, .10};
-    island->position = {0, -20, 0};
-
-    bubble = std::make_unique<Bubble>();
-    bubble->scale = {10, 10, 10};
-    //scene.objects.push_back(move(island));
-    //skybox->position = {0, 10, 0};
-
-    dolphin = std::make_unique<Dolphin>();
-    dolphin->scale = {.05, .05, .05};;
-    //skybox->update(scene, 0);
-
-    // Add generator to scene
-    auto generator = std::make_unique<Generator>();
-    generator->position.y = 10.0f;
-    scene.objects.push_back(move(generator));
-
-    // Add player to the scene
-    auto player = std::make_unique<Player>();
-    player->position.y = -6;
-    scene.objects.push_back(move(player));
+      //// Add player to the scene
+      //auto player = std::make_unique<Player>();
+      //player->position.y = -6;
+      //scene.objects.push_back(move(player));
   }
 
 public:
@@ -106,6 +112,10 @@ public:
     // Enable Z-buffer
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
+
+    // transparent blending
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     // Enable polygon culling
     glEnable(GL_CULL_FACE);
@@ -161,6 +171,18 @@ public:
     if (key == GLFW_KEY_A) {
         if(action == GLFW_PRESS) directions.x = -1;
         if(action == GLFW_RELEASE) directions.x = 0;
+
+    }
+
+    if (key == GLFW_KEY_Q) {
+        if(action == GLFW_PRESS) {scene.camera->position.y -= 1; scene.camera->target.y -= 1;}
+        if(action == GLFW_RELEASE);
+
+    }
+
+    if (key == GLFW_KEY_E) {
+        if(action == GLFW_PRESS) {scene.camera->position.y += 1; scene.camera->target.y += 1;}
+        if(action == GLFW_RELEASE);
 
     }
 
@@ -226,15 +248,18 @@ public:
     //skybox->rotMomentum = {1, 0, 1};
 
     int distance = 20;
-    //scene.camera->position = {20 + distance * (sin(time / 2)), 5, 0};
+    //scene.camera->position = {distance * (sin(time / 2)), 5, distance * (cos(time / 2))};
     skybox->position = scene.camera->position;
-
+    if((scene.camera->position.y < 0 && surfaceState == 1) || (scene.camera->position.y >= 0 && surfaceState == 0)){
+        skybox->changeTexture(skybox_alt_texture);
+        surfaceState = !surfaceState;
+    }
 
     float speed = 0.1f;
     glm::vec3 direction = glm::normalize(scene.camera->target - scene.camera->position);
+    //printf("%d %d %d \n", direction.x, direction.y, direction.z);
     scene.camera->position += (directions * direction) * speed;
     //move(skybox);
-    bubble->position = scene.camera->position + (direction * 5.0f);
 
     time = (float) glfwGetTime();
 
@@ -252,8 +277,8 @@ public:
     island->render(scene);
     dolphin->update(scene, dt);
     dolphin->render(scene);
-    bubble->update(scene, dt);
-    bubble->render(scene);
+    //bubble->update(scene, dt);
+    //bubble->render(scene);
 
     //pohyb delfina:
     //X := originX + cos(angle)*radius;

@@ -3,7 +3,9 @@
 
 #include <shaders/diffuse_vert_glsl.h>
 #include <shaders/diffuse_frag_glsl.h>
-#include <shaders/diffuse_vert_glsl.h>
+#include <shaders/underwater_vert_glsl.h>
+#include <shaders/underwater_frag_glsl.h>
+
 
 
 // Static resources
@@ -19,7 +21,7 @@ Island::Island() {
     rotMomentum = {0, 0, 0};
 
     // Initialize static resources if needed
-    if (!shader) shader = std::make_unique<ppgso::Shader>(diffuse_vert_glsl, diffuse_frag_glsl);
+    if (!shader) shader = std::make_unique<ppgso::Shader>(underwater_vert_glsl, underwater_frag_glsl);
     if (!texture) texture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("island\\island.bmp"));
     if (!mesh) mesh = std::make_unique<ppgso::Mesh>("island\\island.obj");
 }
@@ -91,6 +93,7 @@ void Island::render(Scene &scene) {
     // render mesh
     shader->setUniform("ModelMatrix", modelMatrix);
     shader->setUniform("Texture", *texture);
+    shader->setUniform("Transparency", 1);
     mesh->render();
 }
 

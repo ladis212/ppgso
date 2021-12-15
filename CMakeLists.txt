@@ -67,6 +67,8 @@ set(PPGSO_SHADER_SRC
         shader/convolution_vert.glsl shader/convolution_frag.glsl
         shader/diffuse_vert.glsl shader/diffuse_frag.glsl
         shader/texture_vert.glsl shader/texture_frag.glsl
+        shader/underwater_vert.glsl shader/underwater_frag.glsl
+        shader/bubble_frag.glsl
         )
 add_resources(shaders ${PPGSO_SHADER_SRC})
 

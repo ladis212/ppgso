@@ -36,6 +36,8 @@ public:
    * @param explosionScale - Scale of the explosion
    * @param pieces - Skybox pieces to generate
    */
+    void changeTexture(std::unique_ptr<ppgso::Texture> &tex);
+
 public:
   /*!
    * Create new asteroid
@@ -61,6 +63,5 @@ public:
    */
   void onClick(Scene &scene) override;
 
-private:
 };
 

@@ -93,6 +93,7 @@ void GenericObject::render(Scene &scene) {
     // render mesh
     shader->setUniform("ModelMatrix", modelMatrix);
     shader->setUniform("Texture", *texture);
+    shader->setUniform("Transparency", 1);
     mesh->render();
 }
 

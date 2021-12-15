@@ -1,8 +1,9 @@
 #include <glm/gtc/random.hpp>
 #include "Bubble.h"
 
-#include <shaders/diffuse_vert_glsl.h>
-#include <shaders/diffuse_frag_glsl.h>
+#include <shaders/texture_vert_glsl.h>
+#include <shaders/bubble_frag_glsl.h>
+#include <glm/gtx/euler_angles.hpp>
 
 
 // Static resources
@@ -18,21 +19,22 @@ Bubble::Bubble() {
     rotMomentum = {0, 0, 0};
 
     // Initialize static resources if needed
-    if (!shader) shader = std::make_unique<ppgso::Shader>(diffuse_vert_glsl, diffuse_frag_glsl);
+    if (!shader) shader = std::make_unique<ppgso::Shader>(texture_vert_glsl, bubble_frag_glsl);
     if (!texture) texture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("bubble.bmp"));
     if (!mesh) mesh = std::make_unique<ppgso::Mesh>("quad.obj");
 }
 
+
 bool Bubble::update(Scene &scene, float dt) {
     // Count time alive
-    //age += dt;
+    age += dt;
 
     // Animate position according to time
     position += speed * dt;
     rotation += rotMomentum * dt;
 
     // Delete when alive longer than 10s or out of visibility
-    //if (age > 10.0f || position.y < -10) return false;
+    if (age > 30.0f || position.y > 20) return false;
 
     // Collide with scene
     //for (auto &obj : scene.objects) {
@@ -68,6 +70,8 @@ bool Bubble::update(Scene &scene, float dt) {
 
     // Generate modelMatrix from position, rotation and scale
     generateModelMatrix();
+    modelMatrix *= glm::inverse(scene.camera->viewMatrix);
+    modelMatrix *= glm::orientate4(glm::vec3{0, 0, M_PI});
 
     return true;
 }
@@ -90,6 +94,7 @@ void Bubble::render(Scene &scene) {
     // render mesh
     shader->setUniform("ModelMatrix", modelMatrix);
     shader->setUniform("Texture", *texture);
+    shader->setUniform("Transparency", 1);
     mesh->render();
 }
 

@@ -23,6 +23,10 @@ Skybox::Skybox() {
   if (!mesh) mesh = std::make_unique<ppgso::Mesh>("skybox.obj");
 }
 
+void Skybox::changeTexture(std::unique_ptr<ppgso::Texture> &tex){
+    texture.swap(tex);
+}
+
 bool Skybox::update(Scene &scene, float dt) {
   // Count time alive
   //age += dt;
@@ -91,6 +95,7 @@ void Skybox::render(Scene &scene) {
   // render mesh
   shader->setUniform("ModelMatrix", modelMatrix);
   shader->setUniform("Texture", *texture);
+  shader->setUniform("Transparency", 1);
   mesh->render();
 }
 
