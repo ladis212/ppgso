@@ -29,6 +29,7 @@
 #include "dolphin.h"
 #include "Bubble.h"
 #include "GenericObject.h"
+#include "fish.h"
 
 #include "BezierPatch.h"
 
@@ -52,6 +53,16 @@ private:
   std::unique_ptr<GenericObject> dolphin;
   std::unique_ptr<Bubble> bubble;
   std::unique_ptr<ppgso::Texture> skybox_alt_texture;
+  std::unique_ptr<GenericObject> cor1;
+  std::unique_ptr<GenericObject> cor2;
+  std::unique_ptr<GenericObject> cor3;
+  std::unique_ptr<GenericObject> grass1;
+  std::unique_ptr<GenericObject> grass2;
+  std::unique_ptr<fish>fish_h1;
+  std::unique_ptr<fish>fish_h2;
+  std::unique_ptr<fish>fish_h3;
+  std::unique_ptr<fish>fish_l1;
+  std::unique_ptr<fish>fish_l2;
 
   bool surfaceState = true;
 
@@ -94,6 +105,21 @@ private:
       //generator->position.y = 10.0f;
       //scene.objects.push_back(move(generator));
 
+      ///// koraly a rastlinky
+      cor1 = std::make_unique<GenericObject>("coral\\braincoral.obj", "coral\\braincoral.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      cor2 = std::make_unique<GenericObject>("coral\\v1coral.obj", "coral\\v1coral.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      cor3 = std::make_unique<GenericObject>("coral\\treecoral.obj", "coral\\treecoralcustom.bmp", diffuse_vert_glsl, diffuse_frag_glsl); //Textura je CUSTOM -- nezarucujem, ale povodna bola bugnuta.
+      grass1 = std::make_unique<GenericObject>("coral\\Grass.obj", "coral\\Grass.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      grass2 = std::make_unique<GenericObject>("coral\\Grass.obj", "coral\\SeaGrass.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+
+      ///// high poly fish
+      fish_h1 = std::make_unique<fish>("fishes\\fish.obj", "fishes\\fish.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      fish_h2 = std::make_unique<fish>("fishes\\bluetang.obj", "fishes\\bluetang.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      fish_h3 = std::make_unique<fish>("fishes\\chromis.obj", "fishes\\chromis.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+
+      //// low poly fish
+      fish_l1 = std::make_unique<fish>("fishes\\finalfish.obj", "fishes\\finalfish.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      fish_l2 = std::make_unique<fish>("fishes\\finalfish.obj", "fishes\\specialfinalfish.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
       //// Add player to the scene
       //auto player = std::make_unique<Player>();
       //player->position.y = -6;
@@ -203,7 +229,7 @@ public:
    * Handle cursor buttons
    * @param button Mouse button being manipulated
    * @param action Mouse bu
-   * @param mods
+   * @param mods Mouse
    */
 
   void onMouseButton(int button, int action, int mods) override {
@@ -277,6 +303,29 @@ public:
     island->render(scene);
     dolphin->update(scene, dt);
     dolphin->render(scene);
+    //koraly a rastlinky
+    cor1->update(scene,dt);
+    cor1->render(scene);
+    cor2->update(scene,dt);
+    cor2->render(scene);
+    cor3->update(scene,dt);
+    cor3->render(scene);
+    grass1->update(scene,dt);
+    grass1->render(scene);
+    grass2->update(scene,dt);
+    grass2->render(scene);
+
+    //ryby
+    fish_h1->update(scene,dt);
+    fish_h1->render(scene);
+    fish_h2->update(scene,dt);
+    fish_h2->render(scene);
+    fish_h3->update(scene,dt);
+    fish_h3->render(scene);
+    fish_l1->update(scene,dt);
+    fish_l1->render(scene);
+    fish_l2->update(scene,dt);
+    fish_l2->render(scene);
     //bubble->update(scene, dt);
     //bubble->render(scene);
 
