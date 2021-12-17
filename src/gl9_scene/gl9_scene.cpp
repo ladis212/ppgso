@@ -67,6 +67,7 @@ private:
   std::unique_ptr<Skybox> skybox;
   std::unique_ptr<Island> island;
   std::unique_ptr<GenericObject> dolphin;
+  std::unique_ptr<Dolphin>dolphin2;
   std::unique_ptr<Bubble> bubble;
   std::unique_ptr<ppgso::Texture> skybox_alt_texture;
   //std::unique_ptr<GenericObject> cor1;
@@ -163,7 +164,8 @@ private:
       //auto generator = std::make_unique<Generator>();
       //generator->position.y = 10.0f;
       //scene.objects.push_back(move(generator));
-
+      dolphin2 = std::make_unique<Dolphin>();
+      dolphin2->scale = {.05, .05, .05};
       ///// koraly a rastlinky
       //cor1 = std::make_unique<GenericObject>("coral\\braincoral.obj", "coral\\braincoral.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
       //cor2 = std::make_unique<GenericObject>("coral\\v1coral.obj", "coral\\v1coral.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
@@ -382,6 +384,8 @@ public:
     island->render(scene);
     dolphin->update(scene, dt);
     dolphin->render(scene);
+    dolphin2->update(scene, dt);
+    dolphin2->render(scene);
     sea->update(scene, time);
     sea->render(scene);
 

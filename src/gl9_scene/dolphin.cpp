@@ -35,7 +35,7 @@ bool Dolphin::update(Scene &scene, float dt) {
     // Animate position according to time
     position += speed * dt;
     rotation += rotMomentum * dt;
-
+    jump(scene);
     // Delete when alive longer than 10s or out of visibility
     //if (age > 10.0f || position.y < -10) return false;
 
@@ -75,6 +75,24 @@ bool Dolphin::update(Scene &scene, float dt) {
     generateModelMatrix();
 
     return true;
+}
+
+void Dolphin::jump(Scene &scene){
+    clock_t t;
+    t = clock();
+    //Motion
+    position.x += sin(t/1000.0f) / 12.0f;
+    position.y = 5* sin(t/300.0f);
+    position.z += cos(t/1000.0f) / 12.0f;
+
+  //  double r = position.x*position.x + position.z*position.z;
+  //  std::cout << r <<std::endl;
+    //Rotation <
+    rotation.x = -1.2;
+  //  rotation.y = -cos(t/1000.0f)*2.87f;
+    rotation.z = t/1000.0f;
+    //rotation.z += cos(t/1000.0f) / 60.0f;
+
 }
 
 void Dolphin::render(Scene &scene) {

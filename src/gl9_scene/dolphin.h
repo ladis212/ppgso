@@ -50,6 +50,7 @@ public:
      */
     bool update(Scene &scene, float dt) override;
 
+    void jump(Scene &scene);
     /*!
      * Render asteroid
      * @param scene Scene to render in
