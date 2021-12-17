@@ -31,6 +31,7 @@
 #include "GenericObject.h"
 #include "fish.h"
 #include "BezierPatch.h"
+#include "object.h"
 
 #include "BezierPatch.h"
 
@@ -38,13 +39,27 @@
 #include <shaders/texture_frag_glsl.h>
 #include <shaders/diffuse_vert_glsl.h>
 #include <shaders/diffuse_frag_glsl.h>
+#include <valarray>
 
 const unsigned int HEIGHT = 720;
 const unsigned int WIDTH = 720;
 
-/*!
- * Custom windows for our simple game
- */
+struct Keyframe {
+    glm::vec3 position;
+    glm::vec3 rotation;
+    glm::vec3 scale;
+    float timeToTake;
+};
+
+template<typename Object>
+void linearBetweenKeyframes(std::unique_ptr<Object> &object, Keyframe A, Keyframe B, float timeSinceA){
+    float t = timeSinceA / B.timeToTake;
+    object->position = glm::lerp(A.position, B.position, t);
+    object->rotation = glm::lerp(A.rotation, B.rotation, t);
+    object->scale = glm::lerp(A.scale, B.scale, t);
+
+}
+
 class SceneWindow : public ppgso::Window {
 private:
   Scene scene;
@@ -54,18 +69,56 @@ private:
   std::unique_ptr<GenericObject> dolphin;
   std::unique_ptr<Bubble> bubble;
   std::unique_ptr<ppgso::Texture> skybox_alt_texture;
-  std::unique_ptr<GenericObject> cor1;
-  std::unique_ptr<GenericObject> cor2;
-  std::unique_ptr<GenericObject> cor3;
-  std::unique_ptr<GenericObject> grass1;
-  std::unique_ptr<GenericObject> grass2;
-  std::unique_ptr<fish>fish_h1;
-  std::unique_ptr<fish>fish_h2;
-  std::unique_ptr<fish>fish_h3;
-  std::unique_ptr<fish>fish_l1;
-  std::unique_ptr<fish>fish_l2;
+  //std::unique_ptr<GenericObject> cor1;
+  //std::unique_ptr<GenericObject> cor2;
+  //std::unique_ptr<GenericObject> cor3;
+  //std::unique_ptr<GenericObject> grass1;
+  //std::unique_ptr<GenericObject> grass2;
+  //std::unique_ptr<fish>fish_h1;
+  //std::unique_ptr<fish>fish_h2;
+  //std::unique_ptr<fish>fish_h3;
+  //std::unique_ptr<fish>fish_l1;
+  //std::unique_ptr<fish>fish_l2;
 
   std::unique_ptr<BezierPatch> sea;
+
+  std::vector<Keyframe> octopusKeyframes {
+      {
+          .position={5,0,0},
+          .rotation={0,0,M_PI * 2},
+          .scale={.05,.05,.05},
+          .timeToTake=0
+      },
+      {
+          .position={0,0,5},
+          .rotation={0, 0, M_PI + M_PI_2},
+          .scale={.05,.05,.05},
+          .timeToTake=1
+      },
+      {
+          .position={-5,0,0},
+          .rotation={0, 0, M_PI},
+          .scale={.05,.05,.05},
+          .timeToTake=1
+      },
+      {
+          .position={0,0,-5},
+          .rotation={0, 0, M_PI_2},
+          .scale={.05,.05,.05},
+          .timeToTake=1
+      },
+      {
+              .position={5,0,0},
+              .rotation={0,0,0},
+              .scale={.05,.05,.05},
+              .timeToTake=1
+      }
+
+
+
+
+
+  };
 
   bool surfaceState = true;
 
@@ -112,20 +165,18 @@ private:
       //scene.objects.push_back(move(generator));
 
       ///// koraly a rastlinky
-      cor1 = std::make_unique<GenericObject>("coral\\braincoral.obj", "coral\\braincoral.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
-      cor2 = std::make_unique<GenericObject>("coral\\v1coral.obj", "coral\\v1coral.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
-      cor3 = std::make_unique<GenericObject>("coral\\treecoral.obj", "coral\\treecoralcustom.bmp", diffuse_vert_glsl, diffuse_frag_glsl); //Textura je CUSTOM -- nezarucujem, ale povodna bola bugnuta.
-      grass1 = std::make_unique<GenericObject>("coral\\Grass.obj", "coral\\Grass.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
-      grass2 = std::make_unique<GenericObject>("coral\\Grass.obj", "coral\\SeaGrass.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
-
-      ///// high poly fish
-      fish_h1 = std::make_unique<fish>("fishes\\fish.obj", "fishes\\fish.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
-      fish_h2 = std::make_unique<fish>("fishes\\bluetang.obj", "fishes\\bluetang.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
-      fish_h3 = std::make_unique<fish>("fishes\\chromis.obj", "fishes\\chromis.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
-
-      //// low poly fish
-      fish_l1 = std::make_unique<fish>("fishes\\finalfish.obj", "fishes\\finalfish.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
-      fish_l2 = std::make_unique<fish>("fishes\\finalfish.obj", "fishes\\specialfinalfish.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      //cor1 = std::make_unique<GenericObject>("coral\\braincoral.obj", "coral\\braincoral.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      //cor2 = std::make_unique<GenericObject>("coral\\v1coral.obj", "coral\\v1coral.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      //cor3 = std::make_unique<GenericObject>("coral\\treecoral.obj", "coral\\treecoralcustom.bmp", diffuse_vert_glsl, diffuse_frag_glsl); //Textura je CUSTOM -- nezarucujem, ale povodna bola bugnuta.
+      //grass1 = std::make_unique<GenericObject>("coral\\Grass.obj", "coral\\Grass.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      //grass2 = std::make_unique<GenericObject>("coral\\Grass.obj", "coral\\SeaGrass.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      /////// high poly fish
+      //fish_h1 = std::make_unique<fish>("fishes\\fish.obj", "fishes\\fish.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      //fish_h2 = std::make_unique<fish>("fishes\\bluetang.obj", "fishes\\bluetang.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      //fish_h3 = std::make_unique<fish>("fishes\\chromis.obj", "fishes\\chromis.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      ////// low poly fish
+      //fish_l1 = std::make_unique<fish>("fishes\\finalfish.obj", "fishes\\finalfish.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      //fish_l2 = std::make_unique<fish>("fishes\\finalfish.obj", "fishes\\specialfinalfish.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
       //// Add player to the scene
       //auto player = std::make_unique<Player>();
       //player->position.y = -6;
@@ -269,6 +320,11 @@ public:
   /*!
    * Window update implementation that will be called automatically from pollEvents
    */
+  float keyframeTime = 0;
+  float timestamp = 0;
+  int keyframeIndex = 0;
+  Keyframe thisKeyframe, nextKeyframe;
+
   void onIdle() override {
 
     // Track time
@@ -295,6 +351,23 @@ public:
 
     time = (float) glfwGetTime();
 
+    keyframeTime = time - timestamp;
+
+    thisKeyframe = octopusKeyframes[keyframeIndex % octopusKeyframes.size()];
+    nextKeyframe = octopusKeyframes[(keyframeIndex + 1) % octopusKeyframes.size()];
+    linearBetweenKeyframes(dolphin, thisKeyframe, nextKeyframe, keyframeTime);
+    if(keyframeTime >= nextKeyframe.timeToTake) {
+        keyframeTime = 0;
+        keyframeIndex++;
+        timestamp = time;
+    }
+    std::cout << keyframeIndex;
+    std::cout << (keyframeIndex + 1) << std::endl;
+
+
+    //dolphin->position.y = time;
+
+
     // Set gray background
     glClearColor(.5f, .5f, .5f, 0);
     // Clear depth and color buffers
@@ -313,28 +386,28 @@ public:
     sea->render(scene);
 
     //koraly a rastlinky
-    cor1->update(scene,dt);
-    cor1->render(scene);
-    cor2->update(scene,dt);
-    cor2->render(scene);
-    cor3->update(scene,dt);
-    cor3->render(scene);
-    grass1->update(scene,dt);
-    grass1->render(scene);
-    grass2->update(scene,dt);
-    grass2->render(scene);
+    //cor1->update(scene,dt);
+    //cor1->render(scene);
+    //cor2->update(scene,dt);
+    //cor2->render(scene);
+    //cor3->update(scene,dt);
+    //cor3->render(scene);
+    //grass1->update(scene,dt);
+    //grass1->render(scene);
+    //grass2->update(scene,dt);
+    //grass2->render(scene);
 
     //ryby
-    fish_h1->update(scene,dt);
-    fish_h1->render(scene);
-    fish_h2->update(scene,dt);
-    fish_h2->render(scene);
-    fish_h3->update(scene,dt);
-    fish_h3->render(scene);
-    fish_l1->update(scene,dt);
-    fish_l1->render(scene);
-    fish_l2->update(scene,dt);
-    fish_l2->render(scene);
+    //fish_h1->update(scene,dt);
+    //fish_h1->render(scene);
+    //fish_h2->update(scene,dt);
+    //fish_h2->render(scene);
+    //fish_h3->update(scene,dt);
+    //fish_h3->render(scene);
+    //fish_l1->update(scene,dt);
+    //fish_l1->render(scene);
+    //fish_l2->update(scene,dt);
+    //fish_l2->render(scene);
     //bubble->update(scene, dt);
     //bubble->render(scene);
 

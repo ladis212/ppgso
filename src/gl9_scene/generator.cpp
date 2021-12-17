@@ -21,7 +21,6 @@ bool Generator::update(Scene &scene, float dt) {
     obj->speed = {0, randSpeed, 0};
     scene.objects.push_back(move(obj));
     time = 0;
-    printf("Generated.\n");
   }
 
   return true;

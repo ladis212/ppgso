@@ -1,7 +1,7 @@
 #include <glm/gtc/random.hpp>
 #include "Bubble.h"
 
-#include <shaders/texture_vert_glsl.h>
+#include <shaders/bubble_vert_glsl.h>
 #include <shaders/bubble_frag_glsl.h>
 #include <glm/gtx/euler_angles.hpp>
 
@@ -19,7 +19,7 @@ Bubble::Bubble() {
     rotMomentum = {0, 0, 0};
 
     // Initialize static resources if needed
-    if (!shader) shader = std::make_unique<ppgso::Shader>(texture_vert_glsl, bubble_frag_glsl);
+    if (!shader) shader = std::make_unique<ppgso::Shader>(bubble_vert_glsl, bubble_frag_glsl);
     if (!texture) texture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("bubble.bmp"));
     if (!mesh) mesh = std::make_unique<ppgso::Mesh>("quad.obj");
 }
