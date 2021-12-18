@@ -32,6 +32,7 @@
 #include "fish.h"
 #include "BezierPatch.h"
 #include "object.h"
+#include "sponge.h"
 
 #include "BezierPatch.h"
 
@@ -80,7 +81,7 @@ private:
   //std::unique_ptr<fish>fish_h3;
   //std::unique_ptr<fish>fish_l1;
   //std::unique_ptr<fish>fish_l2;
-
+  std::unique_ptr<Sponge>sponge;
   std::unique_ptr<BezierPatch> sea;
 
   std::vector<Keyframe> octopusKeyframes {
@@ -179,10 +180,10 @@ private:
       ////// low poly fish
       //fish_l1 = std::make_unique<fish>("fishes\\finalfish.obj", "fishes\\finalfish.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
       //fish_l2 = std::make_unique<fish>("fishes\\finalfish.obj", "fishes\\specialfinalfish.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
-      //// Add player to the scene
-      //auto player = std::make_unique<Player>();
-      //player->position.y = -6;
-      //scene.objects.push_back(move(player));
+      //// Sponge
+      sponge = std::make_unique<Sponge>();
+      sponge->scale = {.1, .1, .1};
+      sponge->position = {0, -20, .2};
   }
 
 public:
@@ -415,10 +416,8 @@ public:
     //bubble->update(scene, dt);
     //bubble->render(scene);
 
-    //pohyb delfina:
-    //X := originX + cos(angle)*radius;
-     //Y := originY + sin(angle)*radius;
-
+    sponge->update(scene,time);
+    sponge->render(scene);
 
     scene.update(dt);
     scene.render();
