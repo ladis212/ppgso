@@ -33,6 +33,7 @@
 #include "BezierPatch.h"
 #include "object.h"
 #include "sponge.h"
+#include "stingray.h"
 
 #include "BezierPatch.h"
 
@@ -82,7 +83,8 @@ private:
   //std::unique_ptr<fish>fish_l1;
   //std::unique_ptr<fish>fish_l2;
   std::unique_ptr<Sponge>sponge;
- // std::unique_ptr<SpongeGenerator> sgenerator;
+  std::unique_ptr<Stingray>stingray;
+
 
     std::unique_ptr<BezierPatch> sea;
 
@@ -186,6 +188,9 @@ private:
       sponge = std::make_unique<Sponge>();
       sponge->scale = {.1, .1, .1};
       sponge->position = {0, -20, .2};
+      stingray = std::make_unique<Stingray>();
+      stingray->position = {0, 10, .2};
+      stingray->scale = {5, 5, 5};
      // sgenerator = std::make_unique<SpongeGenerator>();
       //sgenerator->position = sponge->position;
   }
@@ -419,7 +424,8 @@ public:
     //fish_l2->render(scene);
     //bubble->update(scene, dt);
     //bubble->render(scene);
-
+    stingray->update(scene,dt);
+    stingray->render(scene);
     sponge->update(scene,dt);
     //sgenerator->update(scene, dt);
     sponge->render(scene);
