@@ -21,6 +21,7 @@ public:
 
     glm::vec3 speed;
     glm::vec3 rotMomentum;
+    float time = 0.0f;
 
 public:
     //constructor
@@ -28,7 +29,7 @@ public:
 
     //Update, Render, etc
     bool update(Scene &scene, float dt) override;
-    void breathe(Scene &scene);
+    void breathe(Scene &scene, float dt);
     void render(Scene &scene) override;
 
     void onClick(Scene &scene) override;

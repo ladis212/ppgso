@@ -82,7 +82,9 @@ private:
   //std::unique_ptr<fish>fish_l1;
   //std::unique_ptr<fish>fish_l2;
   std::unique_ptr<Sponge>sponge;
-  std::unique_ptr<BezierPatch> sea;
+ // std::unique_ptr<SpongeGenerator> sgenerator;
+
+    std::unique_ptr<BezierPatch> sea;
 
   std::vector<Keyframe> octopusKeyframes {
       {
@@ -184,6 +186,8 @@ private:
       sponge = std::make_unique<Sponge>();
       sponge->scale = {.1, .1, .1};
       sponge->position = {0, -20, .2};
+     // sgenerator = std::make_unique<SpongeGenerator>();
+      //sgenerator->position = sponge->position;
   }
 
 public:
@@ -416,7 +420,8 @@ public:
     //bubble->update(scene, dt);
     //bubble->render(scene);
 
-    sponge->update(scene,time);
+    sponge->update(scene,dt);
+    //sgenerator->update(scene, dt);
     sponge->render(scene);
 
     scene.update(dt);
