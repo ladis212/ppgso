@@ -13,7 +13,7 @@ private:
     static std::unique_ptr<ppgso::Mesh> mesh;
     static std::unique_ptr<ppgso::Shader> shader;
     static std::unique_ptr<ppgso::Texture> texture;
-
+    int varination = glm::linearRand(0, 1);
     // Age of the object in seconds
     float age{0.0f};
 
@@ -35,18 +35,9 @@ public:
 
     fish(const std::basic_string<char> &mesh_path, const std::basic_string<char> &texture_path,  const std::string &vert, const std::string &frag);
 
-    /*!
-     * Update asteroid
-     * @param scene Scene to interact with
-     * @param dt Time delta for animation purposes
-     * @return
-     */
     bool update(Scene &scene, float dt) override;
 
-    /*!
-     * Render asteroid
-     * @param scene Scene to render in
-     */
+    void swim (Scene &scene, float dt);
     void render(Scene &scene) override;
 
     /*!

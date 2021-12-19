@@ -13,6 +13,7 @@
 std::unique_ptr<ppgso::Mesh> fish::mesh;
 std::unique_ptr<ppgso::Texture> fish::texture;
 std::unique_ptr<ppgso::Shader> fish::shader;
+int varination = glm::linearRand(0, 1);
 
 fish::fish(const std::basic_string<char> &mesh_path, const std::basic_string<char> &texture_path, const std::string &vert, const std::string &frag) {
     if (!mesh) mesh = std::make_unique<ppgso::Mesh>(mesh_path);
@@ -35,10 +36,26 @@ bool fish::update(Scene &scene, float dt) {
     // Animate position according to time
     position += speed * dt;
     rotation += rotMomentum * dt;
-
+    swim(scene, dt);
     generateModelMatrix();
 
     return true;
+}
+
+void fish::swim(Scene &scene, float dt){
+    //left or right?
+    if (varination == 0){
+        position.x += 2*dt;
+        rotation.z = M_PI;
+    }
+    else {
+        position.x -= 2*dt;
+    }
+    //TODO: add other axis as a variant of varination... (i'll do this tomorrow)
+
+
+
+
 }
 
 void fish::render(Scene &scene) {

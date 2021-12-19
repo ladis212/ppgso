@@ -77,7 +77,7 @@ private:
   //std::unique_ptr<GenericObject> cor3;
   //std::unique_ptr<GenericObject> grass1;
   //std::unique_ptr<GenericObject> grass2;
-  //std::unique_ptr<fish>fish_h1;
+  std::unique_ptr<fish>fish_h1;
   //std::unique_ptr<fish>fish_h2;
   //std::unique_ptr<fish>fish_h3;
   //std::unique_ptr<fish>fish_l1;
@@ -178,7 +178,10 @@ private:
       //grass1 = std::make_unique<GenericObject>("coral\\Grass.obj", "coral\\Grass.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
       //grass2 = std::make_unique<GenericObject>("coral\\Grass.obj", "coral\\SeaGrass.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
       /////// high poly fish
-      //fish_h1 = std::make_unique<fish>("fishes\\fish.obj", "fishes\\fish.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      fish_h1 = std::make_unique<fish>("fishes\\fish.obj", "fishes\\fish.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      fish_h1->position = {-15, -15, 0};
+      fish_h1->scale = {.05f, .05f, .05f};
+      fish_h1->rotation.x = -M_PI_2;
       //fish_h2 = std::make_unique<fish>("fishes\\bluetang.obj", "fishes\\bluetang.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
       //fish_h3 = std::make_unique<fish>("fishes\\chromis.obj", "fishes\\chromis.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
       ////// low poly fish
@@ -412,8 +415,8 @@ public:
     //grass2->render(scene);
 
     //ryby
-    //fish_h1->update(scene,dt);
-    //fish_h1->render(scene);
+    fish_h1->update(scene,dt);
+    fish_h1->render(scene);
     //fish_h2->update(scene,dt);
     //fish_h2->render(scene);
     //fish_h3->update(scene,dt);
