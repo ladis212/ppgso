@@ -36,6 +36,7 @@
 #include "stingray.h"
 
 #include "BezierPatch.h"
+#include "Floor.h"
 
 #include <shaders/texture_vert_glsl.h>
 #include <shaders/texture_frag_glsl.h>
@@ -70,9 +71,8 @@ private:
   std::unique_ptr<Island> island;
   std::unique_ptr<GenericObject> dolphin;
   std::unique_ptr<Dolphin>dolphin2;
-  std::unique_ptr<Bubble> bubble;
   std::unique_ptr<ppgso::Texture> skybox_alt_texture;
-  //std::unique_ptr<GenericObject> cor1;
+  std::unique_ptr<GenericObject> cor1;
   //std::unique_ptr<GenericObject> cor2;
   //std::unique_ptr<GenericObject> cor3;
   //std::unique_ptr<GenericObject> grass1;
@@ -86,7 +86,8 @@ private:
   std::unique_ptr<Stingray>stingray;
 
 
-    std::unique_ptr<BezierPatch> sea;
+  std::unique_ptr<BezierPatch> sea;
+  std::unique_ptr<Floor> floor;
 
   std::vector<Keyframe> octopusKeyframes {
       {
@@ -138,20 +139,22 @@ private:
       scene.objects.clear();
       scene.lightDirection = {1, 1, 0};
       // Create a camera
-      auto camera = std::make_unique<Camera>(60.0f, 1.0f, 0.1f, 300.0f);
+      auto camera = std::make_unique<Camera>(60.0f, 1.0f, 0.1f, 500.0f);
       camera->position.z = -15.0f;
       scene.camera = move(camera);
       // Add space background
       // UNDO
       //scene.objects.push_back(std::make_unique<Space>());
       skybox = std::make_unique<Skybox>();
-      skybox->scale = {100, 100, 100};
+      skybox->scale = {300, 300, 300};
       //scene.objects.push_back(move(skybox));
       island = std::make_unique<Island>();
       island->scale = {.10, .10, .10};
       island->position = {0, 0, 0};
 
       sea = std::make_unique<BezierPatch>();
+      floor = std::make_unique<Floor>();
+      floor->position.y = -20;
 
       //bubble = std::make_unique<Bubble>();
       //bubble->scale = {10, 10, 10};
@@ -172,7 +175,7 @@ private:
       dolphin2 = std::make_unique<Dolphin>();
       dolphin2->scale = {.05, .05, .05};
       ///// koraly a rastlinky
-      //cor1 = std::make_unique<GenericObject>("coral\\braincoral.obj", "coral\\braincoral.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      cor1 = std::make_unique<GenericObject>("coral\\braincoral.obj", "coral\\braincoral.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
       //cor2 = std::make_unique<GenericObject>("coral\\v1coral.obj", "coral\\v1coral.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
       //cor3 = std::make_unique<GenericObject>("coral\\treecoral.obj", "coral\\treecoralcustom.bmp", diffuse_vert_glsl, diffuse_frag_glsl); //Textura je CUSTOM -- nezarucujem, ale povodna bola bugnuta.
       //grass1 = std::make_unique<GenericObject>("coral\\Grass.obj", "coral\\Grass.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
@@ -399,12 +402,15 @@ public:
     dolphin->render(scene);
     dolphin2->update(scene, dt);
     dolphin2->render(scene);
+    floor->update(scene, time);
+    floor->render(scene);
     sea->update(scene, time);
     sea->render(scene);
 
+
     //koraly a rastlinky
-    //cor1->update(scene,dt);
-    //cor1->render(scene);
+    cor1->update(scene,dt);
+    cor1->render(scene);
     //cor2->update(scene,dt);
     //cor2->render(scene);
     //cor3->update(scene,dt);
