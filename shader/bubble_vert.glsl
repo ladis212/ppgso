@@ -9,15 +9,24 @@ uniform mat4 ProjectionMatrix;
 uniform mat4 ViewMatrix;
 uniform mat4 ModelMatrix;
 
+uniform float Time;
+
 // This will be passed to the fragment shader
 out vec2 texCoord;
 
 // Normal to pass to the fragment shader
 out vec4 normal;
 
+out float x;
+out float y;
+out float time;
+
 void main() {
   // Copy the input to the fragment shader
   texCoord = TexCoord;
+  x = Position.x;
+  y = Position.y;
+  time = Time;
 
   // Normal in world coordinates
   normal = normalize(ModelMatrix * vec4(Normal, 0.0f));

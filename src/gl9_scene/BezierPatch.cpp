@@ -133,7 +133,7 @@ bool BezierPatch::render(Scene &scene) {
     shader->setUniform("Texture", *texture);
     shader->setUniform("Transparency", 1);
 
-
+    shader->setUniform("Time", glfwGetTime());
 
 
     glBindVertexArray(vao);

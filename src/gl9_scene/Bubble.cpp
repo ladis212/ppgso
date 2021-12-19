@@ -95,6 +95,8 @@ void Bubble::render(Scene &scene) {
     shader->setUniform("ModelMatrix", modelMatrix);
     shader->setUniform("Texture", *texture);
     shader->setUniform("Transparency", 1);
+
+    shader->setUniform("Time", 1);
     mesh->render();
 }
 
