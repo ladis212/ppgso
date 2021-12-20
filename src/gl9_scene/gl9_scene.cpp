@@ -327,8 +327,9 @@ private:
 
       ////Beautiful Eyes
       leye = std::make_unique<Eye>("eye\\lefteye.bmp", bubble_vert_glsl, bubble_frag_glsl);
+      //leye = std::make_unique<Eye>("eye\\lefteye.bmp", bubble_vert_glsl, point_light_glsl);
       leye->position = {-2, -5, 0};
-      reye = std::make_unique<Eye>("eye\\righteye.bmp", bubble_vert_glsl, bubble_frag_glsl);
+      reye = std::make_unique<Eye>("eye\\righteye.bmp", bubble_vert_glsl, point_light_glsl);
       reye->position = {2, -5, 0};
   }
 
