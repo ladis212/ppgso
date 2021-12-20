@@ -70,6 +70,7 @@ set(PPGSO_SHADER_SRC
         shader/underwater_vert.glsl shader/underwater_frag.glsl
         shader/bubble_vert.glsl shader/bubble_frag.glsl
 	    shader/point_light.glsl
+        shader/sea_vert.glsl shader/sea_frag.glsl
         )
 add_resources(shaders ${PPGSO_SHADER_SRC})
 

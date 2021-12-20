@@ -18,9 +18,8 @@
 #include <ppgso/ppgso.h>
 
 
-#include <shaders/texture_vert_glsl.h>
-#include <shaders/texture_frag_glsl.h>
-#include <shaders/bubble_frag_glsl.h>
+#include <shaders/sea_vert_glsl.h>
+#include <shaders/sea_frag_glsl.h>
 
 #define PATCH_SIZE 50
 
@@ -32,7 +31,7 @@ GLuint vao, vbo, tbo, ibo;
 
     BezierPatch::BezierPatch() {
         // Generate Bezier patch points and incidences
-        if (!shader) shader = std::make_unique<ppgso::Shader>(texture_vert_glsl, bubble_frag_glsl);
+        if (!shader) shader = std::make_unique<ppgso::Shader>(sea_vert_glsl, sea_frag_glsl);
         if (!texture) texture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("sea.bmp"));
 
         float u,v;

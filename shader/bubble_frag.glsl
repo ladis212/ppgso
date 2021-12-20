@@ -43,6 +43,7 @@ void main() {
   vec3 farColor = vec3(0.09, 0.05, 0.52);
   vec3 multiplyColor = vec3(0.529, 0.803, 1);
 
+  FragmentColor.a = FragmentColor.r * Transparency;
   FragmentColor.r = mix(FragmentColor.r * multiplyColor.r, farColor.r, linear_depth);
   FragmentColor.g = mix(FragmentColor.g * multiplyColor.g, farColor.g, linear_depth);
   FragmentColor.b = mix(FragmentColor.b * multiplyColor.b, farColor.b, linear_depth);

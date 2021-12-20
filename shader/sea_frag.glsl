@@ -17,10 +17,6 @@ in vec2 texCoord;
 // Wordspace normal passed from vertex shader
 in vec4 normal;
 
-in float x;
-in float y;
-in float time;
-
 // The final color
 out vec4 FragmentColor;
 
@@ -39,12 +35,12 @@ void main() {
   // NOTE: Texture coordinate is inverted vertically for compatibility with OBJ
   float linear_depth = linearizeDepth(gl_FragCoord.z) / far;
   FragmentColor = texture(Texture, vec2(texCoord.x, 1.0 - texCoord.y) + TextureOffset);
-
-  vec3 farColor = vec3(0.09, 0.05, 0.52);
+  
   vec3 multiplyColor = vec3(0.529, 0.803, 1);
 
-  FragmentColor.r = mix(FragmentColor.r * multiplyColor.r, farColor.r, linear_depth);
-  FragmentColor.g = mix(FragmentColor.g * multiplyColor.g, farColor.g, linear_depth);
-  FragmentColor.b = mix(FragmentColor.b * multiplyColor.b, farColor.b, linear_depth);
+  FragmentColor.a = FragmentColor.r * Transparency;
+  FragmentColor.r = mix(FragmentColor.r, FragmentColor.g * multiplyColor.b, linear_depth);
+  FragmentColor.g = mix(FragmentColor.g, FragmentColor.g * multiplyColor.b, linear_depth);
+  FragmentColor.b = mix(FragmentColor.b, FragmentColor.g * multiplyColor.b, linear_depth);
 
 }
