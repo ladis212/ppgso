@@ -318,11 +318,11 @@ private:
       //// Sponge
       sponge = std::make_unique<Sponge>();
       sponge->scale = {.1, .1, .1};
-      sponge->position = {0, -20, .2};
+      sponge->position = {0, -19.0f, .2};
 
       ////Stingray
       stingray = std::make_unique<Stingray>();
-      stingray->position = {0, 10, .2};
+      stingray->position = {5, -16.0f, .2};
       stingray->scale = {5, 5, 5};
 
       ////Beautiful Eyes

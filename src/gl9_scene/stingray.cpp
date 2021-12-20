@@ -69,7 +69,7 @@ void Stingray::render(Scene &scene) {
         if (v < -1) v = -1;
         shader->setUniform("Transparency", 1+v);
     }
-
+    shader->setUniform("HasNormals", -1.0f);
     mesh->render();
 }
 
