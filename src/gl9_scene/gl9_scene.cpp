@@ -163,7 +163,7 @@ private:
       skybox_alt_texture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("skybox_ocean.bmp"));
 
       scene.objects.clear();
-      scene.lightDirection = {1, 1, 0};
+      scene.lightDirection = {-1, 1, 0};
       // Create a camera
       auto camera = std::make_unique<Camera>(60.0f, 1.0f, 0.1f, 300.0f);
       camera->position.z = -15.0f;
@@ -172,7 +172,7 @@ private:
       // UNDO
       //scene.objects.push_back(std::make_unique<Space>());
       skybox = std::make_unique<Skybox>();
-      skybox->scale = {100, 100, 100};
+      skybox->scale = {200, 200, 200};
       //scene.objects.push_back(move(skybox));
       island = std::make_unique<Island>();
       island->scale = {.10, .10, .10};
