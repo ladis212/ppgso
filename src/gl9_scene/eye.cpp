@@ -76,6 +76,9 @@ bool Eye::update(Scene &scene, float dt) {
 }
 
 void Eye::render(Scene &scene) {
+    clock_t t;
+    t = clock();
+
     shader->use();
     shader->setUniform("LightDirection", scene.lightDirection);
 
@@ -107,9 +110,14 @@ void Eye::render(Scene &scene) {
     // render mesh
     shader->setUniform("ModelMatrix", modelMatrix);
     shader->setUniform("Texture", *texture);
-    shader->setUniform("Transparency", 1);
+    float v = 2 * sin(t/1000.0f);
+    if (v < 0){
+        if (v < -1) v = -1;
+        shader->setUniform("Transparency", 1+v);
+    }
 
     shader->setUniform("Time", 1);
+
     mesh->render();
 }
 
