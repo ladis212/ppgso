@@ -36,6 +36,7 @@ Floor::Floor() {
     if (!texture) texture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("sand.bmp"));
 
     float u,v;
+    float real_x, real_z;
     for (unsigned int i = 0; i < PATCH_SIZE; i++) {
         for (unsigned int j = 0; j < PATCH_SIZE; j++) {
             // TODO: Compute points on the bezier patch
@@ -43,9 +44,12 @@ Floor::Floor() {
             u = float(i) / float(PATCH_SIZE - 1);
             v = float(j) / float(PATCH_SIZE - 1);
 
-            displace = sin(float(i)/10)/2 + cos(float(j)/10)/2;
+            real_x = u * 180 - 90;
+            real_z = v * 180 - 90;
 
-            vertices.emplace_back(u * 180 - 90, displace, v * 180 - 90);
+            displace = sin(real_x/5)/2 + cos(real_z/5)/2;
+
+            vertices.emplace_back(real_x, displace, real_z);
             //printf("%f %f\n", u, v);
             texCoords.emplace_back(glm::vec2{u, 1 - v});
         }

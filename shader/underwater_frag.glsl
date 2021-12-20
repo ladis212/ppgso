@@ -25,7 +25,7 @@ out vec4 FragmentColor;
 
 
 float near = 0.1f;
-float far = 50.0f;
+float far = 150.0f;
 float seaLevel = 0.0f;
 
 float linearizeDepth(float depth){
