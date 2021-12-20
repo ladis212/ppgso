@@ -327,7 +327,9 @@ private:
 
       ////Beautiful Eyes
       leye = std::make_unique<Eye>("eye\\lefteye.bmp", bubble_vert_glsl, bubble_frag_glsl);
-
+      leye->position = {-2, -5, 0};
+      reye = std::make_unique<Eye>("eye\\righteye.bmp", bubble_vert_glsl, bubble_frag_glsl);
+      reye->position = {2, -5, 0};
   }
 
 public:
@@ -630,6 +632,8 @@ public:
 
     leye->update(scene, dt);
     leye->render(scene);
+    reye->update(scene, dt);
+    reye->render(scene);
     scene.update(dt);
     scene.render();
   }
