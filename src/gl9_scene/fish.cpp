@@ -37,7 +37,7 @@ bool fish::update(Scene &scene, float dt) {
     rotation += rotMomentum * dt;
 
 
-    //swim(scene, dt);
+    swim(scene, dt);
     generateModelMatrix();
 
     return true;

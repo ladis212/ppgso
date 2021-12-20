@@ -556,65 +556,65 @@ public:
 
     //ryby
     ///ORANGE FISH
-    fish_h1->swim(scene,dt);
+   // fish_h1->swim(scene,dt);
     fish_h1->update(scene,dt);
     fish_h1->render(scene);
 
-    fish_h11->swim(scene,dt);
+    //fish_h11->swim(scene,dt);
     fish_h11->update(scene,dt);
     fish_h11->render(scene);
 
-    fish_h12->swim(scene,dt);
+    //fish_h12->swim(scene,dt);
     fish_h12->update(scene,dt);
     fish_h12->render(scene);
 
-    fish_h13->swim(scene,dt);
+   // fish_h13->swim(scene,dt);
     fish_h13->update(scene,dt);
     fish_h13->render(scene);
 
-    fish_h14->swim(scene,dt);
+  //  fish_h14->swim(scene,dt);
     fish_h14->update(scene,dt);
     fish_h14->render(scene);
 
       ///BLUE TANG
-    fish_h2->swim(scene,dt);
+   // fish_h2->swim(scene,dt);
     fish_h2->update(scene,dt);
     fish_h2->render(scene);
 
-   fish_h21->swim(scene,dt);
+  // fish_h21->swim(scene,dt);
    fish_h21->update(scene,dt);
    fish_h21->render(scene);
 
-   fish_h22->swim(scene,dt);
+   //fish_h22->swim(scene,dt);
    fish_h22->update(scene,dt);
    fish_h22->render(scene);
 
-   fish_h23->swim(scene,dt);
+  // fish_h23->swim(scene,dt);
    fish_h23->update(scene,dt);
    fish_h23->render(scene);
 
-   fish_h24->swim(scene,dt);
+  // fish_h24->swim(scene,dt);
    fish_h24->update(scene,dt);
    fish_h24->render(scene);
 
     ///CHROMIS
-    fish_h3->swim(scene,dt);
+  //  fish_h3->swim(scene,dt);
     fish_h3->update(scene,dt);
     fish_h3->render(scene);
 
-    fish_h31->swim(scene,dt);
+  //  fish_h31->swim(scene,dt);
     fish_h31->update(scene,dt);
     fish_h31->render(scene);
 
-    fish_h32->swim(scene,dt);
+  //  fish_h32->swim(scene,dt);
     fish_h32->update(scene,dt);
     fish_h32->render(scene);
 
-    fish_h33->swim(scene,dt);
+ //   fish_h33->swim(scene,dt);
     fish_h33->update(scene,dt);
     fish_h33->render(scene);
 
-    fish_h34->swim(scene,dt);
+  //  fish_h34->swim(scene,dt);
     fish_h34->update(scene,dt);
     fish_h34->render(scene);
     //fish_l1->update(scene,dt);
