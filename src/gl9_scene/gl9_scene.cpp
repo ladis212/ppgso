@@ -42,6 +42,9 @@
 #include <shaders/diffuse_vert_glsl.h>
 #include <shaders/diffuse_frag_glsl.h>
 //#include <shaders/point_light_glsl.h>
+#include <shaders/underwater_vert_glsl.h>
+#include <shaders/underwater_frag_glsl.h>
+
 #include <valarray>
 
 const unsigned int HEIGHT = 720;
@@ -187,7 +190,7 @@ private:
       //generator->position.y = -10.0f;
       //scene.objects.push_back(move(generator));
       //dolphin = std::make_unique<Dolphin>();
-      dolphin = std::make_unique<GenericObject>("dolphin\\10014_dolphin_v2_max2011_it2.obj", "dolphin\\10014_dolphin_v1_Diffuse.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      dolphin = std::make_unique<GenericObject>("dolphin\\10014_dolphin_v2_max2011_it2.obj", "dolphin\\10014_dolphin_v1_Diffuse.bmp", underwater_vert_glsl, underwater_frag_glsl);
       dolphin->scale = {.05, .05, .05};;
       //skybox->update(scene, 0);
       // Add generator to scene
@@ -197,7 +200,7 @@ private:
       dolphin2 = std::make_unique<Dolphin>();
       dolphin2->scale = {.05, .05, .05};
       ///// koraly a rastlinky
-      cor1 = std::make_unique<GenericObject>("coral\\braincoral.obj", "coral\\braincoral.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      cor1 = std::make_unique<GenericObject>("coral\\braincoral.obj", "coral\\braincoral.bmp", underwater_vert_glsl, underwater_frag_glsl);
       cor1->position = {30, -20, -10};
       cor1->scale = {.5f, .5f, .5f};
       cor1->rotation.x = M_PI_2;
@@ -209,58 +212,58 @@ private:
       //TODO: Easier way to do this?? Array??
       float s = 0.0f; //Container to equalize size ratio across scale
       ///* ORANGE FISH *///
-      fish_h1 = std::make_unique<fish>("fishes\\fish.obj", "fishes\\fish.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      fish_h1 = std::make_unique<fish>("fishes\\fish.obj", "fishes\\fish.bmp", underwater_vert_glsl, underwater_frag_glsl);
       fish_h1->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
       s = glm::linearRand(.03f, .1f);
       fish_h1->scale = {s, s, s};
       fish_h1->rotation.x = -M_PI_2;
-      fish_h11 = std::make_unique<fish>("fishes\\fish.obj", "fishes\\fish.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      fish_h11 = std::make_unique<fish>("fishes\\fish.obj", "fishes\\fish.bmp", underwater_vert_glsl, underwater_frag_glsl);
       fish_h11->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
       s = glm::linearRand(.03f, .1f);
       fish_h11->scale = {s, s, s};
       fish_h11->rotation.x = -M_PI_2;
-      fish_h12 = std::make_unique<fish>("fishes\\fish.obj", "fishes\\fish.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      fish_h12 = std::make_unique<fish>("fishes\\fish.obj", "fishes\\fish.bmp", underwater_vert_glsl, underwater_frag_glsl);
       fish_h12->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
       s = glm::linearRand(.03f, .1f);
       fish_h12->scale = {s, s, s};
       fish_h12->rotation.x = -M_PI_2;
-      fish_h13 = std::make_unique<fish>("fishes\\fish.obj", "fishes\\fish.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      fish_h13 = std::make_unique<fish>("fishes\\fish.obj", "fishes\\fish.bmp", underwater_vert_glsl, underwater_frag_glsl);
       fish_h13->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
       s = glm::linearRand(.03f, .1f);
       fish_h13->scale = {s, s, s};
       fish_h13->rotation.x = -M_PI_2;
-      fish_h14 = std::make_unique<fish>("fishes\\fish.obj", "fishes\\fish.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      fish_h14 = std::make_unique<fish>("fishes\\fish.obj", "fishes\\fish.bmp", underwater_vert_glsl, underwater_frag_glsl);
       fish_h14->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
       s = glm::linearRand(.03f, .1f);
       fish_h14->scale = {s, s, s};
       fish_h14->rotation.x = -M_PI_2;
 
       ///* BLUE TANG *///
-      fish_h2 = std::make_unique<fish>("fishes\\bluetang.obj", "fishes\\bluetang.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      fish_h2 = std::make_unique<fish>("fishes\\bluetang.obj", "fishes\\bluetang.bmp", underwater_vert_glsl, underwater_frag_glsl);
       fish_h2->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
       s = glm::linearRand(.05f, .2f);
       fish_h2->scale = {s, s, s};
       fish_h2->rotation.y= -M_PI_2;
       fish_h2->rotation.x = -M_PI_2;
-      fish_h21 = std::make_unique<fish>("fishes\\bluetang.obj", "fishes\\bluetang.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      fish_h21 = std::make_unique<fish>("fishes\\bluetang.obj", "fishes\\bluetang.bmp", underwater_vert_glsl, underwater_frag_glsl);
       fish_h21->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
       s = glm::linearRand(.05f, .2f);
       fish_h21->scale = {s, s, s};
       fish_h21->rotation.y= -M_PI_2;
       fish_h21->rotation.x = -M_PI_2;
-      fish_h22 = std::make_unique<fish>("fishes\\bluetang.obj", "fishes\\bluetang.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      fish_h22 = std::make_unique<fish>("fishes\\bluetang.obj", "fishes\\bluetang.bmp", underwater_vert_glsl, underwater_frag_glsl);
       fish_h22->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
       s = glm::linearRand(.05f, .2f);
       fish_h22->scale = {s, s, s};
       fish_h22->rotation.y= -M_PI_2;
       fish_h22->rotation.x = -M_PI_2;
-      fish_h23 = std::make_unique<fish>("fishes\\bluetang.obj", "fishes\\bluetang.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      fish_h23 = std::make_unique<fish>("fishes\\bluetang.obj", "fishes\\bluetang.bmp", underwater_vert_glsl, underwater_frag_glsl);
       fish_h23->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
       s = glm::linearRand(.05f, .2f);
       fish_h23->scale = {s, s, s};
       fish_h23->rotation.y= -M_PI_2;
       fish_h23->rotation.x = -M_PI_2;
-      fish_h24 = std::make_unique<fish>("fishes\\bluetang.obj", "fishes\\bluetang.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      fish_h24 = std::make_unique<fish>("fishes\\bluetang.obj", "fishes\\bluetang.bmp", underwater_vert_glsl, underwater_frag_glsl);
       fish_h24->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
       s = glm::linearRand(.05f, .2f);
       fish_h24->scale = {s, s, s};
@@ -268,31 +271,31 @@ private:
       fish_h24->rotation.x = -M_PI_2;
 
       ///*CHROMIS*///
-      fish_h3 = std::make_unique<fish>("fishes\\chromis.obj", "fishes\\chromis.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      fish_h3 = std::make_unique<fish>("fishes\\chromis.obj", "fishes\\chromis.bmp", underwater_vert_glsl, underwater_frag_glsl);
       fish_h3->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
       s = glm::linearRand(.05f, .2f);
       fish_h3->scale = {s, s, s};
       fish_h3->rotation.y = -M_PI_2;
       fish_h3->rotation.x = -M_PI_2;
-      fish_h31 = std::make_unique<fish>("fishes\\chromis.obj", "fishes\\chromis.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      fish_h31 = std::make_unique<fish>("fishes\\chromis.obj", "fishes\\chromis.bmp", underwater_vert_glsl, underwater_frag_glsl);
       fish_h31->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
       s = glm::linearRand(.05f, .2f);
       fish_h31->scale = {s, s, s};
       fish_h31->rotation.y = -M_PI_2;
       fish_h31->rotation.x = -M_PI_2;
-      fish_h32 = std::make_unique<fish>("fishes\\chromis.obj", "fishes\\chromis.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      fish_h32 = std::make_unique<fish>("fishes\\chromis.obj", "fishes\\chromis.bmp", underwater_vert_glsl, underwater_frag_glsl);
       fish_h32->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
       s = glm::linearRand(.05f, .2f);
       fish_h32->scale = {s, s, s};
       fish_h32->rotation.y = -M_PI_2;
       fish_h32->rotation.x = -M_PI_2;
-      fish_h33 = std::make_unique<fish>("fishes\\chromis.obj", "fishes\\chromis.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      fish_h33 = std::make_unique<fish>("fishes\\chromis.obj", "fishes\\chromis.bmp", underwater_vert_glsl, underwater_frag_glsl);
       fish_h33->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
       s = glm::linearRand(.05f, .2f);
       fish_h33->scale = {s, s, s};
       fish_h33->rotation.y = -M_PI_2;
       fish_h33->rotation.x = -M_PI_2;
-      fish_h34 = std::make_unique<fish>("fishes\\chromis.obj", "fishes\\chromis.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      fish_h34 = std::make_unique<fish>("fishes\\chromis.obj", "fishes\\chromis.bmp", underwater_vert_glsl, underwater_frag_glsl);
       fish_h34->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
       s = glm::linearRand(.05f, .2f);
       fish_h34->scale = {s, s, s};

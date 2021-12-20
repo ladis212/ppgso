@@ -19,8 +19,6 @@ GenericObject::GenericObject(const std::basic_string<char> &mesh_path, const std
     rotation = {0, 0, 0};
     rotMomentum = {0, 0, 0};
 
-    // Initialize static resources if needed
-    if (!shader) shader = std::make_unique<ppgso::Shader>(diffuse_vert_glsl, diffuse_frag_glsl);
 }
 
 bool GenericObject::update(Scene &scene, float dt) {
@@ -91,6 +89,7 @@ void GenericObject::render(Scene &scene) {
     shader->setUniform("ModelMatrix", modelMatrix);
     shader->setUniform("Texture", *texture);
     shader->setUniform("Transparency", 1);
+    shader->setUniform("HasNormals", 1.0f);
     mesh->render();
 }
 
