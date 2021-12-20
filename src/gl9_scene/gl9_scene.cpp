@@ -37,12 +37,16 @@
 #include "stingray.h"
 #include "Floor.h"
 #include "BezierPatch.h"
+#include "eye.h"
 
+//shaders
 #include <shaders/texture_vert_glsl.h>
 #include <shaders/texture_frag_glsl.h>
 #include <shaders/diffuse_vert_glsl.h>
 #include <shaders/diffuse_frag_glsl.h>
-//#include <shaders/point_light_glsl.h>
+#include <shaders/point_light_glsl.h>
+#include <shaders/bubble_frag_glsl.h>
+#include <shaders/bubble_vert_glsl.h>
 #include <shaders/underwater_vert_glsl.h>
 #include <shaders/underwater_frag_glsl.h>
 
@@ -85,6 +89,8 @@ private:
   std::unique_ptr<Bubble> bubble;
   std::unique_ptr<ppgso::Texture> skybox_alt_texture;
   std::unique_ptr<GenericObject> cor1;
+  std::unique_ptr<Eye> leye;
+  std::unique_ptr<Eye> reye;
   //std::unique_ptr<GenericObject> cor2;
   //std::unique_ptr<GenericObject> cor3;
   //std::unique_ptr<GenericObject> grass1;
@@ -313,11 +319,15 @@ private:
       sponge = std::make_unique<Sponge>();
       sponge->scale = {.1, .1, .1};
       sponge->position = {0, -20, .2};
+
+      ////Stingray
       stingray = std::make_unique<Stingray>();
       stingray->position = {0, 10, .2};
       stingray->scale = {5, 5, 5};
-     // sgenerator = std::make_unique<SpongeGenerator>();
-      //sgenerator->position = sponge->position;
+
+      ////Beautiful Eyes
+      leye = std::make_unique<Eye>("eye\\lefteye.bmp", bubble_vert_glsl, bubble_frag_glsl);
+
   }
 
 public:
@@ -618,6 +628,8 @@ public:
     sea->update(scene, time);
     sea->render(scene);
 
+    leye->update(scene, dt);
+    leye->render(scene);
     scene.update(dt);
     scene.render();
   }
