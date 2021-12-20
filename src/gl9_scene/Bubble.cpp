@@ -5,6 +5,8 @@
 #include <shaders/bubble_frag_glsl.h>
 #include <glm/gtx/euler_angles.hpp>
 
+#include <glm/gtx/string_cast.hpp>
+
 
 // Static resources
 std::unique_ptr<ppgso::Mesh> Bubble::mesh;
@@ -70,7 +72,7 @@ bool Bubble::update(Scene &scene, float dt) {
 
     // Generate modelMatrix from position, rotation and scale
     generateModelMatrix();
-    //modelMatrix *= glm::inverse(scene.camera->viewMatrix);
+    //wqmodelMatrix *= glm::inverse(scene.camera->viewMatrix);
     //modelMatrix *= glm::orientate4(glm::vec3{0, 0, M_PI});
 
     return true;
@@ -88,8 +90,22 @@ void Bubble::render(Scene &scene) {
     //glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
 
     // use camera
+    //glm::mat4 spriteMatrix = glm::mat4(1.0);
+//
+    //float d = sqrt( pow(scene.camera->viewMatrix[0][0], 2.0) + pow(scene.camera->viewMatrix[0][1], 2.0) + pow(scene.camera->viewMatrix[0][2], 2.0) );
+//
+    //for(int translate_axis = 0; translate_axis < 3; translate_axis++){
+    //    spriteMatrix[3][translate_axis] = scene.camera->viewMatrix[3][translate_axis];
+    //    spriteMatrix[translate_axis][translate_axis] = 5;
+    //}
+//
+    //std::cout << glm::to_string(spriteMatrix);
+
+
     shader->setUniform("ProjectionMatrix", scene.camera->projectionMatrix);
     shader->setUniform("ViewMatrix", scene.camera->viewMatrix);
+    shader->setUniform("BubblePos", position);
+    shader->setUniform("SingleScale", scale.x);
 
     // render mesh
     shader->setUniform("ModelMatrix", modelMatrix);

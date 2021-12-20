@@ -183,9 +183,9 @@ private:
       //bubble->rotation = {0, 0, M_PI};
       //scene.objects.push_back(move(island));
       //skybox->position = {0, 10, 0};
-      auto generator = std::make_unique<Generator>();
-      generator->position.y = -10.0f;
-      scene.objects.push_back(move(generator));
+      //auto generator = std::make_unique<Generator>();
+      //generator->position.y = -10.0f;
+      //scene.objects.push_back(move(generator));
       //dolphin = std::make_unique<Dolphin>();
       dolphin = std::make_unique<GenericObject>("dolphin\\10014_dolphin_v2_max2011_it2.obj", "dolphin\\10014_dolphin_v1_Diffuse.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
       dolphin->scale = {.05, .05, .05};;
@@ -514,10 +514,12 @@ public:
     dolphin->render(scene);
     dolphin2->update(scene, dt);
     dolphin2->render(scene);
-    sea->update(scene, time);
-    sea->render(scene);
+
     floor->update(scene, time);
     floor->render(scene);
+
+
+
     //koraly a rastlinky
     cor1->update(scene,dt);
     cor1->render(scene);
@@ -602,8 +604,10 @@ public:
     stingray->update(scene,dt);
     stingray->render(scene);
     sponge->update(scene,dt);
-    //sgenerator->update(scene, dt);
     sponge->render(scene);
+
+    sea->update(scene, time);
+    sea->render(scene);
 
     scene.update(dt);
     scene.render();

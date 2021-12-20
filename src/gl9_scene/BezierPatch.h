@@ -7,7 +7,7 @@
 #include "object.h"
 
 
-class BezierPatch final {
+class BezierPatch final : public Object {
 private:
     // Static resources (Shared between instances)
     static std::unique_ptr<ppgso::Shader> shader;
@@ -31,6 +31,6 @@ public:
 
     bool update(Scene &scene, float time);
 
-    bool render(Scene &scene);
+    virtual void render(Scene &scene);
 
 };

@@ -8,6 +8,8 @@ layout(location = 2) in vec3 Normal;
 uniform mat4 ProjectionMatrix;
 uniform mat4 ViewMatrix;
 uniform mat4 ModelMatrix;
+uniform vec3 BubblePos;
+uniform float SingleScale;
 
 uniform float Time;
 
@@ -31,12 +33,15 @@ void main() {
   // Normal in world coordinates
   normal = normalize(ModelMatrix * vec4(Normal, 0.0f));
 
-  //mat4 spriteMatrix = mat4(1.0);
-  //for(int translate_axis = 0; translate_axis < 4; translate_axis++){
-  //  spriteMatrix[translate_axis][3] = ViewMatrix[translate_axis][3];
-  //  //spriteMatrix[translate_axis][translate_axis] = ViewMatrix[translate_axis][translate_axis];
-  //}
+  //spriteMatrix[3][1] = - spriteMatrix[3][1];
+  vec3 CameraRight_worldspace = {ViewMatrix[0][0], ViewMatrix[1][0], ViewMatrix[2][0]};
+  vec3 CameraUp_worldspace = {ViewMatrix[0][1], ViewMatrix[1][1], ViewMatrix[2][1]};
 
+
+  vec3 Pos = vec3(gl_Position.x,gl_Position.y,gl_Position.z) + BubblePos;
   // Calculate the final position on screen
-  gl_Position = ProjectionMatrix * ViewMatrix * ModelMatrix * vec4(Position, 1.0);
+  gl_Position = (ProjectionMatrix * ViewMatrix) * vec4(Pos + CameraRight_worldspace * Position.x * SingleScale + CameraUp_worldspace * Position.y * SingleScale, 1.0);
+  //gl_Position = ProjectionMatrix * ViewMatrix * ModelMatrix
+
+
 }

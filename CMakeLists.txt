@@ -69,7 +69,7 @@ set(PPGSO_SHADER_SRC
         shader/texture_vert.glsl shader/texture_frag.glsl
         shader/underwater_vert.glsl shader/underwater_frag.glsl
         shader/bubble_vert.glsl shader/bubble_frag.glsl
-	shader/point_light.glsl
+	    shader/point_light.glsl
         )
 add_resources(shaders ${PPGSO_SHADER_SRC})
 
@@ -152,7 +152,7 @@ add_executable(gl9_scene
         src/gl9_scene/stingray.cpp
         src/gl9_scene/stingray.h
         src/gl9_scene/Floor.cpp
-        src/gl9_scene/Floor.h)
+        src/gl9_scene/Floor.h src/gl9_scene/FishSchool.cpp src/gl9_scene/FishSchool.h)
 target_link_libraries(gl9_scene ppgso shaders)
 install(TARGETS gl9_scene DESTINATION .)
 add_custom_command(TARGET gl9_scene POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/data/ ${CMAKE_CURRENT_BINARY_DIR})
