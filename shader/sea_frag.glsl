@@ -35,7 +35,7 @@ void main() {
   // NOTE: Texture coordinate is inverted vertically for compatibility with OBJ
   float linear_depth = linearizeDepth(gl_FragCoord.z) / far;
   FragmentColor = texture(Texture, vec2(texCoord.x, 1.0 - texCoord.y) + TextureOffset);
-  
+
   vec3 multiplyColor = vec3(0.529, 0.803, 1);
 
   FragmentColor.a = FragmentColor.r * Transparency;

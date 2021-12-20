@@ -38,9 +38,8 @@ void main() {
   vec3 CameraUp_worldspace = vec3(ViewMatrix[0][1], ViewMatrix[1][1], ViewMatrix[2][1]);
 
 
-  vec3 Pos = vec3(gl_Position.x,gl_Position.y,gl_Position.z) + BubblePos;
   // Calculate the final position on screen
-  gl_Position = (ProjectionMatrix * ViewMatrix) * vec4(Pos + CameraRight_worldspace * Position.x * SingleScale + CameraUp_worldspace * Position.y * SingleScale, 1.0);
+  gl_Position = (ProjectionMatrix * ViewMatrix) * vec4(BubblePos + CameraRight_worldspace * Position.x * SingleScale + CameraUp_worldspace * Position.y * SingleScale, 1.0);
   //gl_Position = ProjectionMatrix * ViewMatrix * ModelMatrix
 
 
