@@ -81,9 +81,9 @@ void Dolphin::jump(Scene &scene){
     clock_t t;
     t = clock();
     //Motion
-    position.x += sin(t/1000.0f) / 12.0f;
+    position.x = 12 * sin(t/1000.0f);
     position.y = 5* sin(t/300.0f);
-    position.z += cos(t/1000.0f) / 12.0f;
+    position.z = 12 * cos(t/1000.0f);
 
   //  double r = position.x*position.x + position.z*position.z;
   //  std::cout << r <<std::endl;

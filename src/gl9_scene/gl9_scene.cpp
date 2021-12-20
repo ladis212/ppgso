@@ -76,7 +76,7 @@ private:
   bool animate = true;
   std::unique_ptr<Skybox> skybox;
   std::unique_ptr<Island> island;
-  std::unique_ptr<GenericObject> dolphin;
+  std::unique_ptr<GenericObject> shark;
   std::unique_ptr<Dolphin>dolphin2;
   std::unique_ptr<Bubble> bubble;
   std::unique_ptr<ppgso::Texture> skybox_alt_texture;
@@ -117,40 +117,35 @@ private:
     std::unique_ptr<Floor> floor;
   std::vector<Keyframe> octopusKeyframes {
       {
-          .position={5,0,0},
-          .rotation={0,0,M_PI * 2},
+          .position={10,-1,0},
+          .rotation={-M_PI_2,0,M_PI_2},
           .scale={.05,.05,.05},
           .timeToTake=0
       },
       {
-          .position={0,0,5},
-          .rotation={0, 0, M_PI + M_PI_2},
+          .position={0,-1,10},
+          .rotation={-M_PI_2, 0, 0},
           .scale={.05,.05,.05},
           .timeToTake=1
       },
       {
-          .position={-5,0,0},
-          .rotation={0, 0, M_PI},
+          .position={-10,-1,0},
+          .rotation={-M_PI_2, 0, -M_PI_2},
           .scale={.05,.05,.05},
           .timeToTake=1
       },
       {
-          .position={0,0,-5},
-          .rotation={0, 0, M_PI_2},
+          .position={0,-1,-10},
+          .rotation={-M_PI_2, 0, -M_PI},
           .scale={.05,.05,.05},
           .timeToTake=1
       },
       {
-              .position={5,0,0},
-              .rotation={0,0,0},
+              .position={10,-1,0},
+              .rotation={-M_PI_2,0,-M_PI - M_PI_2},
               .scale={.05,.05,.05},
               .timeToTake=1
       }
-
-
-
-
-
   };
 
   bool surfaceState = true;
@@ -163,7 +158,7 @@ private:
       skybox_alt_texture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("skybox_ocean.bmp"));
 
       scene.objects.clear();
-      scene.lightDirection = {1, 1, 0};
+      scene.lightDirection = {-1, 1, 0};
       // Create a camera
       auto camera = std::make_unique<Camera>(60.0f, 1.0f, 0.1f, 300.0f);
       camera->position.z = -15.0f;
@@ -172,7 +167,7 @@ private:
       // UNDO
       //scene.objects.push_back(std::make_unique<Space>());
       skybox = std::make_unique<Skybox>();
-      skybox->scale = {100, 100, 100};
+      skybox->scale = {200, 200, 200};
       //scene.objects.push_back(move(skybox));
       island = std::make_unique<Island>();
       island->scale = {.10, .10, .10};
@@ -190,8 +185,9 @@ private:
       //generator->position.y = -10.0f;
       //scene.objects.push_back(move(generator));
       //dolphin = std::make_unique<Dolphin>();
-      dolphin = std::make_unique<GenericObject>("dolphin\\10014_dolphin_v2_max2011_it2.obj", "dolphin\\10014_dolphin_v1_Diffuse.bmp", underwater_vert_glsl, underwater_frag_glsl);
-      dolphin->scale = {.05, .05, .05};;
+      shark = std::make_unique<GenericObject>("shark\\12960_Shark_v2_L1.obj", "shark\\12960_Shark_diff_v2.bmp", underwater_vert_glsl, underwater_frag_glsl);
+      shark->scale = {.05, .05, .05};
+      shark->rotation.y = M_PI_2;
       //skybox->update(scene, 0);
       // Add generator to scene
       //auto generator = std::make_unique<Generator>();
@@ -488,7 +484,7 @@ public:
 
     thisKeyframe = octopusKeyframes[keyframeIndex % octopusKeyframes.size()];
     nextKeyframe = octopusKeyframes[(keyframeIndex + 1) % octopusKeyframes.size()];
-    linearBetweenKeyframes(dolphin, thisKeyframe, nextKeyframe, keyframeTime);
+    linearBetweenKeyframes(shark, thisKeyframe, nextKeyframe, keyframeTime);
     if(keyframeTime >= nextKeyframe.timeToTake) {
         keyframeTime = 0;
         keyframeIndex++;
@@ -513,8 +509,8 @@ public:
     skybox->render(scene);
     island->update(scene, dt);
     island->render(scene);
-    dolphin->update(scene, dt);
-    dolphin->render(scene);
+    shark->update(scene, dt);
+    shark->render(scene);
     dolphin2->update(scene, dt);
     dolphin2->render(scene);
 
