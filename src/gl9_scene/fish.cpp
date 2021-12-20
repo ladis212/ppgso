@@ -2,21 +2,22 @@
 
 #include <glm/gtc/random.hpp>
 #include "fish.h"
+#include "Bubble.h"
 
 #include <shaders/diffuse_vert_glsl.h>
 #include <shaders/diffuse_frag_glsl.h>
 
-
-
+//Boundary when fish returns...
+#define BOUNDARY 20.0f
 
 // Static resources
-std::unique_ptr<ppgso::Mesh> fish::mesh;
-std::unique_ptr<ppgso::Texture> fish::texture;
-std::unique_ptr<ppgso::Shader> fish::shader;
-int varination = glm::linearRand(0, 1);
+
+int funny = 0;
+//int varination = glm::linearRand(0, 3);
 
 fish::fish(const std::basic_string<char> &mesh_path, const std::basic_string<char> &texture_path, const std::string &vert, const std::string &frag) {
-    if (!mesh) mesh = std::make_unique<ppgso::Mesh>(mesh_path);
+
+    mesh = std::make_unique<ppgso::Mesh>(mesh_path);
     if (!texture) texture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP(texture_path));
     if (!shader) shader = std::make_unique<ppgso::Shader>(vert, frag);
     // Set random scale speed and rotation
@@ -36,26 +37,101 @@ bool fish::update(Scene &scene, float dt) {
     // Animate position according to time
     position += speed * dt;
     rotation += rotMomentum * dt;
-    swim(scene, dt);
+
+
+    //swim(scene, dt);
     generateModelMatrix();
 
     return true;
 }
 
 void fish::swim(Scene &scene, float dt){
+    clock_t t;
+    t = clock();
+    float siner = t / 10000.0f;
     //left or right?
     if (varination == 0){
-        position.x += 2*dt;
+        position.x += dt;
         rotation.z = M_PI;
+        if (abs(position.x) > BOUNDARY){
+            varination = 1;
+            rotation.z = 0;
+        }
     }
-    else {
-        position.x -= 2*dt;
+    else if (varination == 1) {
+        position.x -= dt;
+        if (abs(position.x) > BOUNDARY){
+            varination = 0;
+            rotation.z = M_PI;
+        }
     }
-    //TODO: add other axis as a variant of varination... (i'll do this tomorrow)
+    else if (varination == 2){
+        position.z +=dt;
+        rotation.z = M_PI_2;
+        if (abs(position.z) > BOUNDARY){
+            varination = 3;
+            rotation.z = -M_PI_2;
+        }
+    }
+    else { //varination == 3
+        position.z -=dt;
+        rotation.z = -M_PI_2;
+        if (abs(position.z) > BOUNDARY) {
+            varination = 2;
+            rotation.z = M_PI_2;
+        }
+    }
+    time += dt;
+    //Sometimes, the fish breathes.
 
+    if (time > .3) {
+        auto obj = std::make_unique<Bubble>();
+        obj->position = position;
+        obj->rotation = {0, 0, M_PI};
+        if (varination == 0) { //Ensuring the bubbles exit the fish's mouth
+            obj->position.x = position.x+1.0f;
+            obj->position.z = position.z;
+        }
+        else if (varination == 1) {
+            obj->position.x = position.x-1.0f;
+            obj->position.z = position.z;
+        }
+        else if (varination == 2){
+            obj->position.x = position.x;
+            obj->position.z = position.z+1.0f;
+        }
+        else{
+            obj->position.x = position.x;
+            obj->position.z = position.z-1.0f;
+        }
 
-
-
+        float randScale = glm::linearRand(0.05f, 0.1f);
+        obj->scale = glm::vec3(randScale);
+        float randSpeed = glm::linearRand(4.0f, 5.0f);
+        obj->speed = {0, randSpeed, 0};
+        scene.objects.push_back(move(obj));
+        time = 0;
+    }
+    if ( funny < 1000 ) funny += 1;
+    else if ((funny >= 1000) && (((varination < 2) && //Wiggle around
+            (abs(position.x) < BOUNDARY - 2.0f) ) || ((varination >= 2) && (abs(position.z) < BOUNDARY - 2.0f) ))){ //To prevent edgecase when wiggling starts too close to boundary.
+            float v = sin(siner) / 2;
+            if (varination == 0){
+                rotation.z = M_PI + v;
+            }
+            else if (varination == 1) {
+                rotation.z = v;
+            }
+            else if (varination == 2){
+                rotation.z = M_PI_2 + v;
+            }
+            else {
+                rotation.z = -M_PI_2 + v;
+            }
+            if (v == 0) funny +=1;
+            std::cout << "wiggle wiggle wiggle" << std::endl;
+            if (funny == 1002) funny = 0; //Should do for a while before returning below 10
+    }
 }
 
 void fish::render(Scene &scene) {

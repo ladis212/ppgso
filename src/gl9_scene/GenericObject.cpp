@@ -8,9 +8,6 @@
 
 
 // Static resources
-std::unique_ptr<ppgso::Mesh> GenericObject::mesh;
-std::unique_ptr<ppgso::Texture> GenericObject::texture;
-std::unique_ptr<ppgso::Shader> GenericObject::shader;
 
 GenericObject::GenericObject(const std::basic_string<char> &mesh_path, const std::basic_string<char> &texture_path, const std::string &vert, const std::string &frag) {
     if (!mesh) mesh = std::make_unique<ppgso::Mesh>(mesh_path);

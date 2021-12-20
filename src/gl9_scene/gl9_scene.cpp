@@ -34,14 +34,14 @@
 #include "object.h"
 #include "sponge.h"
 #include "stingray.h"
-
-#include "BezierPatch.h"
 #include "Floor.h"
+#include "BezierPatch.h"
 
 #include <shaders/texture_vert_glsl.h>
 #include <shaders/texture_frag_glsl.h>
 #include <shaders/diffuse_vert_glsl.h>
 #include <shaders/diffuse_frag_glsl.h>
+//#include <shaders/point_light_glsl.h>
 #include <valarray>
 
 const unsigned int HEIGHT = 720;
@@ -53,6 +53,10 @@ struct Keyframe {
     glm::vec3 scale;
     float timeToTake;
 };
+
+int arrA = glm::linearRand(2, 10);
+int arrB = glm::linearRand(2, 10);
+int arrC = glm::linearRand(2,10);
 
 template<typename Object>
 void linearBetweenKeyframes(std::unique_ptr<Object> &object, Keyframe A, Keyframe B, float timeSinceA){
@@ -71,24 +75,43 @@ private:
   std::unique_ptr<Island> island;
   std::unique_ptr<GenericObject> dolphin;
   std::unique_ptr<Dolphin>dolphin2;
+  std::unique_ptr<Bubble> bubble;
   std::unique_ptr<ppgso::Texture> skybox_alt_texture;
   std::unique_ptr<GenericObject> cor1;
   //std::unique_ptr<GenericObject> cor2;
   //std::unique_ptr<GenericObject> cor3;
   //std::unique_ptr<GenericObject> grass1;
   //std::unique_ptr<GenericObject> grass2;
+  ////Orange fish
   std::unique_ptr<fish>fish_h1;
-  //std::unique_ptr<fish>fish_h2;
-  //std::unique_ptr<fish>fish_h3;
+  std::unique_ptr<fish>fish_h11;
+  std::unique_ptr<fish>fish_h12;
+  std::unique_ptr<fish>fish_h13;
+  std::unique_ptr<fish>fish_h14;
+
+  ////Blue Tang
+  std::unique_ptr<fish>fish_h2;
+  std::unique_ptr<fish>fish_h21;
+  std::unique_ptr<fish>fish_h22;
+  std::unique_ptr<fish>fish_h23;
+  std::unique_ptr<fish>fish_h24;
+
+  ////Chromis
+  std::unique_ptr<fish>fish_h3;
+  std::unique_ptr<fish>fish_h31;
+  std::unique_ptr<fish>fish_h32;
+  std::unique_ptr<fish>fish_h33;
+  std::unique_ptr<fish>fish_h34;
+
+  ////Low Poly
   //std::unique_ptr<fish>fish_l1;
   //std::unique_ptr<fish>fish_l2;
   std::unique_ptr<Sponge>sponge;
   std::unique_ptr<Stingray>stingray;
 
 
-  std::unique_ptr<BezierPatch> sea;
-  std::unique_ptr<Floor> floor;
-
+    std::unique_ptr<BezierPatch> sea;
+    std::unique_ptr<Floor> floor;
   std::vector<Keyframe> octopusKeyframes {
       {
           .position={5,0,0},
@@ -139,14 +162,14 @@ private:
       scene.objects.clear();
       scene.lightDirection = {1, 1, 0};
       // Create a camera
-      auto camera = std::make_unique<Camera>(60.0f, 1.0f, 0.1f, 500.0f);
+      auto camera = std::make_unique<Camera>(60.0f, 1.0f, 0.1f, 300.0f);
       camera->position.z = -15.0f;
       scene.camera = move(camera);
       // Add space background
       // UNDO
       //scene.objects.push_back(std::make_unique<Space>());
       skybox = std::make_unique<Skybox>();
-      skybox->scale = {300, 300, 300};
+      skybox->scale = {100, 100, 100};
       //scene.objects.push_back(move(skybox));
       island = std::make_unique<Island>();
       island->scale = {.10, .10, .10};
@@ -155,7 +178,6 @@ private:
       sea = std::make_unique<BezierPatch>();
       floor = std::make_unique<Floor>();
       floor->position.y = -20;
-
       //bubble = std::make_unique<Bubble>();
       //bubble->scale = {10, 10, 10};
       //bubble->rotation = {0, 0, M_PI};
@@ -176,17 +198,107 @@ private:
       dolphin2->scale = {.05, .05, .05};
       ///// koraly a rastlinky
       cor1 = std::make_unique<GenericObject>("coral\\braincoral.obj", "coral\\braincoral.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      cor1->position = {30, -20, -10};
+      cor1->scale = {.5f, .5f, .5f};
+      cor1->rotation.x = M_PI_2;
       //cor2 = std::make_unique<GenericObject>("coral\\v1coral.obj", "coral\\v1coral.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
       //cor3 = std::make_unique<GenericObject>("coral\\treecoral.obj", "coral\\treecoralcustom.bmp", diffuse_vert_glsl, diffuse_frag_glsl); //Textura je CUSTOM -- nezarucujem, ale povodna bola bugnuta.
       //grass1 = std::make_unique<GenericObject>("coral\\Grass.obj", "coral\\Grass.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
       //grass2 = std::make_unique<GenericObject>("coral\\Grass.obj", "coral\\SeaGrass.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
       /////// high poly fish
+      //TODO: Easier way to do this?? Array??
+      float s = 0.0f; //Container to equalize size ratio across scale
+      ///* ORANGE FISH *///
       fish_h1 = std::make_unique<fish>("fishes\\fish.obj", "fishes\\fish.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
-      fish_h1->position = {-15, -15, 0};
-      fish_h1->scale = {.05f, .05f, .05f};
+      fish_h1->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
+      s = glm::linearRand(.03f, .1f);
+      fish_h1->scale = {s, s, s};
       fish_h1->rotation.x = -M_PI_2;
-      //fish_h2 = std::make_unique<fish>("fishes\\bluetang.obj", "fishes\\bluetang.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
-      //fish_h3 = std::make_unique<fish>("fishes\\chromis.obj", "fishes\\chromis.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      fish_h11 = std::make_unique<fish>("fishes\\fish.obj", "fishes\\fish.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      fish_h11->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
+      s = glm::linearRand(.03f, .1f);
+      fish_h11->scale = {s, s, s};
+      fish_h11->rotation.x = -M_PI_2;
+      fish_h12 = std::make_unique<fish>("fishes\\fish.obj", "fishes\\fish.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      fish_h12->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
+      s = glm::linearRand(.03f, .1f);
+      fish_h12->scale = {s, s, s};
+      fish_h12->rotation.x = -M_PI_2;
+      fish_h13 = std::make_unique<fish>("fishes\\fish.obj", "fishes\\fish.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      fish_h13->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
+      s = glm::linearRand(.03f, .1f);
+      fish_h13->scale = {s, s, s};
+      fish_h13->rotation.x = -M_PI_2;
+      fish_h14 = std::make_unique<fish>("fishes\\fish.obj", "fishes\\fish.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      fish_h14->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
+      s = glm::linearRand(.03f, .1f);
+      fish_h14->scale = {s, s, s};
+      fish_h14->rotation.x = -M_PI_2;
+
+      ///* BLUE TANG *///
+      fish_h2 = std::make_unique<fish>("fishes\\bluetang.obj", "fishes\\bluetang.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      fish_h2->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
+      s = glm::linearRand(.05f, .2f);
+      fish_h2->scale = {s, s, s};
+      fish_h2->rotation.y= -M_PI_2;
+      fish_h2->rotation.x = -M_PI_2;
+      fish_h21 = std::make_unique<fish>("fishes\\bluetang.obj", "fishes\\bluetang.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      fish_h21->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
+      s = glm::linearRand(.05f, .2f);
+      fish_h21->scale = {s, s, s};
+      fish_h21->rotation.y= -M_PI_2;
+      fish_h21->rotation.x = -M_PI_2;
+      fish_h22 = std::make_unique<fish>("fishes\\bluetang.obj", "fishes\\bluetang.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      fish_h22->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
+      s = glm::linearRand(.05f, .2f);
+      fish_h22->scale = {s, s, s};
+      fish_h22->rotation.y= -M_PI_2;
+      fish_h22->rotation.x = -M_PI_2;
+      fish_h23 = std::make_unique<fish>("fishes\\bluetang.obj", "fishes\\bluetang.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      fish_h23->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
+      s = glm::linearRand(.05f, .2f);
+      fish_h23->scale = {s, s, s};
+      fish_h23->rotation.y= -M_PI_2;
+      fish_h23->rotation.x = -M_PI_2;
+      fish_h24 = std::make_unique<fish>("fishes\\bluetang.obj", "fishes\\bluetang.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      fish_h24->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
+      s = glm::linearRand(.05f, .2f);
+      fish_h24->scale = {s, s, s};
+      fish_h24->rotation.y= -M_PI_2;
+      fish_h24->rotation.x = -M_PI_2;
+
+      ///*CHROMIS*///
+      fish_h3 = std::make_unique<fish>("fishes\\chromis.obj", "fishes\\chromis.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      fish_h3->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
+      s = glm::linearRand(.05f, .2f);
+      fish_h3->scale = {s, s, s};
+      fish_h3->rotation.y = -M_PI_2;
+      fish_h3->rotation.x = -M_PI_2;
+      fish_h31 = std::make_unique<fish>("fishes\\chromis.obj", "fishes\\chromis.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      fish_h31->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
+      s = glm::linearRand(.05f, .2f);
+      fish_h31->scale = {s, s, s};
+      fish_h31->rotation.y = -M_PI_2;
+      fish_h31->rotation.x = -M_PI_2;
+      fish_h32 = std::make_unique<fish>("fishes\\chromis.obj", "fishes\\chromis.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      fish_h32->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
+      s = glm::linearRand(.05f, .2f);
+      fish_h32->scale = {s, s, s};
+      fish_h32->rotation.y = -M_PI_2;
+      fish_h32->rotation.x = -M_PI_2;
+      fish_h33 = std::make_unique<fish>("fishes\\chromis.obj", "fishes\\chromis.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      fish_h33->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
+      s = glm::linearRand(.05f, .2f);
+      fish_h33->scale = {s, s, s};
+      fish_h33->rotation.y = -M_PI_2;
+      fish_h33->rotation.x = -M_PI_2;
+      fish_h34 = std::make_unique<fish>("fishes\\chromis.obj", "fishes\\chromis.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      fish_h34->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
+      s = glm::linearRand(.05f, .2f);
+      fish_h34->scale = {s, s, s};
+      fish_h34->rotation.y = -M_PI_2;
+      fish_h34->rotation.x = -M_PI_2;
+
       ////// low poly fish
       //fish_l1 = std::make_unique<fish>("fishes\\finalfish.obj", "fishes\\finalfish.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
       //fish_l2 = std::make_unique<fish>("fishes\\finalfish.obj", "fishes\\specialfinalfish.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
@@ -402,12 +514,10 @@ public:
     dolphin->render(scene);
     dolphin2->update(scene, dt);
     dolphin2->render(scene);
-    floor->update(scene, time);
-    floor->render(scene);
     sea->update(scene, time);
     sea->render(scene);
-
-
+    floor->update(scene, time);
+    floor->render(scene);
     //koraly a rastlinky
     cor1->update(scene,dt);
     cor1->render(scene);
@@ -421,12 +531,68 @@ public:
     //grass2->render(scene);
 
     //ryby
+    ///ORANGE FISH
+    fish_h1->swim(scene,dt);
     fish_h1->update(scene,dt);
     fish_h1->render(scene);
-    //fish_h2->update(scene,dt);
-    //fish_h2->render(scene);
-    //fish_h3->update(scene,dt);
-    //fish_h3->render(scene);
+
+    fish_h11->swim(scene,dt);
+    fish_h11->update(scene,dt);
+    fish_h11->render(scene);
+
+    fish_h12->swim(scene,dt);
+    fish_h12->update(scene,dt);
+    fish_h12->render(scene);
+
+    fish_h13->swim(scene,dt);
+    fish_h13->update(scene,dt);
+    fish_h13->render(scene);
+
+    fish_h14->swim(scene,dt);
+    fish_h14->update(scene,dt);
+    fish_h14->render(scene);
+
+      ///BLUE TANG
+    fish_h2->swim(scene,dt);
+    fish_h2->update(scene,dt);
+    fish_h2->render(scene);
+
+   fish_h21->swim(scene,dt);
+   fish_h21->update(scene,dt);
+   fish_h21->render(scene);
+
+   fish_h22->swim(scene,dt);
+   fish_h22->update(scene,dt);
+   fish_h22->render(scene);
+
+   fish_h23->swim(scene,dt);
+   fish_h23->update(scene,dt);
+   fish_h23->render(scene);
+
+   fish_h24->swim(scene,dt);
+   fish_h24->update(scene,dt);
+   fish_h24->render(scene);
+
+    ///CHROMIS
+    fish_h3->swim(scene,dt);
+    fish_h3->update(scene,dt);
+    fish_h3->render(scene);
+
+    fish_h31->swim(scene,dt);
+    fish_h31->update(scene,dt);
+    fish_h31->render(scene);
+
+    fish_h32->swim(scene,dt);
+    fish_h32->update(scene,dt);
+    fish_h32->render(scene);
+
+    fish_h33->swim(scene,dt);
+    fish_h33->update(scene,dt);
+    fish_h33->render(scene);
+
+    fish_h34->swim(scene,dt);
+    fish_h34->update(scene,dt);
+    fish_h34->render(scene);
     //fish_l1->update(scene,dt);
     //fish_l1->render(scene);
     //fish_l2->update(scene,dt);

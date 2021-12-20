@@ -10,10 +10,10 @@
 class fish final : public Object {
 private:
     // Static resources (Shared between instances)
-    static std::unique_ptr<ppgso::Mesh> mesh;
-    static std::unique_ptr<ppgso::Shader> shader;
-    static std::unique_ptr<ppgso::Texture> texture;
-    int varination = glm::linearRand(0, 1);
+    std::unique_ptr<ppgso::Mesh> mesh;
+    std::unique_ptr<ppgso::Shader> shader;
+    std::unique_ptr<ppgso::Texture> texture;
+    int varination = glm::linearRand(0, 3);
     // Age of the object in seconds
     float age{0.0f};
 
@@ -44,7 +44,7 @@ public:
      * Custom click event for asteroid
      */
     void onClick(Scene &scene) override;
-
+    float time = 0.0f;
 private:
 };
 
