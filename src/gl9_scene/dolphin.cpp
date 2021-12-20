@@ -5,6 +5,7 @@
 
 #include <glm/gtc/random.hpp>
 #include "dolphin.h"
+#include <windows.h>
 
 #include <shaders/diffuse_vert_glsl.h>
 #include <shaders/diffuse_frag_glsl.h>
@@ -14,6 +15,9 @@
 std::unique_ptr<ppgso::Mesh> Dolphin::mesh;
 std::unique_ptr<ppgso::Texture> Dolphin::texture;
 std::unique_ptr<ppgso::Shader> Dolphin::shader;
+float base = 2.0f;
+//float x = 0.0f;
+
 
 Dolphin::Dolphin() {
     // Set random scale speed and rotation
@@ -80,19 +84,31 @@ bool Dolphin::update(Scene &scene, float dt) {
 void Dolphin::jump(Scene &scene){
     clock_t t;
     t = clock();
+    //float s = glm::linearRand(7.0f, 20.0f);
+    float step = 0.02f;
     //Motion
-    position.x = 12 * sin(t/1000.0f);
+
+    position.x = r * sin(t/1000.0f);
     position.y = 5* sin(t/300.0f);
-    position.z = 12 * cos(t/1000.0f);
+    position.z = r * cos(t/1000.0f);
 
   //  double r = position.x*position.x + position.z*position.z;
   //  std::cout << r <<std::endl;
-    //Rotation <
-    rotation.x = -1.2;
+    //base fluctuating between 2.0f and 4.0f
+    if ((position.y >= 0) && (base <= 4.0f)) {
+        rotation.x = -M_PI / base;
+        base += step;
+    }
+    else if ((position.y < 0) && (base >= 2.0f)){
+        rotation.x = -M_PI / base;
+        base-=step;
+    }
   //  rotation.y = -cos(t/1000.0f)*2.87f;
-    rotation.z = t/1000.0f;
-    //rotation.z += cos(t/1000.0f) / 60.0f;
 
+    rotation.z = M_PI_2 + t/1000.0f;
+    //x += step2;
+    //rotation.z += cos(t/1000.0f) / 60.0f;
+    std::cout << t << std::endl;
 }
 
 void Dolphin::render(Scene &scene) {

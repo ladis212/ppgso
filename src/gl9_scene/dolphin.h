@@ -18,7 +18,9 @@ private:
     static std::unique_ptr<ppgso::Mesh> mesh;
     static std::unique_ptr<ppgso::Shader> shader;
     static std::unique_ptr<ppgso::Texture> texture;
-
+    float r = glm::linearRand(7.0f, 20.0f);  //RADIUS - NOT STATIC
+  //  bool one = false;
+   // int wait = glm::linearRand(0, 2000);
     // Age of the object in seconds
     float age{0.0f};
 

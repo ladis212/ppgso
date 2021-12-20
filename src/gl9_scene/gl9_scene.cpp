@@ -11,6 +11,7 @@
 #include <list>
 #include <vector>
 #include <cmath>
+#include <windows.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -61,6 +62,8 @@ int arrA = glm::linearRand(2, 10);
 int arrB = glm::linearRand(2, 10);
 int arrC = glm::linearRand(2,10);
 
+bool one = false;
+
 template<typename Object>
 void linearBetweenKeyframes(std::unique_ptr<Object> &object, Keyframe A, Keyframe B, float timeSinceA){
     float t = timeSinceA / B.timeToTake;
@@ -77,6 +80,7 @@ private:
   std::unique_ptr<Skybox> skybox;
   std::unique_ptr<Island> island;
   std::unique_ptr<GenericObject> shark;
+  std::unique_ptr<Dolphin>dolphin1;
   std::unique_ptr<Dolphin>dolphin2;
   std::unique_ptr<Bubble> bubble;
   std::unique_ptr<ppgso::Texture> skybox_alt_texture;
@@ -193,8 +197,12 @@ private:
       //auto generator = std::make_unique<Generator>();
       //generator->position.y = 10.0f;
       //scene.objects.push_back(move(generator));
+      dolphin1 = std::make_unique<Dolphin>();
+      dolphin1->scale = {.03, .03, .03};
+      dolphin1->position = {-7, -4, -15};
       dolphin2 = std::make_unique<Dolphin>();
-      dolphin2->scale = {.05, .05, .05};
+      dolphin2->scale = {.02, .02, .02};
+      dolphin2->position = {0, -3, 0};
       ///// koraly a rastlinky
       cor1 = std::make_unique<GenericObject>("coral\\braincoral.obj", "coral\\braincoral.bmp", underwater_vert_glsl, underwater_frag_glsl);
       cor1->position = {30, -20, -10};
@@ -511,6 +519,8 @@ public:
     island->render(scene);
     shark->update(scene, dt);
     shark->render(scene);
+    dolphin1->update(scene, dt);
+    dolphin1->render(scene);
     dolphin2->update(scene, dt);
     dolphin2->render(scene);
 
