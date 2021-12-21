@@ -127,7 +127,6 @@ void fish::swim(Scene &scene, float dt){
                 rotation.z = -M_PI_2 + v;
             }
             if (v == 0) funny +=1;
-            std::cout << "wiggle wiggle wiggle" << std::endl;
             if (funny == 1002) funny = 0; //Should do for a while before returning below 10
     }
 }

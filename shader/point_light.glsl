@@ -20,12 +20,17 @@ struct PointLight{
     float point_expA; //quadratic / specular
 };
 
-out vec4 point_Color; //Color
+out vec4 FragmentColor; //Color
 
 in vec3 FragPos;
-in vec3 Normal;
+
+uniform sampler2D Texture;
 in vec2 texCoord;
 
+in vec3 normal;
+in float hasNormals;
+
+uniform float Transparency;
 uniform vec3 viewPos;
 uniform Material material;
 uniform PointLight lit;
@@ -35,7 +40,7 @@ void main()
     //ambi
     vec3 ambience = vec3(lit.point_Ambient) * vec3(texture(material.mat_Diffuse, texCoord));
     //diff
-    vec3 base = normalize(Normal);
+    vec3 base = normalize(normal);
     vec3 lDir = normalize(lit.point_Position - FragPos);
     float div = max(dot(base, lDir), 0.0f);
     vec3 diff = vec3(lit.point_Diffuse) * div * vec3(texture(material.mat_Diffuse, texCoord));
@@ -53,5 +58,9 @@ void main()
     diff *= atten;
     //result
     vec3 res = ambience + diff + spec;
-    point_Color = vec4(res, 1.0f);
+    FragmentColor = vec4(res, 1.0f);
+    FragmentColor.r = 1.0f;
+    FragmentColor.g = 1.0f;
+    FragmentColor.b = 0.0f;
+    FragmentColor.a = Transparency;
 }

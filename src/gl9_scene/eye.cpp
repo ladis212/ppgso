@@ -9,6 +9,8 @@
 
 
 // Static resources
+//GLfloat yellow[] = {0.8f, 0.8f, 0.0f, 1.f};
+//glMaterialfv(GL_FRONT, GL_EMISSION, yellow);
 
 Eye::Eye(const std::basic_string<char> &texture_path, const std::string &vert, const std::string &frag) {
     // Set random scale speed and rotation

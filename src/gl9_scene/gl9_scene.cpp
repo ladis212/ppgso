@@ -38,6 +38,7 @@
 #include "Floor.h"
 #include "BezierPatch.h"
 #include "eye.h"
+#include "cave.h"
 
 //shaders
 #include <shaders/texture_vert_glsl.h>
@@ -62,11 +63,11 @@ struct Keyframe {
     float timeToTake;
 };
 
-int arrA = glm::linearRand(2, 10);
-int arrB = glm::linearRand(2, 10);
-int arrC = glm::linearRand(2,10);
-
-bool one = false;
+struct CameraFrame{
+    glm::vec3 position;
+    glm::vec3 target;
+    float timeToTake;
+};
 
 template<typename Object>
 void linearBetweenKeyframes(std::unique_ptr<Object> &object, Keyframe A, Keyframe B, float timeSinceA){
@@ -91,6 +92,7 @@ private:
   std::unique_ptr<GenericObject> cor1;
   std::unique_ptr<Eye> leye;
   std::unique_ptr<Eye> reye;
+  std::unique_ptr<Cave> cave;
   //std::unique_ptr<GenericObject> cor2;
   //std::unique_ptr<GenericObject> cor3;
   //std::unique_ptr<GenericObject> grass1;
@@ -156,6 +158,130 @@ private:
               .scale={.05,.05,.05},
               .timeToTake=1
       }
+  };
+
+  std::vector<CameraFrame> Camframes{
+          { //ACT 1: Spin around the island
+            .position ={0.0f, 10.0f, 5.0f},
+            .target = {0, 0, 0},
+            .timeToTake = 1.0f,
+          },
+          {
+             .position ={5.0f, 10.0f, 0.0f},
+             .target = {0, 0, 0},
+             .timeToTake = 1.0f,
+          },
+          {
+             .position ={0.0f, 10.0f, -5.0f},
+             .target = {0, 0, 0},
+             .timeToTake = 1.0f,
+          },
+          {
+             .position ={-5.0f, 10.0f, 0.0f},
+             .target = {0, 0, 0},
+             .timeToTake = 1.0f,
+          },
+          {
+             .position ={0.0f, 10.0f, 5.0f},
+             .target = {0, 0, 0},
+             .timeToTake = 1.0f,
+          }, //ACT 1 End...
+          { //ACT 2 - Slow down to make an outer circle, slowly hover to the surface level
+                  .position ={7.0f, 8.0f, 0.0f},
+                  .target = {0, 0, 0},
+                  .timeToTake = 1.2f,
+          },
+          {
+                  .position ={0.0f, 6.0f, -9.0f},
+                  .target = {0, 0, 0},
+                  .timeToTake = 1.4f,
+          },
+          {
+                  .position ={-11.0f, 4.0f, 0.0f},
+                  .target = {0, 0, 0},
+                  .timeToTake = 1.6f,
+          },
+          {
+                  .position ={0.0f, 2.0f, 13.0f},
+                  .target = {0, 0, 0},
+                  .timeToTake = 1.8f,
+          },
+          {
+                  .position ={15.0f, 0.0f, 0.0f},
+                  .target = {0, 0, 0},
+                  .timeToTake = 2.0f,
+          }, //ACT 2 END
+          { //ACT 3 - Journey underwater
+                  .position ={15.0f, -2.0f, 0.0f},
+                  .target = {0, -10.0f, 0},
+                  .timeToTake = 2.0f,
+          },
+          {
+                  .position ={15.0f, -4.0f, 0.0f},
+                  .target = {0, -12.0f, 0},
+                  .timeToTake = 2.2f,
+          },
+          {
+                  .position ={15.0f, -6.0f, 0.0f},
+                  .target = {0, -14.0f, 0},
+                  .timeToTake = 2.4f,
+          },
+          {
+                  .position ={15.0f, -8.0f, 0.0f},
+                  .target = {0, -16.0f, 0},
+                  .timeToTake = 2.6f,
+          },
+          {
+                  .position ={15.0f, -10.0f, 0.0f},
+                  .target = {0, -18.0f, 0},
+                  .timeToTake = 2.8f,
+          },
+          {
+                  .position ={15.0f, -12.0f, 0.0f},
+                  .target = {0, -20.0f, 0},
+                  .timeToTake = 3.0f,
+          }, //ACT 3 - END
+          { //ACT 4 - Placeholder - Spin around the whole thing... [For demo, elect points of interest]
+                  .position ={13.0f, -12.0f, 0.0f},
+                  .target = {0, -20.0f, 0},
+                  .timeToTake = 2.0f,
+          },
+          {
+                  .position ={0.0f, -12.0f, 11.0f},
+                  .target = {0, -20.0f, 0},
+                  .timeToTake = 2.0f,
+          },
+          {
+                  .position ={-9.0f, -12.0f, 0.0f},
+                  .target = {0, -20.0f, 0},
+                  .timeToTake = 2.0f,
+          },
+          {
+                  .position ={0.0f, -12.0f, -7.0f},
+                  .target = {0, -20.0f, 0},
+                  .timeToTake = 2.0f,
+          },
+          {
+                  .position ={5.0f, -12.0f, 0.0f},
+                  .target = {0, -20.0f, 0},
+                  .timeToTake = 2.0f,
+          },//ACT 4 - END
+          { // ACT 5 - Loop back to the start
+                  .position ={5.0f, -6.0f, 0.0f},
+                  .target = {0, -10.0f, 0},
+                  .timeToTake = 0.5f,
+          },
+          {
+                  .position ={5.0f, 0.0f, 0.0f},
+                  .target = {0, 0.0f, 0},
+                  .timeToTake = 0.5f,
+          },
+          {
+                  .position ={5.0f, 10.0f, 0.0f},
+                  .target = {0, 0.0f, 0},
+                  .timeToTake = 1.0f,
+          } //ACT 5 - END
+
   };
 
   bool surfaceState = true;
@@ -325,12 +451,20 @@ private:
       stingray->position = {5, -16.0f, .2};
       stingray->scale = {5, 5, 5};
 
+      ////Cave
+      cave = std::make_unique<Cave>();
+      cave->position = {10.0f, -17.0f, 10.0f};
+      cave->scale = {7, 7, 7};
+      cave->rotation.z = M_PI_2;
+
       ////Beautiful Eyes
       leye = std::make_unique<Eye>("eye\\lefteye.bmp", bubble_vert_glsl, bubble_frag_glsl);
       //leye = std::make_unique<Eye>("eye\\lefteye.bmp", bubble_vert_glsl, point_light_glsl);
-      leye->position = {-2, -5, 0};
+      leye->position = {9, -17.0f, 7};
+      leye->scale = {.5, .5, .5};
       reye = std::make_unique<Eye>("eye\\righteye.bmp", bubble_vert_glsl, point_light_glsl);
-      reye->position = {2, -5, 0};
+      reye->position = {7, -17.0f, 7};
+      reye->scale = {.5, .5, .5};
   }
 
 public:
@@ -355,9 +489,9 @@ public:
     glFrontFace(GL_CCW);
     glCullFace(GL_BACK);
 
-    //glEnable(GL_LIGHTING);
-    //glEnable(GL_LIGHT0);
-    //glShadeModel(GL_SMOOTH);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glShadeModel(GL_SMOOTH);
 
     initScene();
 
@@ -630,7 +764,8 @@ public:
 
     sea->update(scene, time);
     sea->render(scene);
-
+    cave->update(scene,dt);
+    cave->render(scene);
     leye->update(scene, dt);
     leye->render(scene);
     reye->update(scene, dt);
