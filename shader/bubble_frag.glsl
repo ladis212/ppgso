@@ -25,7 +25,7 @@ in float time;
 out vec4 FragmentColor;
 
 float near = 0.1f;
-float far = 50.0f;
+float far = 150.0f;
 
 float linearizeDepth(float depth){
   return (2.0 * near * far) / (far + near - (depth * 2.0 - 1.0) * (far - near));

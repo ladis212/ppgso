@@ -21,7 +21,7 @@
 #include <shaders/sea_vert_glsl.h>
 #include <shaders/sea_frag_glsl.h>
 
-#define PATCH_SIZE 50
+#define PATCH_SIZE 300
 
 std::unique_ptr<ppgso::Shader> BezierPatch::shader;
 std::unique_ptr<ppgso::Texture> BezierPatch::texture;
@@ -42,9 +42,10 @@ GLuint vao, vbo, tbo, ibo;
                 u = float(i) / float(PATCH_SIZE - 1);
                 v = float(j) / float(PATCH_SIZE - 1);
 
-                vertices.emplace_back(u * 30 - 15, 0, v * 30 - 15);
+
+                vertices.emplace_back(u * 180 - 90, 0, v * 180 - 90);
                 //printf("%f %f\n", u, v);
-                texCoords.emplace_back(glm::vec2{u, 1 - v});
+                texCoords.emplace_back(glm::vec2{u * 6, 1 - v * 6});
             }
         }
         // Generate indices
