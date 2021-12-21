@@ -10,8 +10,12 @@ FishSchool::FishSchool() {
 
 
 bool FishSchool::update(Scene &scene, float dt) {
+
+
+    generateModelMatrix();
     for(auto& fish : fishes) {
-        fish.
+        fish->update(scene, dt);
+        fish->modelMatrix *= modelMatrix;
     }
     return true;
 }
