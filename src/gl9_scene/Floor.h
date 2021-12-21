@@ -29,6 +29,8 @@ public:
 
     ~Floor();
 
+    static float getDisplacement(float x, float z);
+
     bool update(Scene &scene, float time);
 
     bool render(Scene &scene);

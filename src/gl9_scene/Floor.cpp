@@ -27,7 +27,9 @@ std::unique_ptr<ppgso::Shader> Floor::shader;
 std::unique_ptr<ppgso::Texture> Floor::texture;
 GLuint floor_vao, floor_vbo, floor_tbo, floor_ibo;
 
-
+float Floor::getDisplacement(float x, float z){
+    return sin(x/5)/2 + cos(z/5)/2; // vyska v Y osi
+}
 
 Floor::Floor() {
     float displace = 0;
@@ -47,7 +49,7 @@ Floor::Floor() {
             real_x = u * 180 - 90;
             real_z = v * 180 - 90;
 
-            displace = sin(real_x/5)/2 + cos(real_z/5)/2;
+            displace = getDisplacement(real_x, real_z);
 
             vertices.emplace_back(real_x, displace, real_z);
             //printf("%f %f\n", u, v);
