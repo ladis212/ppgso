@@ -36,9 +36,10 @@ public:
     fish(const std::basic_string<char> &mesh_path, const std::basic_string<char> &texture_path,  const std::string &vert, const std::string &frag);
 
     bool update(Scene &scene, float dt) override;
-
+    void collide (Scene &scene, float dt);
     void swim (Scene &scene, float dt);
     void render(Scene &scene) override;
+
 
     /*!
      * Custom click event for asteroid

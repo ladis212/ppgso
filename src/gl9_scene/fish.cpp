@@ -9,10 +9,11 @@
 
 //Boundary when fish returns...
 #define BOUNDARY 20.0f
-
+#define STEP_LIMIT 100
 // Static resources
 
 int funny = 0;
+int step = 0;
 //int varination = glm::linearRand(0, 3);
 
 fish::fish(const std::basic_string<char> &mesh_path, const std::basic_string<char> &texture_path, const std::string &vert, const std::string &frag) {
@@ -129,6 +130,80 @@ void fish::swim(Scene &scene, float dt){
             if (v == 0) funny +=1;
             if (funny == 1002) funny = 0; //Should do for a while before returning below 10
     }
+}
+
+void fish::collide(Scene &scene, float dt){ //reaction to collision, merely.
+
+    if (varination == 0){
+        if (step <= STEP_LIMIT) {
+            //Goes in the opposite direction from collision, without turning
+            position.x -= 2*dt;
+            step++;
+        }
+        else if ((step > STEP_LIMIT)&&(step <= 2*STEP_LIMIT)){
+            //Shakes collision off
+            position.x -= dt; //should cancel out at 0
+            step++;
+        }
+        else {  //Rotates -90 or 90 degrees - alters swim to the appropriate procedure
+            varination = glm::linearRand(2, 3); //pick varination 2 or 3
+            step = 0; //reset
+            return; //finish function
+        }
+
+    }
+    else if (varination == 1){
+        if (step <= STEP_LIMIT) {
+            //Goes in the opposite direction from collision, without turning
+            position.x += 2*dt;
+            step++;
+        }
+        else if ((step > STEP_LIMIT)&&(step <= 2*STEP_LIMIT)){
+            //Shakes collision off
+            position.x += dt; //should cancel out at 0
+            step++;
+        }
+        else {  //Rotates -90 or 90 degrees - alters swim to the appropriate procedure
+            varination = glm::linearRand(2, 3); //pick varination 2 or 3
+            step = 0; //reset
+            return; //finish function
+        }
+    }
+    else if (varination == 2){
+        if (step <= STEP_LIMIT) {
+            //Goes in the opposite direction from collision, without turning
+            position.z -= 2*dt;
+            step++;
+        }
+        else if ((step > STEP_LIMIT)&&(step <= 2*STEP_LIMIT)){
+            //Shakes collision off
+            position.z -= dt; //should cancel out at 0
+            step++;
+        }
+        else {  //Rotates -90 or 90 degrees - alters swim to the appropriate procedure
+            varination = glm::linearRand(0, 1); //pick varination 2 or 3
+            step = 0; //reset
+            return; //finish function
+        }
+    }
+    else { //varination == 3
+        if (step <= STEP_LIMIT) {
+            //Goes in the opposite direction from collision, without turning
+            position.z += 2*dt;
+            step++;
+        }
+        else if ((step > STEP_LIMIT)&&(step <= 2*STEP_LIMIT)){
+            //Shakes collision off
+            position.z += dt; //should cancel out at 0
+            step++;
+        }
+        else {  //Rotates -90 or 90 degrees - alters swim to the appropriate procedure
+            varination = glm::linearRand(0, 1); //pick varination 2 or 3
+            step = 0; //reset
+            return; //finish function
+        }
+    }
+
 }
 
 void fish::render(Scene &scene) {

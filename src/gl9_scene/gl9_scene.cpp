@@ -740,6 +740,7 @@ public:
     fish_h31->render(scene);
 
   //  fish_h32->swim(scene,dt);
+    fish_h32->collide(scene,dt);
     fish_h32->update(scene,dt);
     fish_h32->render(scene);
 
