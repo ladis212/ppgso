@@ -97,6 +97,22 @@ private:
   //std::unique_ptr<GenericObject> cor3;
   //std::unique_ptr<GenericObject> grass1;
   //std::unique_ptr<GenericObject> grass2;
+
+  ////Rock Pillar 1
+  std::unique_ptr<GenericObject>rock1p1;
+  std::unique_ptr<GenericObject>rock2p1;
+  std::unique_ptr<GenericObject>rock3p1;
+
+  ////Rock Pillar 2
+  std::unique_ptr<GenericObject>rock1p2;
+  std::unique_ptr<GenericObject>rock2p2;
+  std::unique_ptr<GenericObject>rock3p2;
+
+  ////Rock Pillar 3
+  std::unique_ptr<GenericObject>rock1p3;
+  std::unique_ptr<GenericObject>rock2p3;
+  std::unique_ptr<GenericObject>rock3p3;
+
   ////Orange fish
   std::unique_ptr<fish>fish_h1;
   std::unique_ptr<fish>fish_h11;
@@ -121,7 +137,12 @@ private:
   ////Low Poly
   //std::unique_ptr<fish>fish_l1;
   //std::unique_ptr<fish>fish_l2;
+
+  ///Sponges
   std::unique_ptr<Sponge>sponge;
+  std::unique_ptr<Sponge>sponge1;
+  std::unique_ptr<Sponge>sponge2;
+
   std::unique_ptr<Stingray>stingray;
 
 
@@ -441,29 +462,62 @@ private:
       ////// low poly fish
       //fish_l1 = std::make_unique<fish>("fishes\\finalfish.obj", "fishes\\finalfish.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
       //fish_l2 = std::make_unique<fish>("fishes\\finalfish.obj", "fishes\\specialfinalfish.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
-      //// Sponge
-      sponge = std::make_unique<Sponge>();
-      sponge->scale = {.1, .1, .1};
-      sponge->position = {0, -19.0f, .2};
+
 
       ////Stingray
       stingray = std::make_unique<Stingray>();
       stingray->position = {5, -16.0f, .2};
       stingray->scale = {5, 5, 5};
 
+      ///* QUADRANT 1 + + *///
       ////Cave
       cave = std::make_unique<Cave>();
-      cave->position = {10.0f, -17.0f, 10.0f};
+      cave->position = {20.0f, -17.0f, 20.0f};
       cave->scale = {7, 7, 7};
       cave->rotation.z = M_PI_2;
+      //// Sponge
+      sponge = std::make_unique<Sponge>();
+      sponge->scale = {.07, .07, .07};
+      sponge->position = {19.0f, -8.0f, 23.5f};
+      ///Sponge 2
+      sponge1 = std::make_unique<Sponge>();
+      sponge1->scale = {.1, .1, .1};
+      sponge1->position = {19.0f, -8.0f, 20.5f};
+      ///* QUADRANT 2 - + *///
+      ///Rock Arch
 
+      ///Sea Grass
+
+      ///* QUADRANT 3 - - *///
+      ///Coral Reef
+
+      ///Sponge 3
+      sponge2 = std::make_unique<Sponge>();
+      sponge2->scale = {.1, .1, .1};
+      sponge2->position = {-22.5f, -20.0f, -12.0f};
+
+      ///* QUADRANT 4 + - *///
+      ///Triple Rock Columns
+      rock1p1 = std::make_unique<GenericObject>("rocks\\RockPackByPava.obj", "rocks\\darkrock.bmp", underwater_vert_glsl, underwater_frag_glsl);
+      rock1p1->position = {19.5f, -19.5f, -8.0f};
+      rock1p1->scale = {5, 5, 5};
+      rock1p1->rotation.x = M_PI_2;
+      rock1p2 = std::make_unique<GenericObject>("rocks\\RockPackByPava.obj", "rocks\\darkrock.bmp", underwater_vert_glsl, underwater_frag_glsl);
+      rock1p2->position = {22.0f, -19.5f, -18.0f};
+      rock1p2->scale = {7, 7, 7};
+      rock1p2->rotation.x = -M_PI_2;
+      rock1p3 = std::make_unique<GenericObject>("rocks\\RockPackByPava.obj", "rocks\\darkrock.bmp", underwater_vert_glsl, underwater_frag_glsl);
+      rock1p3->position = {30.0f, -19.5f, -10.0f};
+      rock1p3->scale = {6, 6, 6};
+      rock1p3->rotation.x = M_PI_2;
+      rock1p3->rotation.y = -M_PI_2;
       ////Beautiful Eyes
       leye = std::make_unique<Eye>("eye\\lefteye.bmp", bubble_vert_glsl, bubble_frag_glsl);
       //leye = std::make_unique<Eye>("eye\\lefteye.bmp", bubble_vert_glsl, point_light_glsl);
-      leye->position = {9, -17.0f, 7};
+      leye->position = {19, -17.0f, 17};
       leye->scale = {.5, .5, .5};
       reye = std::make_unique<Eye>("eye\\righteye.bmp", bubble_vert_glsl, point_light_glsl);
-      reye->position = {7, -17.0f, 7};
+      reye->position = {17, -17.0f, 17};
       reye->scale = {.5, .5, .5};
   }
 
@@ -759,12 +813,24 @@ public:
     //bubble->render(scene);
     stingray->update(scene,dt);
     stingray->render(scene);
+    //// Sponges
     sponge->update(scene,dt);
     sponge->render(scene);
-
+    sponge1->update(scene,dt);
+    sponge1->render(scene);
+    sponge2->update(scene,dt);
+    sponge2->render(scene);
 
     cave->update(scene,dt);
     cave->render(scene);
+
+    ///Rocks
+    rock1p1->update(scene,dt);
+    rock1p1->render(scene);
+    rock1p2->update(scene,dt);
+    rock1p2->render(scene);
+    rock1p3->update(scene,dt);
+    rock1p3->render(scene);
 
     leye->update(scene, dt);
     leye->render(scene);
