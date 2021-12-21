@@ -494,10 +494,10 @@ public:
         surfaceState = !surfaceState;
     }
 
-    float speed = 0.1f;
+    float speed = 0.5f;
     glm::vec3 direction = glm::normalize(scene.camera->target - scene.camera->position);
     //printf("%d %d %d \n", direction.x, direction.y, direction.z);
-    scene.camera->position += (directions /** direction*/) * speed;
+    scene.camera->position += (directions ) * speed;
 
     time = (float) glfwGetTime();
 
@@ -511,9 +511,8 @@ public:
         keyframeIndex++;
         timestamp = time;
     }
-    std::cout << keyframeIndex;
-    std::cout << (keyframeIndex + 1) << std::endl;
-
+    //std::cout << keyframeIndex;
+    //std::cout << (keyframeIndex + 1) << std::endl;
 
     //dolphin->position.y = time;
 
@@ -628,8 +627,7 @@ public:
     sponge->update(scene,dt);
     sponge->render(scene);
 
-    sea->update(scene, time);
-    sea->render(scene);
+
 
     leye->update(scene, dt);
     leye->render(scene);
@@ -637,6 +635,9 @@ public:
     reye->render(scene);
     scene.update(dt);
     scene.render();
+
+    sea->update(scene, time);
+    sea->render(scene);
   }
 };
 
