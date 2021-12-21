@@ -98,6 +98,15 @@ private:
   //std::unique_ptr<GenericObject> grass1;
   //std::unique_ptr<GenericObject> grass2;
 
+  ////Rock Arch
+  std::unique_ptr<GenericObject>rockAL0;
+  std::unique_ptr<GenericObject>rockAR0;
+  std::unique_ptr<GenericObject>rockAL1;
+  std::unique_ptr<GenericObject>rockAR1;
+  std::unique_ptr<GenericObject>rockAL2;
+  std::unique_ptr<GenericObject>rockAR2;
+  std::unique_ptr<GenericObject>rockAR3;
+
   ////Rock Pillar 1
   std::unique_ptr<GenericObject>rock1p1;
   std::unique_ptr<GenericObject>rock2p1;
@@ -485,7 +494,32 @@ private:
       sponge1->position = {19.0f, -8.0f, 20.5f};
       ///* QUADRANT 2 - + *///
       ///Rock Arch
-
+      //endpoints
+      rockAL0 = std::make_unique<GenericObject>("rocks\\RockPackByPava.obj", "rocks\\sandstone.bmp", underwater_vert_glsl, underwater_frag_glsl);
+      rockAL0->position = {-25.0f, -19.5f, 15.0f};
+      rockAL0->scale = {4.5, 3, 4.5};
+      rockAL1 = std::make_unique<GenericObject>("rocks\\RockPackByPava.obj", "rocks\\brownrock.bmp", underwater_vert_glsl, underwater_frag_glsl);
+      rockAL1->position = {-23.33f, -17.5f, 16.67f};
+      rockAL1->scale = {5, 3, 5};
+      rockAL2 = std::make_unique<GenericObject>("rocks\\RockPackByPava.obj", "rocks\\sandstone.bmp", underwater_vert_glsl, underwater_frag_glsl);
+      rockAL2->position = {-21.67f, -15.5f, 18.33f};
+      rockAL2->scale = {5.5f, 3, 5.5f};
+ //     rockAL1->rotation.y =  M_PI_4;
+      rockAR3 = std::make_unique<GenericObject>("rocks\\RockPackByPava.obj", "rocks\\RockTexture.bmp", underwater_vert_glsl, underwater_frag_glsl);
+      rockAR3->position = {-20.0f, -13.5f, 20.0f};
+      rockAR3->scale = {6, 2, 6};
+ //     rockAL2->rotation.y =  M_PI_2;
+      rockAR2 = std::make_unique<GenericObject>("rocks\\RockPackByPava.obj", "rocks\\grayrock.bmp", underwater_vert_glsl, underwater_frag_glsl);
+      rockAR2->position = {-18.33f, -15.5f, 21.67f};
+      rockAR2->scale = {5.5f, 3, 5.5f};
+      rockAR1 = std::make_unique<GenericObject>("rocks\\RockPackByPava.obj", "rocks\\rock2_1.bmp", underwater_vert_glsl, underwater_frag_glsl);
+      rockAR1->position = {-16.67f, -17.5f, 23.33f};
+      rockAR1->scale = {5, 3, 5};
+  //    rockAR1->rotation.y =  -M_PI_4;
+      rockAR0 = std::make_unique<GenericObject>("rocks\\RockPackByPava.obj", "rocks\\Rock-Texture-Surface.bmp", underwater_vert_glsl, underwater_frag_glsl);
+      rockAR0->rotation.x = -M_PI;
+      rockAR0->position = {-15.0f, -19.5f, 25.0f};
+      rockAR0->scale = {4.5f, 3, 4.5f};
       ///Sea Grass
 
       ///* QUADRANT 3 - - *///
@@ -498,19 +532,56 @@ private:
 
       ///* QUADRANT 4 + - *///
       ///Triple Rock Columns
-      rock1p1 = std::make_unique<GenericObject>("rocks\\RockPackByPava.obj", "rocks\\darkrock.bmp", underwater_vert_glsl, underwater_frag_glsl);
-      rock1p1->position = {19.5f, -19.5f, -8.0f};
+      //pillar 1
+      rock1p1 = std::make_unique<GenericObject>("rocks\\RockPackByPava.obj", "rocks\\rock2_2.bmp", underwater_vert_glsl, underwater_frag_glsl);
+      rock1p1->position = {15.5f, -19.5f, -8.0f};
       rock1p1->scale = {5, 5, 5};
       rock1p1->rotation.x = M_PI_2;
+      rock2p1 = std::make_unique<GenericObject>("rocks\\RockPackByPava.obj", "rocks\\brownrock.bmp", underwater_vert_glsl, underwater_frag_glsl);
+      rock2p1->position = {15.5f, -15.0f, -8.0f};
+      rock2p1->scale = {4.5, 4.5, 4.5};
+      rock2p1->rotation.x = M_PI_2;
+      rock2p1->rotation.z = M_PI;
+      rock3p1 = std::make_unique<GenericObject>("rocks\\RockPackByPava.obj", "rocks\\Rock-Texture-Surface.bmp", underwater_vert_glsl, underwater_frag_glsl);
+      rock3p1->position = {15.5f, -11.5f, -8.0f};
+      rock3p1->scale = {3.5, 3.5, 3.5};
+      rock3p1->rotation.x = M_PI_2;
+      rock3p1->rotation.z = -M_PI_2;
+
+      //pillar2
       rock1p2 = std::make_unique<GenericObject>("rocks\\RockPackByPava.obj", "rocks\\darkrock.bmp", underwater_vert_glsl, underwater_frag_glsl);
-      rock1p2->position = {22.0f, -19.5f, -18.0f};
+      rock1p2->position = {22.0f, -19.5f, -28.0f};
       rock1p2->scale = {7, 7, 7};
       rock1p2->rotation.x = -M_PI_2;
-      rock1p3 = std::make_unique<GenericObject>("rocks\\RockPackByPava.obj", "rocks\\darkrock.bmp", underwater_vert_glsl, underwater_frag_glsl);
-      rock1p3->position = {30.0f, -19.5f, -10.0f};
+      rock2p2 = std::make_unique<GenericObject>("rocks\\RockPackByPava.obj", "rocks\\RockTexture.bmp", underwater_vert_glsl, underwater_frag_glsl);
+      rock2p2->position = {22.0f, -14.0f, -28.0f};
+      rock2p2->scale = {5.5, 5.5, 5.5};
+      rock2p2->rotation.x = M_PI_2;
+      rock2p2->rotation.y = M_PI;
+      rock3p2 = std::make_unique<GenericObject>("rocks\\RockPackByPava.obj", "rocks\\darkrock.bmp", underwater_vert_glsl, underwater_frag_glsl);
+      rock3p2->position = {22.0f, -11.0f, -28.0f};
+      rock3p2->scale = {3.5, 3.5, 3.5};
+      rock3p2->rotation.z = M_PI_2;
+      rock3p2->rotation.x = M_PI;
+
+      //pillar3
+      rock1p3 = std::make_unique<GenericObject>("rocks\\RockPackByPava.obj", "rocks\\undersearock.bmp", underwater_vert_glsl, underwater_frag_glsl);
+      rock1p3->position = {35.0f, -19.5f, -16.0f};
       rock1p3->scale = {6, 6, 6};
       rock1p3->rotation.x = M_PI_2;
       rock1p3->rotation.y = -M_PI_2;
+      rock2p3 = std::make_unique<GenericObject>("rocks\\RockPackByPava.obj", "rocks\\grayrock.bmp", underwater_vert_glsl, underwater_frag_glsl);
+      rock2p3->position = {35.0f, -16.5f, -16.0f};
+      rock2p3->scale = {4, 4, 4};
+      rock2p3->rotation.x = -M_PI_2;
+      rock2p3->rotation.y = M_PI_2;
+      rock3p3 = std::make_unique<GenericObject>("rocks\\RockPackByPava.obj", "rocks\\RockTexture.bmp", underwater_vert_glsl, underwater_frag_glsl);
+      rock3p3->position = {35.0f, -14.5f, -16.0f};
+      rock3p3->scale = {3, 3, 3};
+      rock3p3->rotation.x = -M_PI;
+      rock3p3->rotation.z = M_PI_2;
+
+
       ////Beautiful Eyes
       leye = std::make_unique<Eye>("eye\\lefteye.bmp", bubble_vert_glsl, bubble_frag_glsl);
       //leye = std::make_unique<Eye>("eye\\lefteye.bmp", bubble_vert_glsl, point_light_glsl);
@@ -825,12 +896,45 @@ public:
     cave->render(scene);
 
     ///Rocks
+    //Archway
+    rockAL0->update(scene, dt);
+    rockAL0->render(scene);
+    rockAR0->update(scene, dt);
+    rockAR0->render(scene);
+    rockAL1->update(scene, dt);
+    rockAL1->render(scene);
+    rockAR1->update(scene, dt);
+    rockAR1->render(scene);
+    rockAL2->update(scene, dt);
+    rockAL2->render(scene);
+    rockAR2->update(scene,dt);
+    rockAR2->render(scene);
+    rockAR3->update(scene,dt);
+    rockAR3->render(scene);
+
+    //pillar 1
     rock1p1->update(scene,dt);
     rock1p1->render(scene);
+    rock2p1->update(scene, dt);
+    rock2p1->render(scene);
+    rock3p1->update(scene, dt);
+    rock3p1->render(scene);
+
+    //pillar 2
     rock1p2->update(scene,dt);
     rock1p2->render(scene);
+    rock2p2->update(scene,dt);
+    rock2p2->render(scene);
+    rock3p2->update(scene,dt);
+    rock3p2->render(scene);
+
+    //pillar 3
     rock1p3->update(scene,dt);
     rock1p3->render(scene);
+    rock2p3->update(scene,dt);
+    rock2p3->render(scene);
+    rock3p3->update(scene,dt);
+    rock3p3->render(scene);
 
     leye->update(scene, dt);
     leye->render(scene);
