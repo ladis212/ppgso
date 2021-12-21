@@ -762,8 +762,6 @@ public:
     sponge->render(scene);
 
 
-    sea->update(scene, time);
-    sea->render(scene);
     cave->update(scene,dt);
     cave->render(scene);
 

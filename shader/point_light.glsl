@@ -27,7 +27,7 @@ in vec3 FragPos;
 uniform sampler2D Texture;
 in vec2 texCoord;
 
-in vec3 normal;
+in vec4 normal;
 in float hasNormals;
 
 uniform float Transparency;
@@ -40,7 +40,7 @@ void main()
     //ambi
     vec3 ambience = vec3(lit.point_Ambient) * vec3(texture(material.mat_Diffuse, texCoord));
     //diff
-    vec3 base = normalize(normal);
+    vec3 base = normalize(vec3(normal));
     vec3 lDir = normalize(lit.point_Position - FragPos);
     float div = max(dot(base, lDir), 0.0f);
     vec3 diff = vec3(lit.point_Diffuse) * div * vec3(texture(material.mat_Diffuse, texCoord));
