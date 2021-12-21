@@ -170,7 +170,7 @@ private:
       scene.objects.clear();
       scene.lightDirection = {-1, 1, 0};
       // Create a camera
-      auto camera = std::make_unique<Camera>(60.0f, 1.0f, 0.1f, 300.0f);
+      auto camera = std::make_unique<Camera>(60.0f, 1.0f, 0.1f, 400.0f);
       camera->position.z = -15.0f;
       scene.camera = move(camera);
       // Add space background
@@ -181,7 +181,7 @@ private:
       //scene.objects.push_back(move(skybox));
       island = std::make_unique<Island>();
       island->scale = {.10, .10, .10};
-      island->position = {0, 0, 0};
+      island->position = {20, 0, 15};
 
       sea = std::make_unique<BezierPatch>();
       floor = std::make_unique<Floor>();

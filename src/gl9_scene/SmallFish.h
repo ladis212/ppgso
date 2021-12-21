@@ -54,7 +54,6 @@ public:
     /*!
      * Custom click event for asteroid
      */
-    void onClick(Scene &scene) override;
 
 private:
 };
