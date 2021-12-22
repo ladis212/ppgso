@@ -34,19 +34,19 @@ Plank::Plank() {
 bool Plank::update(Scene &scene, float dt) {
     // Animate position according to time
     if (phaser == 0) wind = {glm::linearRand(-WIND_MAX, WIND_MAX), 0, glm::linearRand(-WIND_MAX, WIND_MAX)};
-    position += wind * dt + momentum; //Momentum 0 on first plank, adds up if collided.
+    position += (wind + momentum)* dt ; //Momentum 0 on first plank, adds up if collided.
 
     //increment phaser
     phaser++;
     if (momentum.x * wind.x < 0) { //The momentum is against the wind
-        momentum.x -= fmin(abs(wind.x - 1), momentum.x);
+        momentum.x -= fmin(abs(wind.x + 0.5f), momentum.x);
     }
     else { //Momentum is in the direction of the wind.
         momentum.x -= fmin(1, momentum.x);
     }
     //same for momentum z
     if (momentum.z * wind.z < 0) { //The momentum is against the wind
-        momentum.z -= fmin(abs(wind.z - 1), momentum.z);
+        momentum.z -= fmin(abs(wind.z + 0.5f), momentum.z);
     }
     else { //Momentum is in the direction of the wind.
         momentum.z -= fmin(1, momentum.z);
