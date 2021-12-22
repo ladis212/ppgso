@@ -608,6 +608,15 @@ private:
       grass2 = std::make_unique<GenericObject>("coral\\Grass.obj", "coral\\SeaGrass.bmp", underwater_vert_glsl, underwater_frag_glsl);
       grass2->scale = {37, 37, 37};
       grass2->position = {-13.0f, -19.5f, 23.0f};
+
+      ///Turtle
+      auto turtle = std::make_unique<GenericObject>("turtle\\turtle.obj", "turtle\\turtle.bmp", underwater_vert_glsl, underwater_frag_glsl);
+      turtle->position = {-20.0f,-19.25f,20.0f};
+      turtle->scale = {.07, .07, .07};
+      turtle->rotation.x = -M_PI_2;
+      turtle->rotation.z = M_PI_4;
+      scene.objects.push_back(move(turtle));
+
       ///* QUADRANT 3 - - *///
       ///Coral Reef
       cor1 = std::make_unique<GenericObject>("coral\\braincoral.obj", "coral\\braincoral.bmp", underwater_vert_glsl, underwater_frag_glsl);
