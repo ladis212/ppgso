@@ -280,7 +280,7 @@ private:
           { //ACT 5 - Quadrant 1
                   .position ={50.0f, -10.0f, 30.0f},
                   .target = {20.0f, -17.0f, 20.0f},
-                  .timeToTake = 3.33f,
+                  .timeToTake = 5.0f,
           },
           {
                   .position ={30.0f, -10.0f, 50.0f},
@@ -295,7 +295,7 @@ private:
           {
                   .position ={20.0f, -10.0f, 0.0f},
                   .target = {20.0f, -17.0f, 20.0f},
-                  .timeToTake = 4.0f,
+                  .timeToTake = 5.0f,
           }, //ACT end - 15s -75s
           { //ACT 6 intermission
                   .position ={0.0f, -12.0f, 0.0f},
