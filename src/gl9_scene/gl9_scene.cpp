@@ -62,7 +62,7 @@ const unsigned int WIDTH = 720;
 #define GRASS_MAX 30
 #define ROCK_MAX 40
 #define CORAL_MAX 30
-#define FISH_MAX 20
+#define FISH_MAX 10
 #define SCHOOL_MAX 10
 
 //Boundaries?
@@ -463,7 +463,7 @@ private:
       float s = 0.0f; //Container to equalize size ratio across scale
       ///* ORANGE FISH *///
       for(int i = 0; i < FISH_MAX; i++){
-          auto new_fish = std::make_unique<fish>("fishes\\fish.obj", "fishes\\fish.bmp", underwater_vert_glsl, underwater_frag_glsl);
+          auto new_fish = std::make_unique<fish>("fishes\\fish.obj", "fishes\\fish.bmp", underwater_vert_glsl, underwater_frag_glsl,i);
           new_fish->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
           s = glm::linearRand(.03f, .1f);
           new_fish->scale = glm::vec3(s);
@@ -474,7 +474,7 @@ private:
       ///* BLUE TANG *///
 
       for(int i = 0; i < FISH_MAX; i++){
-          auto new_fish = std::make_unique<fish>("fishes\\bluetang.obj", "fishes\\bluetang.bmp", underwater_vert_glsl, underwater_frag_glsl);
+          auto new_fish = std::make_unique<fish>("fishes\\bluetang.obj", "fishes\\bluetang.bmp", underwater_vert_glsl, underwater_frag_glsl,i + FISH_MAX);
           new_fish->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
           s = glm::linearRand(.05f, .2f);
           new_fish->scale = glm::vec3(s);
@@ -486,7 +486,7 @@ private:
       ///*CHROMIS*///
 
       for(int i = 0; i < FISH_MAX; i++){
-          auto new_fish = std::make_unique<fish>("fishes\\chromis.obj", "fishes\\chromis.bmp", underwater_vert_glsl, underwater_frag_glsl);
+          auto new_fish = std::make_unique<fish>("fishes\\chromis.obj", "fishes\\chromis.bmp", underwater_vert_glsl, underwater_frag_glsl,i+ 2* FISH_MAX);
           new_fish->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
           s = glm::linearRand(.05f, .2f);
           new_fish->scale = glm::vec3(s);
