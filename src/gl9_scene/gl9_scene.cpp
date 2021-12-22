@@ -466,8 +466,8 @@ private:
       /////// high poly fish
       float s = 0.0f; //Container to equalize size ratio across scale
       ///* ORANGE FISH *///
-      for(int i = 0; i < 5; i++){
-          auto new_fish = std::make_unique<fish>("fishes\\fish.obj", "fishes\\fish.bmp", underwater_vert_glsl, underwater_frag_glsl);
+      for(int i = 0; i < 10; i++){
+          auto new_fish = std::make_unique<fish>("fishes\\fish.obj", "fishes\\fish.bmp", underwater_vert_glsl, underwater_frag_glsl, i);
           new_fish->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
           s = glm::linearRand(.03f, .1f);
           new_fish->scale = glm::vec3(s);
@@ -476,8 +476,8 @@ private:
       }
 
       ///* BLUE TANG *///
-      for(int i = 0; i < 5; i++){
-          auto new_fish = std::make_unique<fish>("fishes\\bluetang.obj", "fishes\\bluetang.bmp", underwater_vert_glsl, underwater_frag_glsl);
+      for(int i = 0; i < 10; i++){
+          auto new_fish = std::make_unique<fish>("fishes\\bluetang.obj", "fishes\\bluetang.bmp", underwater_vert_glsl, underwater_frag_glsl, i + 10);
           new_fish->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
           s = glm::linearRand(.05f, .2f);
           new_fish->scale = glm::vec3(s);
@@ -487,8 +487,8 @@ private:
       }
 
       ///*CHROMIS*///
-      for(int i = 0; i < 5; i++){
-          auto new_fish = std::make_unique<fish>("fishes\\chromis.obj", "fishes\\chromis.bmp", underwater_vert_glsl, underwater_frag_glsl);
+      for(int i = 0; i < 10; i++){
+          auto new_fish = std::make_unique<fish>("fishes\\chromis.obj", "fishes\\chromis.bmp", underwater_vert_glsl, underwater_frag_glsl, i + 20);
           new_fish->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
           s = glm::linearRand(.05f, .2f);
           new_fish->scale = glm::vec3(s);
@@ -848,6 +848,8 @@ public:
     glEnable(GL_LIGHT0);
     glShadeModel(GL_SMOOTH);
 
+
+
     initScene();
 
 
@@ -1043,8 +1045,6 @@ public:
 
     //bubble->update(scene, dt);
     //bubble->render(scene);
-    stingray->update(scene,dt);
-    stingray->render(scene);
     //// Sponges
     sponge->update(scene,dt);
     sponge->render(scene);
@@ -1109,6 +1109,9 @@ public:
     reye->render(scene);
     scene.update(dt);
     scene.render();
+
+    stingray->update(scene,dt);
+    stingray->render(scene);
 
     sea->update(scene, time);
     sea->render(scene);

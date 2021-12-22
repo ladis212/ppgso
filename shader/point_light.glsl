@@ -9,15 +9,15 @@ struct Material{
 
 //point light
 struct PointLight{
-    vec3 point_Position; //position
+    vec3 position; //position
 
-    vec3 point_Ambient; //ambient
+    vec3 ambient; //ambient
     vec3 point_Diffuse; //diffuse
     vec3 point_Specular; //specular
 
-    float point_constA; //constant
-    float point_linA; //linear
-    float point_expA; //quadratic / specular
+    float constant; //constant
+    float linear; //linear
+    float specular; //quadratic / specular
 };
 
 out vec4 FragmentColor; //Color
@@ -33,25 +33,25 @@ in float hasNormals;
 uniform float Transparency;
 uniform vec3 viewPos;
 uniform Material material;
-uniform PointLight lit;
+uniform PointLight light;
 
 void main()
 {
     //ambi
-    vec3 ambience = vec3(lit.point_Ambient) * vec3(texture(material.mat_Diffuse, texCoord));
+    vec3 ambience = vec3(light.ambient) * vec3(texture(material.mat_Diffuse, texCoord));
     //diff
     vec3 base = normalize(vec3(normal));
-    vec3 lDir = normalize(lit.point_Position - FragPos);
+    vec3 lDir = normalize(light.position - FragPos);
     float div = max(dot(base, lDir), 0.0f);
-    vec3 diff = vec3(lit.point_Diffuse) * div * vec3(texture(material.mat_Diffuse, texCoord));
+    vec3 diff = vec3(light.point_Diffuse) * div * vec3(texture(material.mat_Diffuse, texCoord));
     //quad
     vec3 vDir = normalize(viewPos - FragPos);
     vec3 rDir = reflect(-lDir, base);
     float quad = pow(max(dot(vDir, rDir), 0.0f), material.mat_Shine);
-    vec3 spec = vec3(lit.point_Specular) * quad * vec3(texture(material.mat_Specular, texCoord));
+    vec3 spec = vec3(light.point_Specular) * quad * vec3(texture(material.mat_Specular, texCoord));
     //attenuation - factor in distance, etc.
-    float distance = length(lit.point_Position - FragPos);
-    float atten = 1.0f / (lit.point_constA + lit.point_linA * distance + lit.point_expA * (distance*distance));
+    float distance = length(light.position - FragPos);
+    float atten = 1.0f / (light.constant + light.linear * distance + light.specular * (distance*distance));
     //goes onto Ambient, Diffuse and Specular
     ambience *= atten;
     spec *= atten;
@@ -59,8 +59,8 @@ void main()
     //result
     vec3 res = ambience + diff + spec;
     FragmentColor = vec4(res, 1.0f);
-    FragmentColor.r = 1.0f;
-    FragmentColor.g = 1.0f;
-    FragmentColor.b = 0.0f;
+    //FragmentColor.r = 1.0f;
+    //FragmentColor.g = 1.0f;
+    //FragmentColor.b = 0.0f;
     FragmentColor.a = Transparency;
 }

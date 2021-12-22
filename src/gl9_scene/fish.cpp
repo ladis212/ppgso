@@ -16,7 +16,9 @@ int funny = 0;
 int step = 0;
 //int varination = glm::linearRand(0, 3);
 
-fish::fish(const std::basic_string<char> &mesh_path, const std::basic_string<char> &texture_path, const std::string &vert, const std::string &frag) {
+glm::vec3 fish::shadowPositions[30];
+
+fish::fish(const std::basic_string<char> &mesh_path, const std::basic_string<char> &texture_path, const std::string &vert, const std::string &frag, int shadowIndex) {
 
     mesh = std::make_unique<ppgso::Mesh>(mesh_path);
     if (!texture) texture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP(texture_path));
@@ -26,6 +28,9 @@ fish::fish(const std::basic_string<char> &mesh_path, const std::basic_string<cha
     //speed = {glm::linearRand(-2.0f, 2.0f), glm::linearRand(-5.0f, -10.0f), 0.0f};
     rotation = {0, 0, 0};
     rotMomentum = {0, 0, 0};
+    index = shadowIndex;
+
+    //for(int i = 0; i < 30; i++) fish::shadowPositions[i] = glm::vec3(0, 0, 0);
 
 }
 
@@ -40,6 +45,7 @@ bool fish::update(Scene &scene, float dt) {
 
     swim(scene, dt);
     generateModelMatrix();
+    fish::shadowPositions[index] = modelMatrix * glm::vec4(position, 1.0f);
 
     return true;
 }

@@ -3,6 +3,7 @@
 //
 
 #include "Floor.h"
+#include "fish.h"
 
 #include <iostream>
 #include <map>
@@ -28,7 +29,7 @@ std::unique_ptr<ppgso::Texture> Floor::texture;
 GLuint floor_vao, floor_vbo, floor_tbo, floor_ibo;
 
 float Floor::getDisplacement(float x, float z){
-    return sin(x/5)/2 + cos(z/5)/2; // vyska v Y osi
+    return std::sin(x/5)/2 + std::cos(z/5)/2; // vyska v Y osi
 }
 
 Floor::Floor() {
@@ -143,6 +144,11 @@ bool Floor::render(Scene &scene) {
     shader->setUniform("Transparency", 1);
 
     shader->setUniform("Time", glfwGetTime());
+
+    glUniform1i(glGetUniformLocation(shader->getProgram(), "castShadows"), 1);
+    for(int i = 0; i < 30; i++){
+        glUniform3fv(glGetUniformLocation(shader->getProgram(), ("Shadows[" + std::to_string(i) + ']').c_str()), 1, glm::value_ptr(fish::shadowPositions[i]));
+    }
 
 
     glBindVertexArray(floor_vao);
