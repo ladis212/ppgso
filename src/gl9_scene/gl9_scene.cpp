@@ -210,102 +210,202 @@ private:
              .position ={0.0f, 10.0f, 20.0f},
              .target = {0, 0, 0},
              .timeToTake = 2.0f,
-          }, //ACT 1 End... 10s
+          }, //ACT 1 End... 10s - 10s
           { //ACT 2 - Advance towards the island. The island is at: 20 0 15, use 4 keyframes, roughly 8 sec (to make it still smooth)
                   .position ={0.0f, 10.0f, 20.0f},
                   .target = {5.0f, 0, 3.75f},
                   .timeToTake = 2.0f,
           },
           {
-                  .position ={0.0f, 11.0f, 17.5f},
-                  .target = {10.0f, 0, 7.5f},
+                  .position ={0.0f, 11.0f, 20.0f},
+                  .target = {10.0f, 1, 7.5f},
                   .timeToTake = 2.0f,
           },
           {
-                  .position ={0.0f, 12.0f, 15.0f},
-                  .target = {0, 0, 0},
-                  .timeToTake = 1.6f,
+                  .position ={0.0f, 12.0f, 20.0f},
+                  .target = {15.0f, 2, 11.25f},
+                  .timeToTake = 2.0f,
           },
           {
-                  .position ={0.0f, 2.0f, 13.0f},
+                  .position ={0.0f, 13.0f, 20.0f},
+                  .target = {20.0f, 3, 15.0f},
+                  .timeToTake = 4.0f,
+          }, //ACT 2 - End - 10s - 20s
+          { //ACT 3 - kruzit okolo ostrova - pomaly, 4s per frame - trochu vyvyseny pre efekt.
+                  .position ={20.0f, 13.0f, 0.0f},
+                  .target = {20, 3, 15},
+                  .timeToTake = 3.0f,
+          },
+          {
+                  .position ={0.0f, 13.0f, -20.0f},
+                  .target = {20, 3, 15},
+                  .timeToTake = 3.0f,
+          },
+          {
+                  .position ={-20.0f, 13.0f, 0.0f},
+                  .target = {20, 3, 15},
+                  .timeToTake = 3.0f,
+          },
+          {
+                  .position ={0.0f, 13.0f, -20.0f},
+                  .target = {20, 3, 15},
+                  .timeToTake = 3.0f,
+          },
+          {
+                  .position ={20.0f, 13.0f, 0.0f},
+                  .target = {20, 3, 15},
+                  .timeToTake = 3.0f,
+          }, //ACT 3 - END - 15s - 35s
+          { //ACT 4 - ponor pod morsku hladinu - pomaly, 30s
+                  .position ={20.0f, 13.0f, 0.0f}, //navrat na 0, 0 - raja
                   .target = {0, 0, 0},
-                  .timeToTake = 1.8f,
+                  .timeToTake = 5.0f,
+          },
+          {
+                  .position ={15.0f, 10.0f, 0.0f},
+                  .target = {0, -2.5f, 0},
+                  .timeToTake = 1.0f,
+          },
+          {
+                  .position ={15.0f, 5.0f, 0.0f},
+                  .target = {0, -5, 0},
+                  .timeToTake = 1.0f,
           },
           {
                   .position ={15.0f, 0.0f, 0.0f},
-                  .target = {0, 0, 0},
+                  .target = {0, -7.5f, 0},
+                  .timeToTake = 1.0f,
+          },
+          {
+                  .position ={15.0f, -5.0f, 0.0f},
+                  .target = {0, -10, 0},
+                  .timeToTake = 2.0f, //10s
+          },
+          { //Goes to the central area of a quadrant
+                  .position ={15.0f, -10.0f, 0.0f},
+                  .target = {10, -13.5, 10},
                   .timeToTake = 2.0f,
-          }, //ACT 2 END
-          { //ACT 3 - Journey underwater
-                  .position ={15.0f, -2.0f, 0.0f},
-                  .target = {0, -10.0f, 0},
-                  .timeToTake = 2.0f,
-          },
-          {
-                  .position ={15.0f, -4.0f, 0.0f},
-                  .target = {0, -12.0f, 0},
-                  .timeToTake = 2.2f,
-          },
-          {
-                  .position ={15.0f, -6.0f, 0.0f},
-                  .target = {0, -14.0f, 0},
-                  .timeToTake = 2.4f,
-          },
-          {
-                  .position ={15.0f, -8.0f, 0.0f},
-                  .target = {0, -16.0f, 0},
-                  .timeToTake = 2.6f,
           },
           {
                   .position ={15.0f, -10.0f, 0.0f},
-                  .target = {0, -18.0f, 0},
-                  .timeToTake = 2.8f,
+                  .target = {20.0f, -17.0f, 20.0f},
+                  .timeToTake = 3.0f, //15s
+          }, //arrives at quadrant 1  - 25s - act end - 60s
+          { //ACT 5 - Quadrant 1
+                  .position ={0.0f, -12.0f, -15.0f},
+                  .target = {20.0f, -17.0f, 20.0f},
+                  .timeToTake = 3.33f,
+          },
+          {
+                  .position ={-15.0f, -12.0f, 0.0f},
+                  .target = {20.0f, -17.0f, 20.0f},
+                  .timeToTake = 3.33f,
+          },
+          {
+                  .position ={0.0f, -12.0f, 15.0f},
+                  .target = {20.0f, -17.0f, 20.0f},
+                  .timeToTake = 3.34f,
           },
           {
                   .position ={15.0f, -12.0f, 0.0f},
-                  .target = {0, -20.0f, 0},
-                  .timeToTake = 3.0f,
-          }, //ACT 3 - END
-          { //ACT 4 - Placeholder - Spin around the whole thing... [For demo, elect points of interest]
-                  .position ={13.0f, -12.0f, 0.0f},
-                  .target = {0, -20.0f, 0},
-                  .timeToTake = 2.0f,
+                  .target = {20.0f, -17.0f, 20.0f},
+                  .timeToTake = 4.0f,
+          }, //ACT end - 15s -75s
+          { //ACT 6 intermission
+                  .position ={0.0f, -12.0f, 0.0f},
+                  .target = {0.0f, -17.0f, 20.0f},
+                  .timeToTake = 2.5f,
           },
           {
-                  .position ={0.0f, -12.0f, 11.0f},
-                  .target = {0, -20.0f, 0},
-                  .timeToTake = 2.0f,
+                  .position ={-15.0f, -12.0f, 0.0f},
+                  .target = {-20.0f, -17.0f, 20.0f},
+                  .timeToTake = 2.5f,
+          }, //80s
+          { //ACT 7 - Quadrant 2
+                  .position ={0.0f, -12.0f, -15.0f},
+                  .target = {-20.0f, -17.0f, 20.0f},
+                  .timeToTake = 3.33f,
           },
           {
-                  .position ={-9.0f, -12.0f, 0.0f},
-                  .target = {0, -20.0f, 0},
-                  .timeToTake = 2.0f,
+                  .position ={15.0f, -12.0f, 0.0f},
+                  .target = {-20.0f, -17.0f, 20.0f},
+                  .timeToTake = 3.33f,
           },
           {
-                  .position ={0.0f, -12.0f, -7.0f},
-                  .target = {0, -20.0f, 0},
-                  .timeToTake = 2.0f,
+                  .position ={0.0f, -12.0f, 15.0f},
+                  .target = {-20.0f, -17.0f, 20.0f},
+                  .timeToTake = 3.34f,
           },
           {
-                  .position ={5.0f, -12.0f, 0.0f},
-                  .target = {0, -20.0f, 0},
-                  .timeToTake = 2.0f,
-          },//ACT 4 - END
-          { // ACT 5 - Loop back to the start
-                  .position ={5.0f, -6.0f, 0.0f},
-                  .target = {0, -10.0f, 0},
-                  .timeToTake = 0.5f,
-          },
-          {
-                  .position ={5.0f, 0.0f, 0.0f},
-                  .target = {0, 0.0f, 0},
-                  .timeToTake = 0.5f,
-          },
-          {
-                  .position ={5.0f, 10.0f, 0.0f},
-                  .target = {0, 0.0f, 0},
+                  .position ={-15.0f, -12.0f, 0.0f},
+                  .target = {-20.0f, -17.0f, 20.0f},
+                  .timeToTake = 4.0f,
+          }, //95s
+          { //quadrant 3 transmission
+                  .position ={-15.0f, -12.0f, -0.0f},
+                  .target = {-20.0f, -17.0f, 0.0f},
                   .timeToTake = 1.0f,
-          } //ACT 5 - END
+          },
+          {
+                 .position ={-15.0f, -12.0f, 0.0f},
+                 .target = {-20.0f, -17.0f, -20.0f},
+                 .timeToTake = 4.0f,
+          }, //100s
+          { //QUADRANT 3
+                  .position ={0.0f, -12.0f, -15.0f},
+                  .target = {-20.0f, -17.0f, -20.0f},
+                  .timeToTake = 3.33f,
+          },
+          {
+                  .position ={15.0f, -12.0f, 0.0f},
+                  .target = {-20.0f, -17.0f, -20.0f},
+                  .timeToTake = 3.33f,
+          },
+          {
+                  .position ={0.0f, -12.0f, 15.0f},
+                  .target = {-20.0f, -17.0f, -20.0f},
+                  .timeToTake = 3.34f,
+          },
+          {
+                  .position ={-15.0f, -12.0f, 0.0f},
+                  .target = {-20.0f, -17.0f, -20.0f},
+                  .timeToTake = 4.0f,
+          }, //115s
+          { //transition cez ostatne quadranty
+                  .position ={-7.5f, -12.0f, 0.0f},
+                  .target = {-20.0f, -17.0f, 20.0f},
+                  .timeToTake = 2.0f,
+          },
+          {
+                  .position ={7.5f, -12.0f, 0.0f},
+                  .target = {20.0f, -17.0f, 20.0f},
+                  .timeToTake = 2.0f,
+          },
+          {
+                  .position ={15.0f, -12.0f, 15.0f},
+                  .target = {20.0f, -17.0f, -20.0f},
+                  .timeToTake = 2.0f,
+          },
+          { //QUADRANT 4
+                  .position ={0.0f, -12.0f, -15.0f},
+                  .target = {20.0f, -17.0f, -20.0f},
+                  .timeToTake = 3.33f,
+          },
+          {
+                  .position ={-15.0f, -12.0f, 0.0f},
+                  .target = {20.0f, -17.0f, -20.0f},
+                  .timeToTake = 3.33f,
+          },
+          {
+                  .position ={0.0f, -12.0f, 15.0f},
+                  .target = {20.0f, -17.0f, -20.0f},
+                  .timeToTake = 3.34f,
+          },
+          {
+                  .position ={15.0f, -12.0f, 0.0f},
+                  .target = {20.0f, -17.0f, -20.0f},
+                  .timeToTake = 4.0f,
+          },
 
   };
 
@@ -322,6 +422,9 @@ private:
       scene.lightDirection = {-1, 1, 0};
       // Create a camera
       auto camera = std::make_unique<Camera>(60.0f, 1.0f, 0.1f, 400.0f);
+
+
+
       camera->position.z = -15.0f;
       scene.camera = move(camera);
       scene.objects.push_back(std::make_unique<FishSchool>(10));
