@@ -17,6 +17,7 @@
 std::unique_ptr<ppgso::Mesh> Plank::mesh;
 std::unique_ptr<ppgso::Texture> Plank::texture;
 std::unique_ptr<ppgso::Shader> Plank::shader;
+glm::vec3 wind = {0.0f, 0.0f, 0.0f};
 
 Plank::Plank() {
     std::cout << "go" << std::endl;
