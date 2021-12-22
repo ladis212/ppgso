@@ -9,8 +9,9 @@
 #include <shaders/underwater_vert_glsl.h>
 #include <shaders/underwater_frag_glsl.h>
 
-
-
+#define PHASEDIFF 100
+#define WIND_MAX 5.0f
+#define THRESHHOLD 20
 
 // Static resources
 std::unique_ptr<ppgso::Mesh> Plank::mesh;
@@ -18,10 +19,10 @@ std::unique_ptr<ppgso::Texture> Plank::texture;
 std::unique_ptr<ppgso::Shader> Plank::shader;
 
 Plank::Plank() {
-
+    std::cout << "go" << std::endl;
     //rotation and rotmomentum
     rotation = {0, 0, 0};
-    rotMomentum = {0, 0, 0};
+    momentum = {0, 0, 0};
 
     // Initialize static resources if needed
     if (!shader) shader = std::make_unique<ppgso::Shader>(diffuse_vert_glsl, diffuse_frag_glsl);
@@ -31,10 +32,27 @@ Plank::Plank() {
 
 bool Plank::update(Scene &scene, float dt) {
     // Animate position according to time
-    position += speed * dt;
+    if (phaser == 0) wind = {glm::linearRand(-WIND_MAX, WIND_MAX), 0, glm::linearRand(-WIND_MAX, WIND_MAX)};
+    position += wind * dt + momentum; //Momentum 0 on first plank, adds up if collided.
 
-    // Rotate the object
-    rotation += rotMomentum * dt;
+    //increment phaser
+    phaser++;
+    if (momentum.x * wind.x < 0) { //The momentum is against the wind
+        momentum.x -= fmin(abs(wind.x - 1), momentum.x);
+    }
+    else { //Momentum is in the direction of the wind.
+        momentum.x -= fmin(1, momentum.x);
+    }
+    //same for momentum z
+    if (momentum.z * wind.z < 0) { //The momentum is against the wind
+        momentum.z -= fmin(abs(wind.z - 1), momentum.z);
+    }
+    else { //Momentum is in the direction of the wind.
+        momentum.z -= fmin(1, momentum.z);
+    }
+
+    if (phaser >= PHASEDIFF) phaser = 0; //ready for wind change
+
 
     // Collide with scene - this plank is very fragile.
     for (auto &obj : scene.objects) {
@@ -49,11 +67,12 @@ bool Plank::update(Scene &scene, float dt) {
         if (!island && !dolphin && !plunk && !shark) continue;
 
         // hitbox
-        if (distance(position, obj->position) < (obj->scale.y + scale.y) * 0.7f) {
+        if ((phaser-immunity >= THRESHHOLD)&&(distance(position, obj->position) < (obj->scale.x + scale.x) * 0.7f)) {
+            std::cout << "We collide." << std::endl;
             int pieces = glm::linearRand(2, 3); //2 or 3 pieces
 
             // if board is tiny it just gets destroy.
-            if (scale.x < 0.25) pieces = 0;
+            if (scale.x <= 0.33f) pieces = 0;
 
 
             // Generate smaller asteroids
@@ -71,14 +90,16 @@ bool Plank::update(Scene &scene, float dt) {
 
 void Plank::shatter(Scene &scene, int pieces){
     // Generate smaller planks
+    std::cout << "We shatter" << std::endl;
         for (int i = 0; i < pieces; i++) {
             auto plank = std::make_unique<Plank>();
-            plank->speed = speed + glm::vec3(glm::linearRand(-3.0f, 3.0f), glm::linearRand(0.0f, -5.0f), 0.0f);;
+            plank->momentum =glm::vec3(glm::linearRand(-5.0f, 5.0f), 0.0f , glm::linearRand(-5.0f, 5.0f));;
             plank->position = position;
-            plank->rotMomentum = rotMomentum;
-            float factor = (float) pieces / 2.0f;
-            plank->scale = scale / factor;
+            //plank->rotMomentum = rotMomentum;
+            plank->scale = {scale.x/pieces, scale.y/pieces, scale.z/pieces};
+            std::cout << "We're about to shatter!" << std::endl;
             scene.objects.push_back(move(plank));
+            std::cout << "shattered" << std::endl;
         }
 }
 

@@ -40,6 +40,7 @@
 #include "eye.h"
 #include "cave.h"
 #include "FishSchool.h"
+#include "plank.h"
 
 //shaders
 #include <shaders/texture_vert_glsl.h>
@@ -396,6 +397,15 @@ private:
       ////// low poly fish
       //fish_l1 = std::make_unique<fish>("fishes\\finalfish.obj", "fishes\\finalfish.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
       //fish_l2 = std::make_unique<fish>("fishes\\finalfish.obj", "fishes\\specialfinalfish.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+
+      ///Planks
+      // TODO: Collision status unknown - lags PC very much
+      for (int i = 0; i < 10; i++){
+          auto plank = std::make_unique<Plank>();
+         plank->position = {glm::linearRand(-20.0, 20.0), 0, glm::linearRand(-20.0, 20.0)};
+         scene.objects.push_back(move(plank));
+     }
+
 
 
       ////Stingray

@@ -20,8 +20,10 @@ private:
 public:
 
     glm::vec3 speed;
-    glm::vec3 rotMomentum;
-
+    glm::vec3 momentum;
+    glm::vec3 wind;
+    int phaser = 0;
+    int immunity = 0;
 public:
 
     Plank();
