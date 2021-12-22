@@ -2,7 +2,7 @@
 #include "eye.h"
 
 #include <shaders/bubble_vert_glsl.h>
-#include <shaders/bubble_frag_glsl.h>
+#include <shaders/eye_frag_glsl.h>
 #include <glm/gtx/euler_angles.hpp>
 
 #include <glm/gtx/string_cast.hpp>

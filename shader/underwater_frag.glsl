@@ -111,8 +111,9 @@ void main() {
   }
 
   for(int i = 0; i < 3; i++){
-    vec3 colorVectors[] = {vec3(1, 0, 0), vec3(0, 1, 0), vec3(0, 0, 1)};
-    lights[i] = PointLight(colorVectors[i], vec3(-15*i, -15, 0), vec3(0.2, 0.2, 0.2), vec3(0.5, 0.5, 0.5), vec3(0.1, 0.1, 0.1), 1.0, 0.09, 0.032);
+    vec3 colorVectors[] = vec3[](vec3(1, 0.847, 0), vec3(1, 0.847, 0), vec3(0, 0, 1));
+    vec3 positionVectors[] = vec3[](vec3(19, -17.0f, 17), vec3(17, -17.0f, 17), vec3(0, -20, 0));
+    lights[i] = PointLight(colorVectors[i], positionVectors[i], vec3(0.2, 0.2, 0.2), vec3(0.5, 0.5, 0.5), vec3(0.1, 0.1, 0.1), 1.0, 0.09, 0.032);
     FragmentColor = FragmentColor + vec4(getPointLightVector(lights[i], vec3(worldPosition)), Transparency);
   }
 

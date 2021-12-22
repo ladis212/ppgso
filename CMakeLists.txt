@@ -63,13 +63,10 @@ endif ()
 #
 
 set(PPGSO_SHADER_SRC
-        shader/color_vert.glsl shader/color_frag.glsl
-        shader/convolution_vert.glsl shader/convolution_frag.glsl
-        shader/diffuse_vert.glsl shader/diffuse_frag.glsl
         shader/texture_vert.glsl shader/texture_frag.glsl
         shader/underwater_vert.glsl shader/underwater_frag.glsl
         shader/bubble_vert.glsl shader/bubble_frag.glsl
-	    shader/point_light.glsl
+        shader/eye_frag.glsl
         shader/sea_vert.glsl shader/sea_frag.glsl
         )
 add_resources(shaders ${PPGSO_SHADER_SRC})
@@ -134,10 +131,6 @@ add_executable(gl9_scene
         src/gl9_scene/skybox.cpp
         src/gl9_scene/dolphin.cpp
         src/gl9_scene/generator.cpp
-        src/gl9_scene/player.cpp
-        src/gl9_scene/projectile.cpp
-        src/gl9_scene/explosion.cpp
-        src/gl9_scene/space.cpp
         src/gl9_scene/BezierPatch.cpp
         src/gl9_scene/BezierPatch.h
         src/gl9_scene/island.cpp

@@ -4,8 +4,6 @@
 #include "dolphin.h"
 #include "GenericObject.h"
 
-#include <shaders/diffuse_vert_glsl.h>
-#include <shaders/diffuse_frag_glsl.h>
 #include <shaders/underwater_vert_glsl.h>
 #include <shaders/underwater_frag_glsl.h>
 
@@ -26,7 +24,7 @@ Plank::Plank() {
     momentum = {0, 0, 0};
 
     // Initialize static resources if needed
-    if (!shader) shader = std::make_unique<ppgso::Shader>(diffuse_vert_glsl, diffuse_frag_glsl);
+    if (!shader) shader = std::make_unique<ppgso::Shader>(underwater_vert_glsl, underwater_frag_glsl);
     if (!texture) texture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("plank\\grunge-wood-texture.bmp"));
     if (!mesh) mesh = std::make_unique<ppgso::Mesh>("plank\\wornout_plank.obj");
 }

@@ -22,9 +22,6 @@
 
 #include "camera.h"
 #include "scene.h"
-#include "generator.h"
-#include "player.h"
-#include "space.h"
 #include "skybox.h"
 #include "island.h"
 #include "dolphin.h"
@@ -36,7 +33,6 @@
 #include "sponge.h"
 #include "stingray.h"
 #include "Floor.h"
-#include "BezierPatch.h"
 #include "eye.h"
 #include "cave.h"
 #include "FishSchool.h"
@@ -46,13 +42,11 @@
 //shaders
 #include <shaders/texture_vert_glsl.h>
 #include <shaders/texture_frag_glsl.h>
-#include <shaders/diffuse_vert_glsl.h>
-#include <shaders/diffuse_frag_glsl.h>
-#include <shaders/point_light_glsl.h>
-#include <shaders/bubble_frag_glsl.h>
 #include <shaders/bubble_vert_glsl.h>
 #include <shaders/underwater_vert_glsl.h>
 #include <shaders/underwater_frag_glsl.h>
+#include <shaders/eye_frag_glsl.h>
+
 
 #include <valarray>
 
@@ -821,11 +815,11 @@ private:
 
 
       ////Beautiful Eyes
-      leye = std::make_unique<Eye>("eye\\lefteye.bmp", bubble_vert_glsl, texture_frag_glsl);
+      leye = std::make_unique<Eye>("eye\\lefteye.bmp", bubble_vert_glsl, eye_frag_glsl);
       //leye = std::make_unique<Eye>("eye\\lefteye.bmp", bubble_vert_glsl, point_light_glsl);
       leye->position = {19, -17.0f, 17};
       leye->scale = {.5, .5, .5};
-      reye = std::make_unique<Eye>("eye\\righteye.bmp", bubble_vert_glsl, texture_frag_glsl);
+      reye = std::make_unique<Eye>("eye\\righteye.bmp", bubble_vert_glsl, eye_frag_glsl);
       reye->position = {17, -17.0f, 17};
       reye->scale = {.5, .5, .5};
   }
