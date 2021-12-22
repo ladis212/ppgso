@@ -5,11 +5,11 @@
 
 #include "scene.h"
 #include "object.h"
-#include "FishTail.h"
 
 
-class SmallFish final : public Object {
-// Static resources (Shared between instances)
+class FishTail final : public Object {
+private:
+    // Static resources (Shared between instances)
     static std::unique_ptr<ppgso::Mesh> mesh;
     static std::unique_ptr<ppgso::Shader> shader;
     static std::unique_ptr<ppgso::Texture> texture;
@@ -19,12 +19,8 @@ class SmallFish final : public Object {
 
     // Speed and rotational momentum
 public:
-    std::unique_ptr<FishTail> tail;
-
     glm::vec3 speed;
     glm::vec3 rotMomentum;
-    glm::vec3 offset;
-    float phase;
 
     /*!
      * Split the asteroid into multiple pieces and spawn an explosion object.
@@ -38,7 +34,7 @@ public:
     /*!
      * Create new asteroid
      */
-    SmallFish(float x, float y, float z, float movement_phase);
+    FishTail();
 
     /*!
      * Update asteroid

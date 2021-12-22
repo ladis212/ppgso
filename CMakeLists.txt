@@ -153,7 +153,7 @@ add_executable(gl9_scene
         src/gl9_scene/stingray.cpp
         src/gl9_scene/stingray.h
         src/gl9_scene/Floor.cpp
-        src/gl9_scene/Floor.h src/gl9_scene/FishSchool.cpp src/gl9_scene/FishSchool.h src/gl9_scene/eye.cpp src/gl9_scene/eye.h src/gl9_scene/cave.cpp src/gl9_scene/cave.h src/gl9_scene/SmallFish.cpp src/gl9_scene/SmallFish.h)
+        src/gl9_scene/Floor.h src/gl9_scene/FishSchool.cpp src/gl9_scene/FishSchool.h src/gl9_scene/eye.cpp src/gl9_scene/eye.h src/gl9_scene/cave.cpp src/gl9_scene/cave.h src/gl9_scene/SmallFish.cpp src/gl9_scene/SmallFish.h src/gl9_scene/FishTail.cpp src/gl9_scene/FishTail.h)
 target_link_libraries(gl9_scene ppgso shaders)
 install(TARGETS gl9_scene DESTINATION .)
 add_custom_command(TARGET gl9_scene POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/data/ ${CMAKE_CURRENT_BINARY_DIR})

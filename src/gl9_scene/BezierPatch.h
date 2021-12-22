@@ -14,8 +14,10 @@ private:
     static std::unique_ptr<ppgso::Texture> texture;
 
     std::vector<glm::vec3> vertices;
+    std::vector<glm::vec3> normals;
     std::vector<glm::vec2> texCoords;
     std::vector<GLuint> mesh;
+    std::vector<GLuint> normalIndices;
 
     GLuint vao{}, vbo{}, tbo{}, ibo{};
     glm::mat4 modelMatrix{1.0f};

@@ -16,7 +16,9 @@ public:
      * @param dt Time delta
      * @return true to delete the object
      */
-    FishSchool();
+
+    FishSchool(int fishCount);
+
     std::list< std::unique_ptr<SmallFish> > fishes;
 
     bool update(Scene &scene, float dt) override;

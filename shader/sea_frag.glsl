@@ -11,6 +11,8 @@ uniform float Transparency;
 // (optional) Texture offset
 uniform vec2 TextureOffset;
 
+uniform vec3 EyePosition;
+
 // The vertex shader will feed this input
 in vec2 texCoord;
 
@@ -38,9 +40,13 @@ void main() {
 
   vec3 multiplyColor = vec3(0.529, 0.803, 1);
 
-  FragmentColor.a = FragmentColor.r * Transparency;
+  FragmentColor.a = min(FragmentColor.r * Transparency, 1.0);
   FragmentColor.r = mix(FragmentColor.r, FragmentColor.g * multiplyColor.b, linear_depth);
   FragmentColor.g = mix(FragmentColor.g, FragmentColor.g * multiplyColor.b, linear_depth);
   FragmentColor.b = mix(FragmentColor.b, FragmentColor.g * multiplyColor.b, linear_depth);
+  //FragmentColor.a = normal.y;
+  //FragmentColor.r = normal.x;;
+  //FragmentColor.g = normal.y;
+  //FragmentColor.b = normal.z;
 
 }

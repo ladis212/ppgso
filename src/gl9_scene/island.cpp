@@ -94,6 +94,8 @@ void Island::render(Scene &scene) {
     shader->setUniform("ModelMatrix", modelMatrix);
     shader->setUniform("Texture", *texture);
     shader->setUniform("Transparency", 1);
+
+
     mesh->render();
 }
 

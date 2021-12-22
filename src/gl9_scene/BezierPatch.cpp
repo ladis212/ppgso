@@ -25,7 +25,7 @@
 
 std::unique_ptr<ppgso::Shader> BezierPatch::shader;
 std::unique_ptr<ppgso::Texture> BezierPatch::texture;
-GLuint vao, vbo, tbo, ibo;
+GLuint vao, vbo, tbo, ibo, n_vbo;
 
 
 
@@ -34,7 +34,7 @@ GLuint vao, vbo, tbo, ibo;
         if (!shader) shader = std::make_unique<ppgso::Shader>(sea_vert_glsl, sea_frag_glsl);
         if (!texture) texture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("sea.bmp"));
 
-        float u,v;
+        float u,v, real_x, real_z;
         for (unsigned int i = 0; i < PATCH_SIZE; i++) {
             for (unsigned int j = 0; j < PATCH_SIZE; j++) {
                 // TODO: Compute points on the bezier patch
@@ -42,10 +42,13 @@ GLuint vao, vbo, tbo, ibo;
                 u = float(i) / float(PATCH_SIZE - 1);
                 v = float(j) / float(PATCH_SIZE - 1);
 
+                real_x = i * 0.6 - PATCH_SIZE * 0.3;
+                real_z = j * 0.6 - PATCH_SIZE * 0.3;
 
-                vertices.emplace_back(u * 180 - 90, 0, v * 180 - 90);
+
+                vertices.emplace_back(real_x, 0, real_z);
                 //printf("%f %f\n", u, v);
-                texCoords.emplace_back(glm::vec2{u * 6, 1 - v * 6});
+                texCoords.emplace_back(glm::vec2{u * 6, 1 - v * 6}); // *6 - opakujuca textura
             }
         }
         // Generate indices
@@ -87,6 +90,16 @@ GLuint vao, vbo, tbo, ibo;
         auto texCoord_attrib = shader->getAttribLocation("TexCoord");
         glEnableVertexAttribArray(texCoord_attrib);
         glVertexAttribPointer(texCoord_attrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
+
+        // Normals
+        glGenBuffers(1, &n_vbo);
+        glBindBuffer(GL_ARRAY_BUFFER, n_vbo);
+        glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(glm::vec3), normals.data(), GL_DYNAMIC_DRAW);
+
+        auto normal_attrib = shader->getAttribLocation("Normal");
+        glEnableVertexAttribArray(normal_attrib);
+        glVertexAttribPointer(normal_attrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
+
         glEnableVertexAttribArray(0);
 
         // Copy indices to gpu
@@ -112,7 +125,10 @@ GLuint vao, vbo, tbo, ibo;
     bool BezierPatch::update(Scene &scene, float time) {
         for (unsigned int i = 0; i < PATCH_SIZE; i++) {
             for (unsigned int j = 0; j < PATCH_SIZE; j++) {
-                vertices[i*PATCH_SIZE + j].y = sin(time)/3 + sin(float(i)/3 + time)/2 + cos(float(j)/3 + time)/2;
+                float real_x = i * 0.6 - PATCH_SIZE * 0.3;
+                float real_z = j * 0.6 - PATCH_SIZE * 0.3;
+
+                vertices[i*PATCH_SIZE + j].y = sin(time)/3 + sin(float(real_x)/3 + time)/2 + cos(float(real_z)/3 + time)/2 + sin(float(real_x)/9 + time)/2;
             }
         }
 
@@ -134,6 +150,7 @@ void BezierPatch::render(Scene &scene) {
     shader->setUniform("Transparency", 1);
 
     shader->setUniform("Time", glfwGetTime());
+    shader->setUniform("EyePos", scene.camera->position);
 
 
     glBindVertexArray(vao);

@@ -39,6 +39,7 @@
 #include "BezierPatch.h"
 #include "eye.h"
 #include "cave.h"
+#include "FishSchool.h"
 
 //shaders
 #include <shaders/texture_vert_glsl.h>
@@ -331,7 +332,7 @@ private:
       scene.camera = move(camera);
       // Add space background
       // UNDO
-      //scene.objects.push_back(std::make_unique<Space>());
+      scene.objects.push_back(std::make_unique<FishSchool>(10));
       skybox = std::make_unique<Skybox>();
       skybox->scale = {200, 200, 200};
       //scene.objects.push_back(move(skybox));
