@@ -20,6 +20,7 @@ in vec2 texCoord;
 
 // Wordspace normal passed from vertex shader
 in vec4 normal;
+in vec3 localNormal;
 in vec4 worldPosition;
 //in float Time;
 
@@ -27,6 +28,7 @@ in vec4 worldPosition;
 out vec4 FragmentColor;
 
 struct PointLight{
+  vec3 color; //rgb
   vec3 position; //position
 
   vec3 ambient; //ambient
@@ -38,8 +40,8 @@ struct PointLight{
   float quadratic; //quadratic / specular
 };
 
-uniform PointLight light1 = PointLight(vec3(0, -20, 0), vec3(0.2, 0.2, 0.2), vec3(0.5, 0.5, 0.5), vec3(1.0, 1.0, 1.0), 1.0, 0.09, 0.032);
-uniform PointLight light2;
+PointLight lights[3];
+uniform vec3 cameraView = vec3(0, 0, 0);
 
 uniform vec3 Shadows[30];
 
@@ -53,6 +55,25 @@ float linearizeDepth(float depth){
 
 float normalizeHeight(float y){
   return clamp(-y / 20, 0.0, 1.0);
+}
+
+vec3 getPointLightVector(PointLight light, vec3 fragmentPosition){
+  vec4 fixed_normal = (HasNormals > 0.0) ? normal : vec4(0, 1, 0, 0);
+  vec3 fixed_localNormal = (HasNormals > 0.0) ? localNormal : vec3(0, 1, 0);
+
+  vec3 lightDir = normalize(light.position - fragmentPosition);
+  float lightDiffuse = max(dot(fixed_normal, vec4(normalize(lightDir), 1.0)), 0.0);
+  vec3 reflectionDir = reflect(-lightDir, fixed_localNormal);
+  float lightSpecular = pow(max(dot(normalize(cameraView), reflectionDir), 0.0), 120);
+  float distance = distance(light.position, fragmentPosition);
+  float attenuation = 1.0 / (light.constant * light.linear * distance
+                              + light.quadratic * pow(distance, 2));
+
+  vec3 ambientColor = light.ambient * attenuation;
+  vec3 diffuseColor = light.diffuse * lightDiffuse * attenuation;
+  vec3 specularColor = light.specular * lightSpecular * attenuation;
+
+  return (ambientColor + diffuseColor + specularColor) * light.color;
 }
 
 void main() {
@@ -75,11 +96,10 @@ void main() {
     FragmentColor.g = mix(FragmentColor.g * multiplyColor.g, farColor.g, linear_depth);
     FragmentColor.b = mix(FragmentColor.b * multiplyColor.b, farColor.b, linear_depth);
   }
-  FragmentColor.a = Transparency;
 
   if(castShadows == 1){ //vrhanie tienov rybkami
     float yNorm;
-    for(int i; i < 30; i++){
+    for(int i = 0; i < 30; i++){
       yNorm = normalizeHeight(Shadows[i].y);
       if(distance(vec2(worldPosition.x, worldPosition.z), vec2(Shadows[i].x, Shadows[i].z)) < 2.0 - yNorm){
         FragmentColor.r *= 1 - (yNorm) * 0.5;
@@ -88,6 +108,12 @@ void main() {
 
       }
     }
+  }
+
+  for(int i = 0; i < 3; i++){
+    vec3 colorVectors[] = {vec3(1, 0, 0), vec3(0, 1, 0), vec3(0, 0, 1)};
+    lights[i] = PointLight(colorVectors[i], vec3(-15*i, -15, 0), vec3(0.2, 0.2, 0.2), vec3(0.5, 0.5, 0.5), vec3(0.1, 0.1, 0.1), 1.0, 0.09, 0.032);
+    FragmentColor = FragmentColor + vec4(getPointLightVector(lights[i], vec3(worldPosition)), Transparency);
   }
 
 

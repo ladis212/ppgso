@@ -821,11 +821,11 @@ private:
 
 
       ////Beautiful Eyes
-      leye = std::make_unique<Eye>("eye\\lefteye.bmp", bubble_vert_glsl, bubble_frag_glsl);
+      leye = std::make_unique<Eye>("eye\\lefteye.bmp", bubble_vert_glsl, texture_frag_glsl);
       //leye = std::make_unique<Eye>("eye\\lefteye.bmp", bubble_vert_glsl, point_light_glsl);
       leye->position = {19, -17.0f, 17};
       leye->scale = {.5, .5, .5};
-      reye = std::make_unique<Eye>("eye\\righteye.bmp", bubble_vert_glsl, point_light_glsl);
+      reye = std::make_unique<Eye>("eye\\righteye.bmp", bubble_vert_glsl, texture_frag_glsl);
       reye->position = {17, -17.0f, 17};
       reye->scale = {.5, .5, .5};
   }

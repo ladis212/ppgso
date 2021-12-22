@@ -17,10 +17,6 @@ in vec2 texCoord;
 // Wordspace normal passed from vertex shader
 in vec4 normal;
 
-in float x;
-in float y;
-in float time;
-
 // The final color
 out vec4 FragmentColor;
 
@@ -32,11 +28,6 @@ float linearizeDepth(float depth){
 }
 
 void main() {
-  //float func = 4/6 * cos(x*30 + time) - 4/6 * sin(y*30 + time);
-  //float diffuse = 1 - func;
-
-  // Lookup the color in Texture on coordinates given by texCoord
-  // NOTE: Texture coordinate is inverted vertically for compatibility with OBJ
   float linear_depth = linearizeDepth(gl_FragCoord.z) / far;
   FragmentColor = texture(Texture, vec2(texCoord.x, 1.0 - texCoord.y) + TextureOffset);
 

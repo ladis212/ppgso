@@ -144,6 +144,7 @@ bool Floor::render(Scene &scene) {
     shader->setUniform("Transparency", 1);
 
     shader->setUniform("Time", glfwGetTime());
+    shader->setUniform("cameraView", scene.camera->position);
 
     glUniform1i(glGetUniformLocation(shader->getProgram(), "castShadows"), 1);
     for(int i = 0; i < 30; i++){

@@ -225,6 +225,7 @@ void fish::render(Scene &scene) {
     shader->setUniform("Texture", *texture);
     shader->setUniform("Transparency", 1);
     shader->setUniform("HasNormals", 1.0f);
+    //shader->setUniform("cameraView", scene.camera->position);
     mesh->render();
 }
 

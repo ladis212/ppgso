@@ -14,6 +14,7 @@ out vec2 texCoord;
 
 // Normal to pass to the fragment shader
 out vec4 normal;
+out vec3 localNormal;
 out vec4 worldPosition;
 
 
@@ -23,6 +24,7 @@ void main() {
 
   // Normal in world coordinates
   normal = normalize(ModelMatrix * vec4(Normal, 0.0f));
+  localNormal = Normal;
 
   // Calculate the final position on screen
   worldPosition = ModelMatrix * vec4(Position, 1.0);
