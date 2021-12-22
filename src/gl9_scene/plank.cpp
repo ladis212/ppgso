@@ -9,7 +9,7 @@
 #include <shaders/underwater_vert_glsl.h>
 #include <shaders/underwater_frag_glsl.h>
 
-#define PHASEDIFF 100
+#define PHASEDIFF 1000
 #define WIND_MAX 5.0f
 #define THRESHHOLD 20
 
@@ -20,7 +20,7 @@ std::unique_ptr<ppgso::Shader> Plank::shader;
 glm::vec3 wind = {0.0f, 0.0f, 0.0f};
 
 Plank::Plank() {
-    std::cout << "go" << std::endl;
+  //  std::cout << "go" << std::endl;
     //rotation and rotmomentum
     rotation = {0, 0, 0};
     momentum = {0, 0, 0};
@@ -94,7 +94,7 @@ void Plank::shatter(Scene &scene, int pieces){
     std::cout << "We shatter" << std::endl;
         for (int i = 0; i < pieces; i++) {
             auto plank = std::make_unique<Plank>();
-            plank->momentum =glm::vec3(glm::linearRand(-5.0f, 5.0f), 0.0f , glm::linearRand(-5.0f, 5.0f));;
+            plank->momentum =glm::vec3(glm::linearRand(-20.0f, 20.0f), 0.0f , glm::linearRand(-20.0f, 20.0f));;
             plank->position = position;
             //plank->rotMomentum = rotMomentum;
             plank->scale = {scale.x/pieces, scale.y/pieces, scale.z/pieces};

@@ -186,43 +186,43 @@ private:
   };
 
   std::vector<CameraFrame> Camframes{
-          { //ACT 1: Spin around the island
-            .position ={0.0f, 10.0f, 5.0f},
+          { //ACT 1: Spin around the surface ~10s
+            .position ={0.0f, 20.0f, 20.0f},
             .target = {0, 0, 0},
-            .timeToTake = 1.0f,
+            .timeToTake = 2.0f,
           },
           {
-             .position ={5.0f, 10.0f, 0.0f},
+             .position ={20.0f, 17.5f, 0.0f},
              .target = {0, 0, 0},
-             .timeToTake = 1.0f,
+             .timeToTake = 2.0f,
           },
           {
-             .position ={0.0f, 10.0f, -5.0f},
+             .position ={0.0f, 15.0f, -20.0f},
              .target = {0, 0, 0},
-             .timeToTake = 1.0f,
+             .timeToTake = 2.0f,
           },
           {
-             .position ={-5.0f, 10.0f, 0.0f},
+             .position ={-20.0f, 12.5f, 0.0f},
              .target = {0, 0, 0},
-             .timeToTake = 1.0f,
+             .timeToTake = 2.0f,
           },
           {
-             .position ={0.0f, 10.0f, 5.0f},
+             .position ={0.0f, 10.0f, 20.0f},
              .target = {0, 0, 0},
-             .timeToTake = 1.0f,
-          }, //ACT 1 End...
-          { //ACT 2 - Slow down to make an outer circle, slowly hover to the surface level
-                  .position ={7.0f, 8.0f, 0.0f},
-                  .target = {0, 0, 0},
-                  .timeToTake = 1.2f,
+             .timeToTake = 2.0f,
+          }, //ACT 1 End... 10s
+          { //ACT 2 - Advance towards the island. The island is at: 20 0 15, use 4 keyframes, roughly 8 sec (to make it still smooth)
+                  .position ={0.0f, 10.0f, 20.0f},
+                  .target = {5.0f, 0, 3.75f},
+                  .timeToTake = 2.0f,
           },
           {
-                  .position ={0.0f, 6.0f, -9.0f},
-                  .target = {0, 0, 0},
-                  .timeToTake = 1.4f,
+                  .position ={0.0f, 11.0f, 17.5f},
+                  .target = {10.0f, 0, 7.5f},
+                  .timeToTake = 2.0f,
           },
           {
-                  .position ={-11.0f, 4.0f, 0.0f},
+                  .position ={0.0f, 12.0f, 15.0f},
                   .target = {0, 0, 0},
                   .timeToTake = 1.6f,
           },
@@ -860,6 +860,8 @@ public:
   float timestamp = 0;
   int keyframeIndex = 0;
   Keyframe thisKeyframe, nextKeyframe;
+  int CamIndex = 0;
+  CameraFrame thatKeyframe, followKeyframe;
 
   void onIdle() override {
 
