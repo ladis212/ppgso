@@ -90,14 +90,19 @@ private:
   std::unique_ptr<Dolphin>dolphin2;
   std::unique_ptr<Bubble> bubble;
   std::unique_ptr<ppgso::Texture> skybox_alt_texture;
-  std::unique_ptr<GenericObject> cor1;
+
   std::unique_ptr<Eye> leye;
   std::unique_ptr<Eye> reye;
   std::unique_ptr<Cave> cave;
-  //std::unique_ptr<GenericObject> cor2;
-  //std::unique_ptr<GenericObject> cor3;
-  //std::unique_ptr<GenericObject> grass1;
-  //std::unique_ptr<GenericObject> grass2;
+
+   //std::unique_ptr<GenericObject> grass1;
+   //std::unique_ptr<GenericObject> grass2;
+
+  ////Coral Reef
+  std::unique_ptr<GenericObject> cor1;
+  std::unique_ptr<GenericObject> cor2;
+  std::unique_ptr<GenericObject> cor3;
+
 
   ////Rock Arch
   std::unique_ptr<GenericObject>rockAL0;
@@ -367,12 +372,8 @@ private:
       dolphin2->scale = {.02, .02, .02};
       dolphin2->position = {0, -3, 0};
       ///// koraly a rastlinky
-      cor1 = std::make_unique<GenericObject>("coral\\braincoral.obj", "coral\\braincoral.bmp", underwater_vert_glsl, underwater_frag_glsl);
-      cor1->position = {30, -20, -10};
-      cor1->scale = {.5f, .5f, .5f};
-      cor1->rotation.x = M_PI_2;
-      //cor2 = std::make_unique<GenericObject>("coral\\v1coral.obj", "coral\\v1coral.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
-      //cor3 = std::make_unique<GenericObject>("coral\\treecoral.obj", "coral\\treecoralcustom.bmp", diffuse_vert_glsl, diffuse_frag_glsl); //Textura je CUSTOM -- nezarucujem, ale povodna bola bugnuta.
+
+       //Textura je CUSTOM -- nezarucujem, ale povodna bola bugnuta.
       //grass1 = std::make_unique<GenericObject>("coral\\Grass.obj", "coral\\Grass.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
       //grass2 = std::make_unique<GenericObject>("coral\\Grass.obj", "coral\\SeaGrass.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
       /////// high poly fish
@@ -525,7 +526,17 @@ private:
 
       ///* QUADRANT 3 - - *///
       ///Coral Reef
-
+      cor1 = std::make_unique<GenericObject>("coral\\braincoral.obj", "coral\\braincoral.bmp", underwater_vert_glsl, underwater_frag_glsl);
+      cor1->position = {-30, -19.0f, -15};
+      cor1->scale = {.65f, .65f, .65f};
+      cor1->rotation.x = -M_PI_2;
+      cor2 = std::make_unique<GenericObject>("coral\\v1coral.obj", "coral\\v1coral.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      cor2->position = {-25, -19.0f, -25};
+      cor2->scale = {.4f, .4f, .4f};
+      cor2->rotation.x = -M_PI_2;
+      cor3 = std::make_unique<GenericObject>("coral\\treecoral.obj", "coral\\treecoralcustom.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      cor3->scale = {1.5f, 1.5f, 1.5f};
+      cor3->position = {-10, -19.0f, -30};
       ///Sponge 3
       sponge2 = std::make_unique<Sponge>();
       sponge2->scale = {.1, .1, .1};
@@ -804,10 +815,10 @@ public:
     //koraly a rastlinky
     cor1->update(scene,dt);
     cor1->render(scene);
-    //cor2->update(scene,dt);
-    //cor2->render(scene);
-    //cor3->update(scene,dt);
-    //cor3->render(scene);
+    cor2->update(scene,dt);
+    cor2->render(scene);
+    cor3->update(scene,dt);
+    cor3->render(scene);
     //grass1->update(scene,dt);
     //grass1->render(scene);
     //grass2->update(scene,dt);
