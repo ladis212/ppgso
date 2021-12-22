@@ -41,6 +41,7 @@
 #include "cave.h"
 #include "FishSchool.h"
 #include "plank.h"
+#include "turtle.h"
 
 //shaders
 #include <shaders/texture_vert_glsl.h>
@@ -610,7 +611,7 @@ private:
       grass2->position = {-13.0f, -19.5f, 23.0f};
 
       ///Turtle
-      auto turtle = std::make_unique<GenericObject>("turtle\\turtle.obj", "turtle\\turtle.bmp", underwater_vert_glsl, underwater_frag_glsl);
+      auto turtle = std::make_unique<Turtle>();
       turtle->position = {-20.0f,-19.25f,20.0f};
       turtle->scale = {.07, .07, .07};
       turtle->rotation.x = -M_PI_2;

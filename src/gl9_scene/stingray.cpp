@@ -46,7 +46,7 @@ void Stingray::appear(Scene &scene, float dt){
     else if (v < -1) {
         v = -1;
     }
-    position.y +=  v / 500.0f;
+    position.y +=  v / 300.0f;
 
 }
 
