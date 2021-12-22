@@ -4,6 +4,7 @@
 #include <ppgso/ppgso.h>
 
 FishSchool::FishSchool(int fishCount) {
+    position = glm::vec3(-5, -5, -5);
     float x_offset, y_offset, z_offset, phase;
     for(int i = 0; i < fishCount; i++){
         x_offset = glm::linearRand(-3.0f, 3.0f);
