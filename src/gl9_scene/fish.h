@@ -9,7 +9,9 @@
 
 class fish final : public Object {
 private:
-    // Static resources (Shared between instances)
+
+
+// Static resources (Shared between instances)
     std::unique_ptr<ppgso::Mesh> mesh;
     std::unique_ptr<ppgso::Shader> shader;
     std::unique_ptr<ppgso::Texture> texture;
@@ -23,6 +25,9 @@ public:
     glm::vec3 speed;
     glm::vec3 rotMomentum;
 
+    static glm::vec3 shadowPositions[30];
+    int index;
+
     /*!
      * Split the asteroid into multiple pieces and spawn an explosion object.
      *
@@ -33,7 +38,8 @@ public:
      */
 public:
 
-    fish(const std::basic_string<char> &mesh_path, const std::basic_string<char> &texture_path,  const std::string &vert, const std::string &frag);
+    fish(const std::basic_string<char> &mesh_path, const std::basic_string<char> &texture_path, const std::string &vert,
+         const std::string &frag, int shadowIndex);
 
     bool update(Scene &scene, float dt) override;
     void collide (Scene &scene, float dt);

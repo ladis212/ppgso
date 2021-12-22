@@ -472,6 +472,7 @@ private:
       }
 
       ///* BLUE TANG *///
+
       for(int i = 0; i < FISH_MAX; i++){
           auto new_fish = std::make_unique<fish>("fishes\\bluetang.obj", "fishes\\bluetang.bmp", underwater_vert_glsl, underwater_frag_glsl);
           new_fish->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
@@ -483,6 +484,7 @@ private:
       }
 
       ///*CHROMIS*///
+
       for(int i = 0; i < FISH_MAX; i++){
           auto new_fish = std::make_unique<fish>("fishes\\chromis.obj", "fishes\\chromis.bmp", underwater_vert_glsl, underwater_frag_glsl);
           new_fish->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
@@ -844,6 +846,8 @@ public:
     glEnable(GL_LIGHT0);
     glShadeModel(GL_SMOOTH);
 
+
+
     initScene();
 
 
@@ -1041,8 +1045,6 @@ public:
 
     //bubble->update(scene, dt);
     //bubble->render(scene);
-    stingray->update(scene,dt);
-    stingray->render(scene);
     //// Sponges
     sponge->update(scene,dt);
     sponge->render(scene);
@@ -1107,6 +1109,9 @@ public:
     reye->render(scene);
     scene.update(dt);
     scene.render();
+
+    stingray->update(scene,dt);
+    stingray->render(scene);
 
     sea->update(scene, time);
     sea->render(scene);
