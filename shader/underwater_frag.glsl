@@ -85,7 +85,7 @@ void main() {
         FragmentColor.r *= 1 - (yNorm) * 0.5;
         FragmentColor.g *= 1 - (yNorm) * 0.5;
         FragmentColor.b *= 1 - (yNorm) * 0.5;
-        break;
+
       }
     }
   }
