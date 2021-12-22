@@ -8,7 +8,7 @@
 #include <shaders/diffuse_frag_glsl.h>
 
 //Boundary when fish returns...
-#define BOUNDARY 90.0f
+#define BOUNDARY 20.0f
 #define STEP_LIMIT 100
 // Static resources
 
