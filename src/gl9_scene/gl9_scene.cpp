@@ -57,6 +57,15 @@
 const unsigned int HEIGHT = 720;
 const unsigned int WIDTH = 720;
 
+//how many are generated
+#define GRASS_MAX 30
+#define ROCK_MAX 40
+#define CORAL_MAX 30
+#define FISH_MAX 10
+
+//Boundaries?
+#define HORIZON 90.0f
+
 struct Keyframe {
     glm::vec3 position;
     glm::vec3 rotation;
@@ -95,8 +104,8 @@ private:
   std::unique_ptr<Eye> reye;
   std::unique_ptr<Cave> cave;
 
-   //std::unique_ptr<GenericObject> grass1;
-   //std::unique_ptr<GenericObject> grass2;
+  std::unique_ptr<GenericObject> grass1;
+  std::unique_ptr<GenericObject> grass2;
 
   ////Coral Reef
   std::unique_ptr<GenericObject> cor1;
@@ -314,8 +323,6 @@ private:
       auto camera = std::make_unique<Camera>(60.0f, 1.0f, 0.1f, 400.0f);
       camera->position.z = -15.0f;
       scene.camera = move(camera);
-      // Add space background
-      // UNDO
       scene.objects.push_back(std::make_unique<FishSchool>(10));
       skybox = std::make_unique<Skybox>();
       skybox->scale = {200, 200, 200};
@@ -350,13 +357,9 @@ private:
       dolphin2 = std::make_unique<Dolphin>();
       dolphin2->scale = {.02, .02, .02};
       dolphin2->position = {0, -3, 0};
-      ///// koraly a rastlinky
 
-       //Textura je CUSTOM -- nezarucujem, ale povodna bola bugnuta.
-      //grass1 = std::make_unique<GenericObject>("coral\\Grass.obj", "coral\\Grass.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
-      //grass2 = std::make_unique<GenericObject>("coral\\Grass.obj", "coral\\SeaGrass.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+
       /////// high poly fish
-      //TODO: Easier way to do this?? Array??
       float s = 0.0f; //Container to equalize size ratio across scale
       ///* ORANGE FISH *///
       for(int i = 0; i < 5; i++){
@@ -397,7 +400,7 @@ private:
 
       ////Stingray
       stingray = std::make_unique<Stingray>();
-      stingray->position = {5, -16.0f, .2};
+      stingray->position = {0, -17.0f, 0};
       stingray->scale = {5, 5, 5};
 
       ///* QUADRANT 1 + + *///
@@ -413,7 +416,50 @@ private:
       ///Sponge 2
       sponge1 = std::make_unique<Sponge>();
       sponge1->scale = {.1, .1, .1};
-      sponge1->position = {19.0f, -8.0f, 20.5f};
+      sponge1->position = {16.0f, -8.0f, 20.5f};
+      ///*PATHWAY Q1 --> Q2///
+      auto new_rock = std::make_unique<GenericObject>("rocks\\RockPackByPava.obj", "rocks\\darkrock.bmp", underwater_vert_glsl, underwater_frag_glsl);
+      new_rock->scale = {3.5f, 3.5f, 3.5f};
+      new_rock->rotation.z = -M_PI_2;
+      new_rock->rotation.x = -M_PI_2;
+      new_rock->position = {6.0f, -19.5f, 22.0f};
+      scene.objects.push_back(move(new_rock));
+
+      auto first_grass = std::make_unique<GenericObject>("coral\\Grass.obj", "coral\\Grass.bmp", underwater_vert_glsl, underwater_frag_glsl);
+      first_grass->scale = {30, 30, 30};
+      first_grass->position = {7.0f, -19.5f, 20.5f};
+      scene.objects.push_back(move(first_grass));
+
+      auto second_grass = std::make_unique<GenericObject>("coral\\Grass.obj", "coral\\SeaGrass.bmp", underwater_vert_glsl, underwater_frag_glsl);
+      second_grass->scale = {40, 40, 40};
+      second_grass->position = {1.5f, -19.5f, 24.5f};
+      scene.objects.push_back(move(second_grass));
+
+      auto brain_coral = std::make_unique<GenericObject>("coral\\braincoral.obj", "coral\\braincoral.bmp", underwater_vert_glsl, underwater_frag_glsl);
+      brain_coral->position = {-4.0f, -19.0f, 21.5f};
+      brain_coral->scale = {.55f, .55f, .55f};
+      brain_coral->rotation.x = -M_PI_2;
+      scene.objects.push_back(move(brain_coral));
+
+      auto tree_coral = std::make_unique<GenericObject>("coral\\treecoral.obj", "coral\\treecoralcustom.bmp", underwater_vert_glsl, underwater_frag_glsl);
+      tree_coral->position = {-6.5f, -19.0f, 26.5f};
+      scene.objects.push_back(move(tree_coral));
+
+      auto second_rock = std::make_unique<GenericObject>("rocks\\RockPackByPava.obj", "rocks\\rock2_2.bmp", underwater_vert_glsl, underwater_frag_glsl);
+      second_rock->scale = {3.5f, 3.5f, 3.5f};
+      second_rock->rotation.z = M_PI_2;
+      second_rock->rotation.y = -M_PI_2;
+      second_rock->position = {-1.0f, -19.7f, 30.0f};
+      scene.objects.push_back(move(second_rock));
+
+      auto third_rock = std::make_unique<GenericObject>("rocks\\RockPackByPava.obj", "rocks\\undersearock.bmp", underwater_vert_glsl, underwater_frag_glsl);
+      third_rock->scale = {3.5f, 3.5f, 3.5f};
+      third_rock->rotation.z = M_PI_2;
+      third_rock->rotation.x = -M_PI_2;
+      third_rock->position = {-8.0f, -19.5f, 27.0f};
+      scene.objects.push_back(move(third_rock));
+
+
       ///* QUADRANT 2 - + *///
       ///Rock Arch
       //endpoints
@@ -426,6 +472,7 @@ private:
       rockAL2 = std::make_unique<GenericObject>("rocks\\RockPackByPava.obj", "rocks\\sandstone.bmp", underwater_vert_glsl, underwater_frag_glsl);
       rockAL2->position = {-21.67f, -15.5f, 18.33f};
       rockAL2->scale = {5.5f, 3, 5.5f};
+      rockAL2->rotation.x = -M_PI_2;
  //     rockAL1->rotation.y =  M_PI_4;
       rockAR3 = std::make_unique<GenericObject>("rocks\\RockPackByPava.obj", "rocks\\RockTexture.bmp", underwater_vert_glsl, underwater_frag_glsl);
       rockAR3->position = {-20.0f, -13.5f, 20.0f};
@@ -434,6 +481,7 @@ private:
       rockAR2 = std::make_unique<GenericObject>("rocks\\RockPackByPava.obj", "rocks\\grayrock.bmp", underwater_vert_glsl, underwater_frag_glsl);
       rockAR2->position = {-18.33f, -15.5f, 21.67f};
       rockAR2->scale = {5.5f, 3, 5.5f};
+      rockAL2->rotation.y = M_PI;
       rockAR1 = std::make_unique<GenericObject>("rocks\\RockPackByPava.obj", "rocks\\rock2_1.bmp", underwater_vert_glsl, underwater_frag_glsl);
       rockAR1->position = {-16.67f, -17.5f, 23.33f};
       rockAR1->scale = {5, 3, 5};
@@ -443,18 +491,23 @@ private:
       rockAR0->position = {-15.0f, -19.5f, 25.0f};
       rockAR0->scale = {4.5f, 3, 4.5f};
       ///Sea Grass
-
+      grass1 = std::make_unique<GenericObject>("coral\\Grass.obj", "coral\\Grass.bmp", underwater_vert_glsl, underwater_frag_glsl);
+      grass1->scale = {35, 35, 35};
+      grass1->position = {-23.0f, -19.5f, 13.0f};
+      grass2 = std::make_unique<GenericObject>("coral\\Grass.obj", "coral\\SeaGrass.bmp", underwater_vert_glsl, underwater_frag_glsl);
+      grass2->scale = {37, 37, 37};
+      grass2->position = {-13.0f, -19.5f, 23.0f};
       ///* QUADRANT 3 - - *///
       ///Coral Reef
       cor1 = std::make_unique<GenericObject>("coral\\braincoral.obj", "coral\\braincoral.bmp", underwater_vert_glsl, underwater_frag_glsl);
       cor1->position = {-30, -19.0f, -15};
       cor1->scale = {.65f, .65f, .65f};
       cor1->rotation.x = -M_PI_2;
-      cor2 = std::make_unique<GenericObject>("coral\\v1coral.obj", "coral\\v1coral.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      cor2 = std::make_unique<GenericObject>("coral\\v1coral.obj", "coral\\v1coral.bmp", underwater_vert_glsl, underwater_frag_glsl);
       cor2->position = {-25, -19.0f, -25};
       cor2->scale = {.4f, .4f, .4f};
       cor2->rotation.x = -M_PI_2;
-      cor3 = std::make_unique<GenericObject>("coral\\treecoral.obj", "coral\\treecoralcustom.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
+      cor3 = std::make_unique<GenericObject>("coral\\treecoral.obj", "coral\\treecoralcustom.bmp", underwater_vert_glsl, underwater_frag_glsl);
       cor3->scale = {1.5f, 1.5f, 1.5f};
       cor3->position = {-10, -19.0f, -30};
       ///Sponge 3
@@ -512,6 +565,138 @@ private:
       rock3p3->scale = {3, 3, 3};
       rock3p3->rotation.x = -M_PI;
       rock3p3->rotation.z = M_PI_2;
+
+      int variation = 0;
+      float ratio = 0.0f;
+      ///* PROCEDURAL SCENERY *///
+      //Corals - Generate 20 of them.
+      for(int i = 0; i < CORAL_MAX; i++){
+          variation = glm::linearRand(1, 3);
+          if (variation == 1){ //Brain Coral
+              auto new_coral = std::make_unique<GenericObject>("coral\\braincoral.obj", "coral\\braincoral.bmp", underwater_vert_glsl, underwater_frag_glsl);
+              ratio = glm::linearRand(.1f, .6f);
+              new_coral->scale = glm::vec3(ratio);
+              new_coral->rotation.x = -M_PI_2;
+              new_coral->position = {glm::linearRand(-HORIZON, HORIZON), -19.5, glm::linearRand(-HORIZON, HORIZON)};
+              scene.objects.push_back(move(new_coral));
+          }
+          else if (variation == 2){ //Coral V1
+              auto new_coral =  std::make_unique<GenericObject>("coral\\v1coral.obj", "coral\\v1coral.bmp", underwater_vert_glsl, underwater_frag_glsl);
+              ratio = glm::linearRand(.01f, .2f);
+              new_coral->scale = glm::vec3(ratio);
+              new_coral->rotation.x = -M_PI_2;
+              new_coral->position = {glm::linearRand(-HORIZON, HORIZON), -19.5, glm::linearRand(-HORIZON, HORIZON)};
+              scene.objects.push_back(move(new_coral));
+          }
+          else { //variation = 3 - Tree Coral
+              auto new_coral = std::make_unique<GenericObject>("coral\\treecoral.obj", "coral\\treecoralcustom.bmp", underwater_vert_glsl, underwater_frag_glsl);
+              ratio = glm::linearRand(.3f, 1.2f);
+              new_coral->scale = glm::vec3(ratio);
+              new_coral->position = {glm::linearRand(-HORIZON, HORIZON), -19.5, glm::linearRand(-HORIZON, HORIZON)};
+              scene.objects.push_back(move(new_coral));
+          }
+      }
+      //Rocks - Generate 30 of them
+      glm::vec3 rotisserie = {0, 0, 0}; //Triad that picks out rotation variation between M_PI, M_PI_2, -M_PI_2 and 0
+      ratio = 0.0f;
+      for(int i = 0; i < ROCK_MAX; i++){
+          variation = glm::linearRand(1, 9); //texture picker
+          rotisserie = {glm::linearRand(0, 3),glm::linearRand(0, 3),glm::linearRand(0, 3)};
+
+          //TODO: Easier way to do this?? Really only thing that changes in each Variation is the texture of the rock.
+          if (variation == 1){
+              auto nRock = std::make_unique<GenericObject>("rocks\\RockPackByPava.obj", "rocks\\brownrock.bmp", underwater_vert_glsl, underwater_frag_glsl);
+              nRock->rotation = {rotisserie.x * M_PI_2, rotisserie.y * M_PI_2, rotisserie.z * M_PI_2}; //returns 0, M_PI_2, M_PI, or 3*M_PI_2 = - M_PI
+              ratio = glm::linearRand(.5f, 8.0f);
+              nRock->scale = glm::vec3(ratio);
+              nRock->position = {glm::linearRand(-HORIZON, HORIZON), -19.5, glm::linearRand(-HORIZON, HORIZON)};
+              scene.objects.push_back(move(nRock));
+          }
+          else if (variation == 2){
+              auto nRock = std::make_unique<GenericObject>("rocks\\RockPackByPava.obj", "rocks\\darkrock.bmp", underwater_vert_glsl, underwater_frag_glsl);
+              nRock->rotation = {rotisserie.x * M_PI_2, rotisserie.y * M_PI_2, rotisserie.z * M_PI_2}; //returns 0, M_PI_2, M_PI, or 3*M_PI_2 = - M_PI
+              ratio = glm::linearRand(.5f, 8.0f);
+              nRock->scale = glm::vec3(ratio);
+              nRock->position = {glm::linearRand(-HORIZON, HORIZON), -19.5, glm::linearRand(-HORIZON, HORIZON)};
+              scene.objects.push_back(move(nRock));
+          }
+          else if (variation == 3){
+              auto nRock = std::make_unique<GenericObject>("rocks\\RockPackByPava.obj", "rocks\\grayrock.bmp", underwater_vert_glsl, underwater_frag_glsl);
+              nRock->rotation = {rotisserie.x * M_PI_2, rotisserie.y * M_PI_2, rotisserie.z * M_PI_2}; //returns 0, M_PI_2, M_PI, or 3*M_PI_2 = - M_PI
+              ratio = glm::linearRand(.5f, 8.0f);
+              nRock->scale = glm::vec3(ratio);
+              nRock->position = {glm::linearRand(-HORIZON, HORIZON), -19.5, glm::linearRand(-HORIZON, HORIZON)};
+              scene.objects.push_back(move(nRock));
+          }
+          else if (variation == 4){
+              auto nRock = std::make_unique<GenericObject>("rocks\\RockPackByPava.obj", "rocks\\rock2_1.bmp", underwater_vert_glsl, underwater_frag_glsl);
+              nRock->rotation = {rotisserie.x * M_PI_2, rotisserie.y * M_PI_2, rotisserie.z * M_PI_2}; //returns 0, M_PI_2, M_PI, or 3*M_PI_2 = - M_PI
+              ratio = glm::linearRand(.5f, 8.0f);
+              nRock->scale = glm::vec3(ratio);
+              nRock->position = {glm::linearRand(-HORIZON, HORIZON), -19.5, glm::linearRand(-HORIZON, HORIZON)};
+              scene.objects.push_back(move(nRock));
+          }
+          else if (variation == 5){
+              auto nRock = std::make_unique<GenericObject>("rocks\\RockPackByPava.obj", "rocks\\rock2_2.bmp", underwater_vert_glsl, underwater_frag_glsl);
+              nRock->rotation = {rotisserie.x * M_PI_2, rotisserie.y * M_PI_2, rotisserie.z * M_PI_2}; //returns 0, M_PI_2, M_PI, or 3*M_PI_2 = - M_PI
+              ratio = glm::linearRand(.5f, 8.0f);
+              nRock->scale = glm::vec3(ratio);
+              nRock->position = {glm::linearRand(-HORIZON, HORIZON), -19.5, glm::linearRand(-HORIZON, HORIZON)};
+              scene.objects.push_back(move(nRock));
+          }
+          else if (variation == 6){
+              auto nRock = std::make_unique<GenericObject>("rocks\\RockPackByPava.obj", "rocks\\RockTexture.bmp", underwater_vert_glsl, underwater_frag_glsl);
+              nRock->rotation = {rotisserie.x * M_PI_2, rotisserie.y * M_PI_2, rotisserie.z * M_PI_2}; //returns 0, M_PI_2, M_PI, or 3*M_PI_2 = - M_PI
+              ratio = glm::linearRand(.5f, 8.0f);
+              nRock->scale = glm::vec3(ratio);
+              nRock->position = {glm::linearRand(-HORIZON, HORIZON), -19.5, glm::linearRand(-HORIZON, HORIZON)};
+              scene.objects.push_back(move(nRock));
+          }
+          else if (variation == 7){
+              auto nRock = std::make_unique<GenericObject>("rocks\\RockPackByPava.obj", "rocks\\Rock-Texture-Surface.bmp", underwater_vert_glsl, underwater_frag_glsl);
+              nRock->rotation = {rotisserie.x * M_PI_2, rotisserie.y * M_PI_2, rotisserie.z * M_PI_2}; //returns 0, M_PI_2, M_PI, or 3*M_PI_2 = - M_PI
+              ratio = glm::linearRand(.5f, 8.0f);
+              nRock->scale = glm::vec3(ratio);
+              nRock->position = {glm::linearRand(-HORIZON, HORIZON), -19.5, glm::linearRand(-HORIZON, HORIZON)};
+              scene.objects.push_back(move(nRock));
+          }
+          else if (variation == 8){
+              auto nRock = std::make_unique<GenericObject>("rocks\\RockPackByPava.obj", "rocks\\sandstone.bmp", underwater_vert_glsl, underwater_frag_glsl);
+              nRock->rotation = {rotisserie.x * M_PI_2, rotisserie.y * M_PI_2, rotisserie.z * M_PI_2}; //returns 0, M_PI_2, M_PI, or 3*M_PI_2 = - M_PI
+              ratio = glm::linearRand(.5f, 8.0f);
+              nRock->scale = glm::vec3(ratio);
+              nRock->position = {glm::linearRand(-HORIZON, HORIZON), -19.5, glm::linearRand(-HORIZON, HORIZON)};
+              scene.objects.push_back(move(nRock));
+          }
+          else { //variation == 9
+              auto nRock = std::make_unique<GenericObject>("rocks\\RockPackByPava.obj", "rocks\\undersearock.bmp", underwater_vert_glsl, underwater_frag_glsl);
+              nRock->rotation = {rotisserie.x * M_PI_2, rotisserie.y * M_PI_2, rotisserie.z * M_PI_2}; //returns 0, M_PI_2, M_PI, or 3*M_PI_2 = - M_PI
+              ratio = glm::linearRand(.5f, 8.0f);
+              nRock->scale = glm::vec3(ratio);
+              nRock->position = {glm::linearRand(-HORIZON, HORIZON), -19.5, glm::linearRand(-HORIZON, HORIZON)};
+              scene.objects.push_back(move(nRock));
+          } //all of this is a total programmer crime
+      }
+      variation = 0;
+      ratio = 0.0f;
+      //grass - 20 instances
+      for (int i = 0; i < GRASS_MAX; i++){
+          variation = glm::linearRand(1, 2);
+          if (variation == 1){
+              auto third_grass = std::make_unique<GenericObject>("coral\\Grass.obj", "coral\\Grass.bmp", underwater_vert_glsl, underwater_frag_glsl);
+              ratio = glm::linearRand(20.0f, 50.0f);
+              third_grass->scale = glm::vec3(ratio);
+              third_grass->position = {glm::linearRand(-HORIZON, HORIZON), -19.5, glm::linearRand(-HORIZON, HORIZON)};
+              scene.objects.push_back(move(third_grass));
+          }
+          else {
+              auto third_grass = std::make_unique<GenericObject>("coral\\Grass.obj", "coral\\SeaGrass.bmp", underwater_vert_glsl, underwater_frag_glsl);
+              ratio = glm::linearRand(20.0f, 50.0f);
+              third_grass->scale = glm::vec3(ratio);
+              third_grass->position = {glm::linearRand(-HORIZON, HORIZON), -19.5, glm::linearRand(-HORIZON, HORIZON)};
+              scene.objects.push_back(move(third_grass));
+          }
+      }
 
 
       ////Beautiful Eyes
@@ -739,10 +924,7 @@ public:
     cor2->render(scene);
     cor3->update(scene,dt);
     cor3->render(scene);
-    //grass1->update(scene,dt);
-    //grass1->render(scene);
-    //grass2->update(scene,dt);
-    //grass2->render(scene);
+
 
     //bubble->update(scene, dt);
     //bubble->render(scene);
@@ -775,6 +957,12 @@ public:
     rockAR2->render(scene);
     rockAR3->update(scene,dt);
     rockAR3->render(scene);
+
+
+    grass1->update(scene,dt);
+    grass1->render(scene);
+    grass2->update(scene,dt);
+    grass2->render(scene);
 
     //pillar 1
     rock1p1->update(scene,dt);
