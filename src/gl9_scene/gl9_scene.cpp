@@ -285,12 +285,12 @@ private:
           {
                   .position ={30.0f, -10.0f, 50.0f},
                   .target = {20.0f, -17.0f, 20.0f},
-                  .timeToTake = 3.33f,
+                  .timeToTake = 5.0f
           },
           {
                   .position ={0.0f, -10.0f, 30.0f},
                   .target = {20.0f, -17.0f, 20.0f},
-                  .timeToTake = 3.34f,
+                  .timeToTake = 5.0f
           },
           {
                   .position ={20.0f, -10.0f, 0.0f},
@@ -300,7 +300,7 @@ private:
           { //ACT 6 intermission
                   .position ={0.0f, -12.0f, 0.0f},
                   .target = {0.0f, -17.0f, 20.0f},
-                  .timeToTake = 2.5f,
+                  .timeToTake = 5.0f,
           },
           {
                   .position ={-20.0f, -12.0f, 0.0f},
