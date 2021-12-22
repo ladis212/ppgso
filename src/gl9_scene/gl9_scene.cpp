@@ -62,7 +62,8 @@ const unsigned int WIDTH = 720;
 #define GRASS_MAX 30
 #define ROCK_MAX 40
 #define CORAL_MAX 30
-#define FISH_MAX 10
+#define FISH_MAX 20
+#define SCHOOL_MAX 10
 
 //Boundaries?
 #define HORIZON 90.0f
@@ -87,6 +88,11 @@ void linearBetweenKeyframes(std::unique_ptr<Object> &object, Keyframe A, Keyfram
     object->rotation = glm::lerp(A.rotation, B.rotation, t);
     object->scale = glm::lerp(A.scale, B.scale, t);
 
+}
+void CameraLinFrames(std::unique_ptr<Camera> &cam, CameraFrame A, CameraFrame B, float timeSinceA){
+    float t = timeSinceA / B.timeToTake;
+    cam->position = glm::lerp(A.position, B.position, t);
+    cam->target = glm::lerp(A.target, B.target, t);
 }
 
 class SceneWindow : public ppgso::Window {
@@ -188,66 +194,51 @@ private:
   std::vector<CameraFrame> Camframes{
           { //ACT 1: Spin around the surface ~10s
             .position ={0.0f, 20.0f, 20.0f},
-            .target = {0, 0, 0},
-            .timeToTake = 2.0f,
+            .target = {0, 5.0f, 0},
+            .timeToTake = 3.0f,
           },
           {
-             .position ={20.0f, 17.5f, 0.0f},
-             .target = {0, 0, 0},
-             .timeToTake = 2.0f,
+             .position ={20.0f, 20.5f, 0.0f},
+             .target = {0, 5.0f, 0},
+             .timeToTake = 3.0f,
           },
           {
-             .position ={0.0f, 15.0f, -20.0f},
-             .target = {0, 0, 0},
-             .timeToTake = 2.0f,
+             .position ={0.0f, 20.0f, -20.0f},
+             .target = {0, 5.0f, 0},
+             .timeToTake = 3.0f,
           },
           {
-             .position ={-20.0f, 12.5f, 0.0f},
-             .target = {0, 0, 0},
-             .timeToTake = 2.0f,
+             .position ={-20.0f, 20.0f, 0.0f},
+             .target = {0, 5.0f, 0},
+             .timeToTake = 3.0f,
           },
           {
-             .position ={0.0f, 10.0f, 20.0f},
-             .target = {0, 0, 0},
+             .position ={0.0f, 15.0f, 20.0f},
+             .target = {0, 5.0f, 0},
              .timeToTake = 2.0f,
           }, //ACT 1 End... 10s - 10s
           { //ACT 2 - Advance towards the island. The island is at: 20 0 15, use 4 keyframes, roughly 8 sec (to make it still smooth)
-                  .position ={0.0f, 10.0f, 20.0f},
-                  .target = {5.0f, 0, 3.75f},
+                  .position ={10.0f, 14.0f, 10.0f},
+                  .target = {5.0f, 5, 3.75f},
                   .timeToTake = 2.0f,
           },
-          {
-                  .position ={0.0f, 11.0f, 20.0f},
-                  .target = {10.0f, 1, 7.5f},
-                  .timeToTake = 2.0f,
-          },
-          {
-                  .position ={0.0f, 12.0f, 20.0f},
-                  .target = {15.0f, 2, 11.25f},
-                  .timeToTake = 2.0f,
-          },
-          {
-                  .position ={0.0f, 13.0f, 20.0f},
-                  .target = {20.0f, 3, 15.0f},
-                  .timeToTake = 4.0f,
-          }, //ACT 2 - End - 10s - 20s
-          { //ACT 3 - kruzit okolo ostrova - pomaly, 4s per frame - trochu vyvyseny pre efekt.
-                  .position ={20.0f, 13.0f, 0.0f},
+          { //ACT 3 - kruzit okolo ostrova - pomaly - trochu vyvyseny pre efekt.
+                  .position ={20.0f, 13.0f, 0.0f}, //pred
                   .target = {20, 3, 15},
                   .timeToTake = 3.0f,
           },
           {
-                  .position ={0.0f, 13.0f, -20.0f},
+                  .position ={0.0f, 13.0f, 15.0f},//vedla
                   .target = {20, 3, 15},
                   .timeToTake = 3.0f,
           },
           {
-                  .position ={-20.0f, 13.0f, 0.0f},
+                  .position ={20.0f, 13.0f, 30.0f}, //za
                   .target = {20, 3, 15},
                   .timeToTake = 3.0f,
           },
           {
-                  .position ={0.0f, 13.0f, -20.0f},
+                  .position ={40.0f, 13.0f, 15.0f}, //vedla
                   .target = {20, 3, 15},
                   .timeToTake = 3.0f,
           },
@@ -262,52 +253,52 @@ private:
                   .timeToTake = 5.0f,
           },
           {
-                  .position ={15.0f, 10.0f, 0.0f},
+                  .position ={20.0f, 10.0f, 0.0f},
                   .target = {0, -2.5f, 0},
                   .timeToTake = 1.0f,
           },
           {
-                  .position ={15.0f, 5.0f, 0.0f},
+                  .position ={20.0f, 5.0f, 0.0f},
                   .target = {0, -5, 0},
                   .timeToTake = 1.0f,
           },
           {
-                  .position ={15.0f, 0.0f, 0.0f},
+                  .position ={20.0f, 0.0f, 0.0f},
                   .target = {0, -7.5f, 0},
                   .timeToTake = 1.0f,
           },
           {
-                  .position ={15.0f, -5.0f, 0.0f},
+                  .position ={20.0f, -5.0f, 0.0f},
                   .target = {0, -10, 0},
                   .timeToTake = 2.0f, //10s
           },
           { //Goes to the central area of a quadrant
-                  .position ={15.0f, -10.0f, 0.0f},
+                  .position ={20.0f, -10.0f, 0.0f},
                   .target = {10, -13.5, 10},
                   .timeToTake = 2.0f,
           },
           {
-                  .position ={15.0f, -10.0f, 0.0f},
+                  .position ={20.0f, -10.0f, 0.0f},
                   .target = {20.0f, -17.0f, 20.0f},
                   .timeToTake = 3.0f, //15s
           }, //arrives at quadrant 1  - 25s - act end - 60s
           { //ACT 5 - Quadrant 1
-                  .position ={0.0f, -12.0f, -15.0f},
+                  .position ={50.0f, -10.0f, 30.0f},
                   .target = {20.0f, -17.0f, 20.0f},
                   .timeToTake = 3.33f,
           },
           {
-                  .position ={-15.0f, -12.0f, 0.0f},
+                  .position ={30.0f, -10.0f, 50.0f},
                   .target = {20.0f, -17.0f, 20.0f},
                   .timeToTake = 3.33f,
           },
           {
-                  .position ={0.0f, -12.0f, 15.0f},
+                  .position ={0.0f, -10.0f, 30.0f},
                   .target = {20.0f, -17.0f, 20.0f},
                   .timeToTake = 3.34f,
           },
           {
-                  .position ={15.0f, -12.0f, 0.0f},
+                  .position ={20.0f, -10.0f, 0.0f},
                   .target = {20.0f, -17.0f, 20.0f},
                   .timeToTake = 4.0f,
           }, //ACT end - 15s -75s
@@ -317,57 +308,57 @@ private:
                   .timeToTake = 2.5f,
           },
           {
-                  .position ={-15.0f, -12.0f, 0.0f},
+                  .position ={-20.0f, -12.0f, 0.0f},
                   .target = {-20.0f, -17.0f, 20.0f},
                   .timeToTake = 2.5f,
           }, //80s
           { //ACT 7 - Quadrant 2
-                  .position ={0.0f, -12.0f, -15.0f},
+                  .position ={-40.0f, -12.0f, 20.0f},
                   .target = {-20.0f, -17.0f, 20.0f},
                   .timeToTake = 3.33f,
           },
           {
-                  .position ={15.0f, -12.0f, 0.0f},
+                  .position ={-20.0f, -12.0f, 40.0f},
                   .target = {-20.0f, -17.0f, 20.0f},
                   .timeToTake = 3.33f,
           },
           {
-                  .position ={0.0f, -12.0f, 15.0f},
+                  .position ={0.0f, -12.0f, 20.0f},
                   .target = {-20.0f, -17.0f, 20.0f},
                   .timeToTake = 3.34f,
           },
           {
-                  .position ={-15.0f, -12.0f, 0.0f},
+                  .position ={-20.0f, -12.0f, 0.0f},
                   .target = {-20.0f, -17.0f, 20.0f},
                   .timeToTake = 4.0f,
           }, //95s
           { //quadrant 3 transmission
                   .position ={-15.0f, -12.0f, -0.0f},
                   .target = {-20.0f, -17.0f, 0.0f},
-                  .timeToTake = 1.0f,
+                  .timeToTake = 3.0f,
           },
           {
-                 .position ={-15.0f, -12.0f, 0.0f},
+                 .position ={-20.0f, -12.0f, 0.0f},
                  .target = {-20.0f, -17.0f, -20.0f},
                  .timeToTake = 4.0f,
           }, //100s
           { //QUADRANT 3
-                  .position ={0.0f, -12.0f, -15.0f},
+                  .position ={-50.0f, -12.0f, -30.0f},
                   .target = {-20.0f, -17.0f, -20.0f},
                   .timeToTake = 3.33f,
           },
           {
-                  .position ={15.0f, -12.0f, 0.0f},
+                  .position ={-30.0f, -12.0f, -50.0f},
                   .target = {-20.0f, -17.0f, -20.0f},
                   .timeToTake = 3.33f,
           },
           {
-                  .position ={0.0f, -12.0f, 15.0f},
+                  .position ={0.0f, -12.0f, -20.0f},
                   .target = {-20.0f, -17.0f, -20.0f},
                   .timeToTake = 3.34f,
           },
           {
-                  .position ={-15.0f, -12.0f, 0.0f},
+                  .position ={-20.0f, -12.0f, 0.0f},
                   .target = {-20.0f, -17.0f, -20.0f},
                   .timeToTake = 4.0f,
           }, //115s
@@ -387,22 +378,22 @@ private:
                   .timeToTake = 2.0f,
           },
           { //QUADRANT 4
-                  .position ={0.0f, -12.0f, -15.0f},
+                  .position ={0.0f, -12.0f, -20.0f},
                   .target = {20.0f, -17.0f, -20.0f},
                   .timeToTake = 3.33f,
           },
           {
-                  .position ={-15.0f, -12.0f, 0.0f},
+                  .position ={20.0f, -12.0f, -40.0f},
                   .target = {20.0f, -17.0f, -20.0f},
                   .timeToTake = 3.33f,
           },
           {
-                  .position ={0.0f, -12.0f, 15.0f},
+                  .position ={40.0f, -12.0f, -20.0f},
                   .target = {20.0f, -17.0f, -20.0f},
                   .timeToTake = 3.34f,
           },
           {
-                  .position ={15.0f, -12.0f, 0.0f},
+                  .position ={20.0f, -12.0f, 0.0f},
                   .target = {20.0f, -17.0f, -20.0f},
                   .timeToTake = 4.0f,
           },
@@ -427,7 +418,12 @@ private:
 
       camera->position.z = -15.0f;
       scene.camera = move(camera);
-      scene.objects.push_back(std::make_unique<FishSchool>(10));
+
+      for (int i = 0; i < SCHOOL_MAX; i++) {
+          auto fishflock = std::make_unique<FishSchool>(glm::linearRand(5, 12));
+          fishflock->position = {glm::linearRand(-HORIZON, HORIZON), glm::linearRand(-5.0f, -15.0f), glm::linearRand(-HORIZON, HORIZON)};
+          scene.objects.push_back(move(fishflock));
+      }
       skybox = std::make_unique<Skybox>();
       skybox->scale = {200, 200, 200};
       //scene.objects.push_back(move(skybox));
@@ -466,7 +462,7 @@ private:
       /////// high poly fish
       float s = 0.0f; //Container to equalize size ratio across scale
       ///* ORANGE FISH *///
-      for(int i = 0; i < 5; i++){
+      for(int i = 0; i < FISH_MAX; i++){
           auto new_fish = std::make_unique<fish>("fishes\\fish.obj", "fishes\\fish.bmp", underwater_vert_glsl, underwater_frag_glsl);
           new_fish->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
           s = glm::linearRand(.03f, .1f);
@@ -476,7 +472,7 @@ private:
       }
 
       ///* BLUE TANG *///
-      for(int i = 0; i < 5; i++){
+      for(int i = 0; i < FISH_MAX; i++){
           auto new_fish = std::make_unique<fish>("fishes\\bluetang.obj", "fishes\\bluetang.bmp", underwater_vert_glsl, underwater_frag_glsl);
           new_fish->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
           s = glm::linearRand(.05f, .2f);
@@ -487,7 +483,7 @@ private:
       }
 
       ///*CHROMIS*///
-      for(int i = 0; i < 5; i++){
+      for(int i = 0; i < FISH_MAX; i++){
           auto new_fish = std::make_unique<fish>("fishes\\chromis.obj", "fishes\\chromis.bmp", underwater_vert_glsl, underwater_frag_glsl);
           new_fish->position = {glm::linearRand(-20.0f, 20.0f), glm::linearRand(-20.0f, -1.0f), glm::linearRand(-20.0f, 20.0f)};
           s = glm::linearRand(.05f, .2f);
@@ -502,7 +498,6 @@ private:
       //fish_l2 = std::make_unique<fish>("fishes\\finalfish.obj", "fishes\\specialfinalfish.bmp", diffuse_vert_glsl, diffuse_frag_glsl);
 
       ///Planks
-      // TODO: Collision status unknown - lags PC very much
       for (int i = 0; i < 10; i++){
           auto plank = std::make_unique<Plank>();
          plank->position = {glm::linearRand(-20.0, 20.0), 0, glm::linearRand(-20.0, 20.0)};
@@ -529,7 +524,8 @@ private:
       ///Sponge 2
       sponge1 = std::make_unique<Sponge>();
       sponge1->scale = {.1, .1, .1};
-      sponge1->position = {16.0f, -8.0f, 20.5f};
+      sponge1->position = {12.0f, -12.0f, 20.5f};
+      sponge1->rotation.x = M_PI_2;
       ///*PATHWAY Q1 --> Q2///
       auto new_rock = std::make_unique<GenericObject>("rocks\\RockPackByPava.obj", "rocks\\darkrock.bmp", underwater_vert_glsl, underwater_frag_glsl);
       new_rock->scale = {3.5f, 3.5f, 3.5f};
@@ -853,13 +849,7 @@ public:
 
   }
 
-  /*!
-   * Handles pressed key when the window is focused
-   * @param key Key code of the key being pressed/released
-   * @param scanCode Scan code of the key being pressed/released
-   * @param action Action indicating the key state change
-   * @param mods Additional modifiers to consider
-   */
+
   glm::vec3 directions = {0, 0, 0};
   void onKey(int key, int scanCode, int action, int mods) override {
     scene.keyboard[key] = action;
@@ -965,6 +955,8 @@ public:
   Keyframe thisKeyframe, nextKeyframe;
   int CamIndex = 0;
   CameraFrame thatKeyframe, followKeyframe;
+  float camtime = 0.0f;
+  float timest = 0.0f;
 
   void onIdle() override {
 
@@ -1002,10 +994,16 @@ public:
         keyframeIndex++;
         timestamp = time;
     }
-    //std::cout << keyframeIndex;
-    //std::cout << (keyframeIndex + 1) << std::endl;
+      camtime = time - timest;
 
-    //dolphin->position.y = time;
+      thatKeyframe = Camframes[CamIndex % Camframes.size()];
+      followKeyframe = Camframes[(CamIndex + 1) % Camframes.size()];
+      CameraLinFrames(scene.camera, thatKeyframe, followKeyframe, camtime);
+      if(camtime >= followKeyframe.timeToTake) {
+          camtime = 0;
+          CamIndex++;
+          timest = time;
+      }
 
 
     // Set gray background
